@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './index.css';
 import API_BASE_URL from './js/urlHelper';
+import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de importar el icono de WhatsApp
 
 // Componentes Home
 import Home from './ui/Home';
@@ -61,9 +62,12 @@ function AppContent() {
 function App() {
   return (
     <Router>
-        <AppContent />
+      <AppContent />
+      {/* Componente de WhatsApp en todas las páginas */}
+      <WhatsAppIcon />
     </Router>
   );
 }
+
 
 export default App;

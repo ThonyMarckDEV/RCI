@@ -1,12 +1,12 @@
 import React from 'react';
 import Navbar from '../components/home/NavBar';
-import Slider from '../components/home/Slider'; // Importa el Slider
-import InfoSection from '../components/home/InfoSection'; // Importa el nuevo componente
-import Footer from '../components/home/Footer'; // Importa el footer
+import Slider from '../components/home/Slider';
+import InfoSection from '../components/home/InfoSection';
+import Footer from '../components/home/Footer';
 
 const Home = () => {
   return (
-    <div className="bg-white font-light text-white">
+    <div className="bg-white text-white">
       {/* Navbar */}
       <Navbar />
 
@@ -15,11 +15,13 @@ const Home = () => {
         <Slider />
 
         {/* Texto "Muebles RCI" */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-fade-in">
-          <h1 className="text-6xl md:text-7xl font-extrabold text-yellow-300 mb-4 animate-slide-down tracking-wide [text-shadow:_3px_3px_6px_rgba(0,0,0,0.9)] p-2 animate__animated animate__fadeInDown animate__delay-1s">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <h1 className="text-6xl md:text-7xl font-[Museo Sans] font-normal text-yellow-300 mb-4 tracking-wide p-2"
+              style={{ textShadow: '4px 4px 8px rgba(0, 0, 0, 0.7)' }}>
             Muebles RCI
           </h1>
-          <p className="text-3xl md:text-4xl font-bold text-yellow-300 animate-slide-up tracking-wider [text-shadow:_3px_3px_6px_rgba(0,0,0,0.9)] p-2 rounded-lg animate__animated animate__fadeInUp animate__delay-2s">
+          <p className="text-3xl md:text-4xl font-[Museo Sans] font-normal text-yellow-300 tracking-wider p-2 rounded-lg"
+             style={{ textShadow: '3px 3px 6px rgba(0, 0, 0, 0.6)' }}>
             Calidad sin límites a cómodos precios
           </p>
         </div>

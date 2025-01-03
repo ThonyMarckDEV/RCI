@@ -10,55 +10,63 @@ const InfoSection = () => {
       <div className="container mx-auto px-6 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Empresa */}
+
+         <a href='/laEmpresa'>
           <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
-            <div className="h-64">
-              <img
-                src={empresa}
-                alt="Empresa"
-                className="w-full h-full object-cover"
-              />
+              <div className="h-64">
+                <img
+                  src={empresa}
+                  alt="Empresa"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <h2 className="text-3xl font-semibold text-gray-900">EMPRESA</h2>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  RCI tiene veinte años de experiencia en la compra y venta de artículos para el hogar.
+                </p>
+              </div>
             </div>
-            <div className="p-8">
-              <h2 className="text-3xl font-semibold text-gray-900">EMPRESA</h2>
-              <p className="text-gray-600 mt-4 leading-relaxed">
-                RCI tiene veinte años de experiencia en la compra y venta de artículos para el hogar. Los principales productos estaban...
-              </p>
-            </div>
-          </div>
+         </a>
 
           {/* Catálogo */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
-            <div className="h-64">
-              <img
-                src={catalogo}
-                alt="Catálogo"
-                className="w-full h-full object-cover"
-              />
+          <a href='/catelogo'>
+            <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
+              <div className="h-64">
+                <img
+                  src={catalogo}
+                  alt="Catálogo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <h2 className="text-3xl font-semibold text-gray-900">CATÁLOGO</h2>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Amoblamos oficinas y hogares con diseños exclusivos y procesos que cumplen con normas internacionales de calidad.
+                </p>
+              </div>
             </div>
-            <div className="p-8">
-              <h2 className="text-3xl font-semibold text-gray-900">CATÁLOGO</h2>
-              <p className="text-gray-600 mt-4 leading-relaxed">
-                Amoblamos oficinas y hogares con diseños exclusivos y procesos que cumplen con normas internacionales de calidad...
-              </p>
-            </div>
-          </div>
+          </a>
 
           {/* Contacto */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
-            <div className="h-64">
-              <img
-                src={contacto}
-                alt="Contacto"
-                className="w-full h-full object-cover"
-              />
+          <a href='/contacto'>
+            <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
+              <div className="h-64">
+                <img
+                  src={contacto}
+                  alt="Contacto"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-8">
+                <h2 className="text-3xl font-semibold text-gray-900">CONTACTO</h2>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Ofrecemos atención personalizada de Lunes a Sábado de 9am a 9pm y Domingos de 9am a 1pm.
+                </p>
+              </div>
             </div>
-            <div className="p-8">
-              <h2 className="text-3xl font-semibold text-gray-900">CONTACTO</h2>
-              <p className="text-gray-600 mt-4 leading-relaxed">
-                Ofrecemos atención personalizada de Lunes a Sábado de 9am a 9pm y Domingos de 9am a 1pm...
-              </p>
-            </div>
-          </div>
+          </a>
+
         </div>
       </div>
     </div>
