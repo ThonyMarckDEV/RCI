@@ -10,11 +10,12 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full p-4 flex justify-between items-center bg-white z-20 shadow-sm">
+      {/* Navbar con transparencia y blur */}
+      <nav className="fixed top-0 left-0 w-full p-4 flex justify-between items-center bg-white bg-opacity-55 backdrop-blur-sm z-20 shadow-sm">
         <div className="hover:scale-105 transition-transform duration-500">
           <a href="/"><img src={logo} alt="RCI Logo" className="h-12" /></a>
         </div>
-
+  
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-8">
           <li>
@@ -66,7 +67,7 @@ const Navbar = () => {
             </a>
           </li>
         </ul>
-
+  
         {/* Mobile Menu Button */}
         <button 
           onClick={toggleMenu}
@@ -75,10 +76,10 @@ const Navbar = () => {
           {isOpen ? '✕' : '☰'}
         </button>
       </nav>
-
+  
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed top-[76px] left-0 w-full bg-white transform transition-transform duration-300 ease-in-out z-10 md:hidden shadow-lg ${
+        className={`fixed top-[76px] left-0 w-full bg-white bg-opacity-70 backdrop-blur-sm transform transition-transform duration-300 ease-in-out z-10 md:hidden shadow-lg ${
           isOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
