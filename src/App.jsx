@@ -9,7 +9,7 @@ import Home from './ui/Home';
 import EcoAmigable from './ui/EcoAmigable';
 import LaEmpresa from './ui/LaEmpresa';
 import Clientes from './ui/Clientes';
-
+import Contacto from './ui/Contacto';
 
 // UIS
 
@@ -23,6 +23,7 @@ import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 
 // Scripts
  import { updateLastActivity } from './js/lastActivity';
+
 
 
 
@@ -53,6 +54,7 @@ function AppContent() {
       <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<EcoAmigable />} />} />
       <Route path="/laEmpresa" element={<ProtectedRouteHome element={<LaEmpresa />} />} />
       <Route path="/clientes" element={<ProtectedRouteHome element={<Clientes />} />} />
+      <Route path="/contacto" element={<ProtectedRouteHome element={<Contacto />} />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

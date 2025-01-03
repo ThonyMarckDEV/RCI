@@ -23,10 +23,10 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-gray-600">Inicio</a></li>
-              <li><a href="#" className="hover:text-gray-600">Nosotros</a></li>
-              <li><a href="#" className="hover:text-gray-600">Servicios</a></li>
-              <li><a href="#" className="hover:text-gray-600">Contacto</a></li>
+              <li><a href="/" className="hover:text-gray-600">Inicio</a></li>
+              <li><a href="/laEmpresa" className="hover:text-gray-600">La Empresa</a></li>
+              <li><a href="/catalogo" className="hover:text-gray-600">Catalogo</a></li>
+              <li><a href="/contacto" className="hover:text-gray-600">Contacto</a></li>
             </ul>
           </div>
 
@@ -36,15 +36,23 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center justify-center md:justify-start">
                 <FaMapMarkerAlt className="mr-2" />
-                Av. Principal 123, Lima, Perú
+                Parque 45-2, Talara - Piura
+              </li>
+              <li className="flex items-center justify-center md:justify-start">
+                <FaMapMarkerAlt className="mr-2" />
+                Av. Gral. Juan Antonio Pezet 1629, San Isidro - Lima
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <FaPhone className="mr-2" />
-                +51 987 654 321
+                (073) 38 3432 - anexo 20 
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <FaEnvelope className="mr-2" />
-                info@mueblesrci.com
+                talara@mueblesrci.com
+              </li>
+              <li className="flex items-center justify-center md:justify-start">
+                <FaEnvelope className="mr-2" />
+                ventas@mueblesrci.com
               </li>
             </ul>
           </div>
@@ -53,10 +61,10 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4">Síguenos</h3>
             <div className="flex space-x-4 justify-center md:justify-start">
-              <a href="#" className="text-gray-800 hover:text-gray-600">
+              <a href="https://www.facebook.com/rcimuebles" className="text-gray-800 hover:text-gray-600">
                 <FaFacebook size={24} />
               </a>
-              <a href="#" className="text-gray-800 hover:text-gray-600">
+              <a href="https://www.instagram.com/rcimuebles?igsh=Z2l1ZXkyMDRlZmow" className="text-gray-800 hover:text-gray-600">
                 <FaInstagram size={24} />
               </a>
             </div>

@@ -59,7 +59,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/contacto"
               className="text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
             >
               Contacto
@@ -130,7 +130,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/contacto"
               className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
               onClick={toggleMenu}
             >
