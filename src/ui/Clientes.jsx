@@ -7,11 +7,6 @@ import Footer from '../components/home/Footer';
 import { motion } from 'framer-motion';
 
 // Animaciones
-const fadeInUp = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-};
-
 const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 1 } },
@@ -67,7 +62,7 @@ const Clientes = () => {
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={fadeInUp}
+            variants={fadeIn}
             className="text-center mb-12"
           >
             <h2 className="text-5xl font-semibold text-yellow-500 mb-4">
@@ -85,7 +80,7 @@ const Clientes = () => {
             className="relative"
           >
             <Slider {...settings}>
-              {['marca1.png', 'marca2.png', 'marca3.png', 'marca4.png', 'marca5.png'].map((marca, index) => (
+              {['marca1.png', 'marca2.png', 'marca3.png', 'marca4.png', 'marca5.png', 'marca6.png', 'marca7.png', 'marca8.png', 'marca9.png', 'marca10.png', 'marca11.png', 'marca12.png', 'marca13.png', 'marca14.png', 'marca15.png', 'marca16.png', 'marca17.png', 'marca18.png', 'marca19.png', 'marca20.png'].map((marca, index) => (
                 <div
                   key={index}
                   className="flex justify-center items-center p-4 w-full"
@@ -95,9 +90,6 @@ const Clientes = () => {
                       src={`/img/marcas/${marca}`} // Usando la ruta relativa en public/img/marcas
                       alt={`Marca ${index + 1}`}
                       className="w-3/4 h-3/4 object-contain transition-transform transform hover:scale-110 duration-300"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.2, duration: 0.5 }}
                     />
                   </motion.div>
                 </div>
