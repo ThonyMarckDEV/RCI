@@ -10,7 +10,7 @@ const EcoAmigable = () => {
       <Navbar />
 
       {/* Contenido principal */}
-      <div className="container mx-auto px-6 py-20 flex flex-col justify-center items-center">
+      <div className="container mx-auto px-6 pt-32 pb-24 flex flex-col justify-center items-center"> {/* Added pb-24 for bottom padding */}
         {/* Sección principal */}
         <div className="flex flex-col md:flex-row items-center md:items-start space-y-12 md:space-y-0 md:space-x-16">
           {/* Logo eco amigable */}
@@ -28,13 +28,13 @@ const EcoAmigable = () => {
           </div>
 
           {/* Texto */}
-          <div className="max-w-2xl space-y-8 text-center md:text-left">
+          <div className="max-w-2xl space-y-2 text-center md:text-left mt-12">
             {/* Título */}
-            <h1 className="text-5xl font-bold text-yellow-500 mb-4 transform hover:scale-105 transition-transform duration-500 inline-block animate-fade-in-up animate-delay-200">
+            <h1 className="text-5xl font-light text-black mb-2 transform hover:scale-105 transition-transform duration-500 inline-block animate-fade-in-up animate-delay-200">
               Eco Amigable
             </h1>
             {/* Línea amarilla */}
-            <div className="w-24 h-1 bg-yellow-500 mb-6 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+            <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
 
             {/* Descripción */}
             <p className="text-lg text-gray-600 leading-relaxed animate-fade-in-up animate-delay-400">
@@ -67,7 +67,7 @@ const EcoAmigable = () => {
                   <li
                     key={index}
                     className="flex items-center space-x-2 animate-fade-in-up"
-                    style={{ animationDelay: `${600 + index * 100}ms` }} // Retraso escalonado
+                    style={{ animationDelay: `${600 + index * 100}ms` }}
                   >
                     {/* Ícono de check */}
                     <span className="w-6 h-6 flex items-center justify-center bg-yellow-500 text-white rounded-full">

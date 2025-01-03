@@ -6,101 +6,155 @@ import Navbar from '../components/home/NavBar';
 import Footer from '../components/home/Footer';
 import { motion } from 'framer-motion';
 
-// Animaciones
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1 } },
-};
-
 const Clientes = () => {
   const settings = {
     infinite: true,
-    speed: 500,
-    slidesToShow: 5,
+    speed: 800,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false, // No mostrar flechas
-    dots: false, // No mostrar puntos
+    autoplaySpeed: 3000,
+    arrows: false,
+    dots: true,
     centerMode: true,
-    focusOnSelect: true,
-    centerPadding: '0',
+    centerPadding: '60px',
+    pauseOnHover: true,
     responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 3,
+          centerPadding: '40px',
+        },
+      },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          centerPadding: '40px',
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1,
+          centerPadding: '20px',
         },
       },
     ],
   };
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  };
+
   return (
-    <div className="bg-white font-light text-gray-800 min-h-screen flex flex-col">
-      {/* Navbar */}
+    <div className="bg-white min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Contenedor para centrar el contenido, ajustado para dispositivos móviles */}
-      <div className="flex flex-1 items-center justify-center py-16 mt-16 sm:mt-0">
-        <div className="w-full max-w-7xl px-6">
-          {/* Título con línea de separación */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="text-center mb-12"
-          >
-            <h2 className="text-5xl font-semibold text-yellow-500 mb-4">
-              Nuestros Clientes
-            </h2>
-            {/* Línea de separación amarilla */}
-            <div className="w-24 h-1 bg-yellow-500 mx-auto"></div>
-          </motion.div>
+      {/* Hero Section */}
+      <motion.div 
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        className="container mx-auto px-6 pt-32 pb-16 text-center"
+      >
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-6">
+          Nuestros Clientes
+        </h1>
+         {/* Línea amarilla */}
+         <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
+          Empresas líderes que confían en nuestra calidad y servicio
+        </p>
+      </motion.div>
 
-          {/* Slider de Marcas */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeIn}
-            className="relative"
-          >
-            <Slider {...settings}>
-              {['marca1.png', 'marca2.png', 'marca3.png', 'marca4.png', 'marca5.png', 'marca6.png', 'marca7.png', 'marca8.png', 'marca9.png', 'marca10.png', 'marca11.png', 'marca12.png', 'marca13.png', 'marca14.png', 'marca15.png', 'marca16.png', 'marca17.png', 'marca18.png', 'marca19.png', 'marca20.png'].map((marca, index) => (
-                <div
-                  key={index}
-                  className="flex justify-center items-center p-4 w-full"
-                >
-                  <motion.div className="w-full h-40 bg-white rounded-lg shadow-lg border border-gray-300 flex items-center justify-center">
-                    <motion.img
-                      src={`/img/marcas/${marca}`} // Usando la ruta relativa en public/img/marcas
-                      alt={`Marca ${index + 1}`}
-                      className="w-3/4 h-3/4 object-contain transition-transform transform hover:scale-110 duration-300"
-                    />
-                  </motion.div>
+      {/* Brands Slider Section */}
+      <div className="w-full bg-gray-50 py-24">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          className="container mx-auto px-6"
+        >
+          <Slider {...settings} className="brands-slider">
+            {[...Array(20)].map((_, index) => (
+              <div key={index} className="px-4">
+                <div className="bg-white rounded-lg p-8 h-48 flex items-center justify-center transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                  <img
+                    src={`/img/marcas/marca${index + 1}.png`}
+                    alt={`Cliente ${index + 1}`}
+                    className="max-w-[80%] max-h-[80%] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                  />
                 </div>
-              ))}
-            </Slider>
-          </motion.div>
-        </div>
+              </div>
+            ))}
+          </Slider>
+        </motion.div>
       </div>
 
-      {/* Footer */}
+      {/* Testimonials Section */}
+      <motion.div 
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        className="container mx-auto px-6 py-24"
+      >
+        <h2 className="text-3xl font-light text-gray-900 text-center mb-16">
+          Lo que dicen nuestros clientes
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {[
+            {
+              text: "La calidad y el servicio superaron nuestras expectativas. Definitivamente volveremos a trabajar juntos.",
+              author: "María González",
+              company: "Diseño Interior SA"
+            },
+            {
+              text: "Su atención al detalle y profesionalismo hacen que cada proyecto sea excepcional.",
+              author: "Carlos Rodríguez",
+              company: "Arquitectos Asociados"
+            },
+            {
+              text: "Un equipo comprometido con la excelencia y la satisfacción del cliente.",
+              author: "Ana López",
+              company: "Constructora del Norte"
+            }
+          ].map((testimonial, index) => (
+            <div 
+              key={index}
+              className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
+              <p className="text-gray-600 italic mb-6">"{testimonial.text}"</p>
+              <div className="border-t pt-4">
+                <p className="font-medium text-gray-900">{testimonial.author}</p>
+                <p className="text-gray-500 text-sm">{testimonial.company}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
       <Footer />
+
+      {/* Custom styles for slider dots */}
+      <style jsx global>{`
+        .brands-slider .slick-dots {
+          bottom: -3rem;
+        }
+        .brands-slider .slick-dots li button:before {
+          font-size: 8px;
+          color: #gray-300;
+        }
+        .brands-slider .slick-dots li.slick-active button:before {
+          color: #gray-900;
+        }
+      `}</style>
     </div>
   );
 };

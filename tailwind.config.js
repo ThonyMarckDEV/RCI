@@ -1,16 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       // Definir animaciones personalizadas
       animation: {
         'fade-in': 'fadeIn 1.5s ease-out',
-        'slide-down': 'slideDown 1.5s ease-out',
-        'slide-up': 'slideUp 1.5s ease-out',
+        'slide-down': 'slideDown 1.5s ease-out forwards', // Agrega "forwards" aquí
         'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+        'slide-up': 'slideUp 1.5s ease-out',
+        'fade-in-down': 'fade-in-down 1s ease-out forwards',
       },
       // Definir keyframes para las animaciones
       keyframes: {
@@ -32,7 +31,7 @@ module.exports = {
         },
       },
       fontFamily: {
-         raleway: ['Raleway', 'sans-serif'],
+        raleway: ['Raleway', 'sans-serif'],
       },
     },
   },
