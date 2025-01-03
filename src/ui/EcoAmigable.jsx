@@ -34,7 +34,7 @@ const EcoAmigable = () => {
               Eco Amigable
             </h1>
             {/* Línea amarilla */}
-            <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+            <div className="w-40 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
 
             {/* Descripción */}
             <p className="text-lg text-gray-600 leading-relaxed animate-fade-in-up animate-delay-400">

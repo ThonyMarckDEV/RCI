@@ -36,8 +36,7 @@ const Contacto = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl font-light text-gray-900 mb-4">Contáctanos</h1>
-           {/* Línea amarilla */}
-           <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Estamos aquí para ayudarte. Contáctanos y un especialista te atenderá pronto.
           </p>
@@ -125,8 +124,7 @@ const Contacto = () => {
           className="max-w-2xl mx-auto py-16"
         >
           <h1 className="text-5xl font-light text-gray-900 mb-12 text-center">Envíanos un mensaje</h1>
-           {/* Línea amarilla */}
-           <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -178,7 +176,7 @@ const Contacto = () => {
               type="submit"
               className="w-full bg-yellow-500 text-white py-4 rounded-none hover:bg-yellow-600 transition-colors duration-300"
             >
-              Enviar Mensaje
+              <strong className="font-bold">Enviar Mensaje</strong>
             </button>
           </form>
         </motion.div>

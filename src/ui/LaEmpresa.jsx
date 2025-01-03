@@ -36,8 +36,7 @@ const LaEmpresa = () => {
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-6">
           La Empresa
         </h1>
-          {/* Línea amarilla */}
-          <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+        <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Construyendo calidad y confort desde 1980
         </p>
@@ -97,8 +96,7 @@ const LaEmpresa = () => {
           <h2 className="text-3xl font-light text-gray-900 text-center mb-16">
             Nuestras Ventajas
           </h2>
-            {/* Línea amarilla */}
-            <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               "Dos años de garantía",

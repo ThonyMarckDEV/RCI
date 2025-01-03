@@ -31,7 +31,7 @@ const Clientes = () => {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-          centerPadding: '40px',
+          centerPadding: '30px',
         },
       },
       {
@@ -39,6 +39,7 @@ const Clientes = () => {
         settings: {
           slidesToShow: 1,
           centerPadding: '20px',
+          centerMode: false,
         },
       },
     ],
@@ -54,7 +55,7 @@ const Clientes = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen flex flex-col">
+    <div className="bg-gradient-to-b from-white to-gray-50 min-h-screen flex flex-col">
       <Navbar />
 
       {/* Hero Section */}
@@ -62,53 +63,81 @@ const Clientes = () => {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="container mx-auto px-6 pt-32 pb-16 text-center"
+        className="container mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 md:pb-16 text-center"
       >
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-6">
+        <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6">
           Nuestros Clientes
         </h1>
-         {/* Línea amarilla */}
-         <div className="w-50 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
+        <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
+        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-12 md:mb-16 px-4">
           Empresas líderes que confían en nuestra calidad y servicio
         </p>
       </motion.div>
 
-      {/* Brands Slider Section */}
-      <div className="w-full bg-gray-50 py-24">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="container mx-auto px-6"
-        >
-          <Slider {...settings} className="brands-slider">
-            {[...Array(20)].map((_, index) => (
-              <div key={index} className="px-4">
-                <div className="bg-white rounded-lg p-8 h-48 flex items-center justify-center transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                  <img
-                    src={`/img/marcas/marca${index + 1}.png`}
-                    alt={`Cliente ${index + 1}`}
-                    className="max-w-[80%] max-h-[80%] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
-                  />
-                </div>
-              </div>
-            ))}
-          </Slider>
-        </motion.div>
-      </div>
+        {/* Brands Slider Section */}
+        <div className="w-full bg-gray-50 py-16 md:py-24 shadow-inner">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+            className="container mx-auto px-4 md:px-6"
+          >
+            <div className="relative pb-16 md:pb-20"> {/* Added padding bottom container */}
+              <Slider {...settings} className="brands-slider">
+                {[...Array(20)].map((_, index) => (
+                  <div key={index} className="px-2 md:px-4 py-4">
+                    <div className="bg-white rounded-xl p-6 md:p-8 h-40 md:h-48 flex items-center justify-center transform transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+                      <img
+                        src={`/img/marcas/marca${index + 1}.png`}
+                        alt={`Cliente ${index + 1}`}
+                        className="max-w-[85%] max-h-[85%] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          </motion.div>
+
+          {/* Estilos para los dots */}
+          <style jsx global>{`
+            .brands-slider .slick-dots {
+              bottom: -3rem !important; /* Increased distance */
+              padding-bottom: 1rem;
+            }
+            .brands-slider .slick-dots li {
+              margin: 0 6px;
+            }
+            .brands-slider .slick-dots li button:before {
+              font-size: 8px;
+              color: #CBD5E0;
+            }
+            .brands-slider .slick-dots li.slick-active button:before {
+              color: #2D3748;
+            }
+            @media (max-width: 640px) {
+              .brands-slider .slick-dots {
+                bottom: -4rem !important; /* Even more space on mobile */
+                padding-bottom: 1.5rem;
+              }
+              .brands-slider .slick-dots li {
+                margin: 0 8px; /* Increased spacing between dots on mobile */
+              }
+            }
+          `}</style>
+        </div>
 
       {/* Testimonials Section */}
       <motion.div 
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="container mx-auto px-6 py-24"
+        className="container mx-auto px-4 md:px-6 py-16 md:py-24"
       >
-        <h2 className="text-3xl font-light text-gray-900 text-center mb-16">
+        <h2 className="text-2xl md:text-3xl font-light text-gray-900 text-center mb-12 md:mb-16">
           Lo que dicen nuestros clientes
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {[
             {
               text: "La calidad y el servicio superaron nuestras expectativas. Definitivamente volveremos a trabajar juntos.",
@@ -128,9 +157,9 @@ const Clientes = () => {
           ].map((testimonial, index) => (
             <div 
               key={index}
-              className="bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="bg-white p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
             >
-              <p className="text-gray-600 italic mb-6">"{testimonial.text}"</p>
+              <p className="text-gray-600 italic mb-6 text-base md:text-lg">"{testimonial.text}"</p>
               <div className="border-t pt-4">
                 <p className="font-medium text-gray-900">{testimonial.author}</p>
                 <p className="text-gray-500 text-sm">{testimonial.company}</p>
@@ -142,17 +171,16 @@ const Clientes = () => {
 
       <Footer />
 
-      {/* Custom styles for slider dots */}
       <style jsx global>{`
         .brands-slider .slick-dots {
-          bottom: -3rem;
+          bottom: -2rem;
         }
         .brands-slider .slick-dots li button:before {
           font-size: 8px;
-          color: #gray-300;
+          color: #CBD5E0;
         }
         .brands-slider .slick-dots li.slick-active button:before {
-          color: #gray-900;
+          color: #2D3748;
         }
       `}</style>
     </div>
