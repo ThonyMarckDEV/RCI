@@ -12,7 +12,7 @@ const Navbar = () => {
     <>
       <nav className="fixed top-0 left-0 w-full p-4 flex justify-between items-center bg-white z-20 shadow-sm">
         <div className="hover:scale-105 transition-transform duration-500">
-          <img src={logo} alt="RCI Logo" className="h-12" />
+          <a href="/"><img src={logo} alt="RCI Logo" className="h-12" /></a>
         </div>
 
         {/* Desktop Menu */}
