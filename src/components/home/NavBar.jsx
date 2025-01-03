@@ -51,7 +51,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/clientes"
               className="text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
             >
               Clientes
@@ -121,7 +121,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/clientes"
               className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
               onClick={toggleMenu}
             >
