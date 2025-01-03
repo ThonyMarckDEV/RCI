@@ -2,7 +2,7 @@ import React from 'react';
 
 // Asegúrate de reemplazar el número con el número de WhatsApp correcto (incluyendo el código de país)
 const WhatsAppIcon = () => {
-  const whatsappNumber = '902207108'; // Reemplaza con tu número de WhatsApp
+  const whatsappNumber = '946 463 174'; // Reemplaza con tu número de WhatsApp
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
   return (
