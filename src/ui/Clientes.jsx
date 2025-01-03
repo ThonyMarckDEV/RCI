@@ -8,42 +8,38 @@ import { motion } from 'framer-motion';
 
 const Clientes = () => {
   const settings = {
+    dots: false, // Elimina los puntos de selección
     infinite: true,
-    speed: 800,
-    slidesToShow: 4,
+    speed: 500,
+    slidesToShow: 5, // Número de slides visibles en PC
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
-    dots: true,
-    centerMode: true,
-    centerPadding: '60px',
-    pauseOnHover: true,
+    autoplaySpeed: 2000,
+    arrows: false, // Oculta las flechas de navegación
     responsive: [
       {
-        breakpoint: 1280,
+        breakpoint: 1024, // Pantallas medianas (tablets)
         settings: {
           slidesToShow: 3,
-          centerPadding: '40px',
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 1024,
+        breakpoint: 768, // Pantallas pequeñas (móviles)
         settings: {
           slidesToShow: 2,
-          centerPadding: '30px',
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 480, // Pantallas muy pequeñas
         settings: {
           slidesToShow: 1,
-          centerPadding: '20px',
-          centerMode: false,
+          slidesToScroll: 1,
         },
       },
     ],
-  };
+  };  
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -74,58 +70,31 @@ const Clientes = () => {
         </p>
       </motion.div>
 
-        {/* Brands Slider Section */}
-        <div className="w-full bg-gray-50 py-16 md:py-24 shadow-inner">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="container mx-auto px-4 md:px-6"
-          >
-            <div className="relative pb-16 md:pb-20"> {/* Added padding bottom container */}
-              <Slider {...settings} className="brands-slider">
-                {[...Array(20)].map((_, index) => (
-                  <div key={index} className="px-2 md:px-4 py-4">
-                    <div className="bg-white rounded-xl p-6 md:p-8 h-40 md:h-48 flex items-center justify-center transform transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
-                      <img
-                        src={`/img/marcas/marca${index + 1}.png`}
-                        alt={`Cliente ${index + 1}`}
-                        className="max-w-[85%] max-h-[85%] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                      />
-                    </div>
+      {/* Brands Slider Section */}
+      <div className="w-full bg-gray-50 py-1 md:py-24 shadow-inner">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          className="container mx-auto px-4 md:px-6"
+        >
+          <div className="relative pb-16 md:pb-20">
+            <Slider {...settings} className="brands-slider">
+              {[...Array(20)].map((_, index) => (
+                <div key={index} className="px-2 md:px-3 py-4">
+                  <div className="bg-white rounded-xl p-4 md:p-6 h-44 md:h-48 w-64 md:w-auto mx-auto mt-10 flex items-center justify-center transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                    <img
+                      src={`/img/marcas/marca${index + 1}.png`}
+                      alt={`Cliente ${index + 1}`}
+                      className="max-w-[80%] max-h-[80%] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                    />
                   </div>
-                ))}
-              </Slider>
-            </div>
-          </motion.div>
-
-          {/* Estilos para los dots */}
-          <style jsx global>{`
-            .brands-slider .slick-dots {
-              bottom: -3rem !important; /* Increased distance */
-              padding-bottom: 1rem;
-            }
-            .brands-slider .slick-dots li {
-              margin: 0 6px;
-            }
-            .brands-slider .slick-dots li button:before {
-              font-size: 8px;
-              color: #CBD5E0;
-            }
-            .brands-slider .slick-dots li.slick-active button:before {
-              color: #2D3748;
-            }
-            @media (max-width: 640px) {
-              .brands-slider .slick-dots {
-                bottom: -4rem !important; /* Even more space on mobile */
-                padding-bottom: 1.5rem;
-              }
-              .brands-slider .slick-dots li {
-                margin: 0 8px; /* Increased spacing between dots on mobile */
-              }
-            }
-          `}</style>
-        </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Testimonials Section */}
       <motion.div 
