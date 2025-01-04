@@ -1,6 +1,7 @@
 import React from 'react';
-import { FaFacebook, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa'; // Íconos de React Icons
+import { FaFacebook, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome } from 'react-icons/fa'; // Íconos de React Icons
 import logoeco from '../../img/eco.png';
+import { FaDashcube } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
@@ -27,6 +28,7 @@ const Footer = () => {
               <li><a href="/laEmpresa" className="hover:text-gray-600">La Empresa</a></li>
               <li><a href="/catalogo" className="hover:text-gray-600">Catalogo</a></li>
               <li><a href="/contacto" className="hover:text-gray-600">Contacto</a></li>
+              <li><a href="/login"className="hover:text-gray-600"> <FaHome className="mr-2" /></a></li>
             </ul>
           </div>
 

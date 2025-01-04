@@ -15,17 +15,8 @@ const ProtectedRouteRolSuperAdmin = ({ element }) => {
   try {
     // Decodificar el JWT
     const userRole = jwtUtils.getUserRole(token); // Extraer el rol del token
-    const emailVerified = jwtUtils.getEmailVerified(token); // Verificar email
 
-    // Si el email no está verificado
-    if (emailVerified === 0) {
-      return <Navigate to="/verificar-correo" />;
-    }
-
-    // Redirigir dependiendo del rol
-    if (userRole === 'cliente') {
-      return <Navigate to="/" />;
-    }else if (userRole === 'admin'){
+    if (userRole === 'admin'){
       return <Navigate to="/admin" />;
     }
     return element;
