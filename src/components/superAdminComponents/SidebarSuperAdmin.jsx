@@ -8,6 +8,7 @@ import {
   AiOutlineDown,
   AiOutlineMenu,
   AiOutlineMenuFold,
+  AiOutlineProduct,
 } from 'react-icons/ai';
 
 function SidebarSuperAdmin() {
@@ -123,7 +124,7 @@ function SidebarSuperAdmin() {
                   onClick={() => setOpenProductos(!openProductos)}
                 >
                   <div className="flex items-center">
-                    <AiOutlineMenuFold className="mr-4 text-xl" />
+                    <AiOutlineProduct className="mr-4 text-xl" />
                     <span>Producto</span>
                   </div>
                   <AiOutlineDown className={`transition-transform ${openProductos ? 'rotate-180' : ''}`} />

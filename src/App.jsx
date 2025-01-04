@@ -19,7 +19,7 @@ import Login from './ui/Login';
   import AgregarUsuario from './ui/superadminUI/AgregarUsuario';
   import EditarUsuario from './ui/superadminUI/EditarUsuario';
   import AgregarProducto from './ui/superadminUI/AgregarProducto';
-  //import EditarUsuario from './ui/superadminUI/EditarUsuario';
+  import EditarProducto from './ui/superadminUI/EditarProducto';
   import AgregarCategoria from './ui/superadminUI/AgregarCategoria';
   import EditarCategoria from './ui/superadminUI/EditarCategoria';
 
@@ -72,7 +72,7 @@ function AppContent() {
       <Route path="/superAdmin/usuarios/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarUsuario />} />} />
       <Route path="/superAdmin/usuarios/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarUsuario />} />} />
       <Route path="/superAdmin/productos/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarProducto />} />} />
-      {/* <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarUsuario />} />} /> */}
+      <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarProducto />} />} />
       <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
       <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
 
