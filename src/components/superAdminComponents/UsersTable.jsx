@@ -359,7 +359,7 @@ const UsersTable = () => {
                     </div>
                   ) : (
                     <button
-                      className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
+                      className="bg-yellow-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-yellow-600 transition-colors"
                       onClick={() => handleEdit(user)}
                     >
                       Editar
@@ -383,7 +383,7 @@ const UsersTable = () => {
             onPageChange={handlePageClick}
             containerClassName={'flex justify-center space-x-2'}
             pageClassName={'px-3 py-1 border rounded-lg'}
-            activeClassName={'bg-black text-white'}
+            activeClassName={'bg-yellow-500 text-white'}
             previousClassName={'px-3 py-1 border rounded-lg'}
             nextClassName={'px-3 py-1 border rounded-lg'}
             disabledClassName={'opacity-50 cursor-not-allowed'}
