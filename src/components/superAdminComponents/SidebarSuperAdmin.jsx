@@ -45,7 +45,7 @@ function SidebarSuperAdmin() {
       >
         <div className="flex flex-col justify-between h-full">
           <div>
-            <h2 className="text-3xl font-bold mb-8 text-center text-yellow-500">SuperAdmin Panel</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center text-yellow-500">RCI SuperAdmin Panel</h2>
             <ul>
   
               {/* Dashboard */}

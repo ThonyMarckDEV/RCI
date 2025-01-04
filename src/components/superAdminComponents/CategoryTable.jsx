@@ -357,7 +357,7 @@ const CategoryTable = () => {
                       </>
                     ) : (
                       <button
-                        className="bg-black text-white px-3 py-1 rounded hover:bg-gray-700"
+                        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                         onClick={() => handleEdit(categoria)}
                       >
                         Editar
@@ -383,7 +383,7 @@ const CategoryTable = () => {
           onPageChange={handlePageClick}
           containerClassName={'flex justify-center space-x-2'}
           pageClassName={'px-3 py-1 border rounded-lg'}
-          activeClassName={'bg-black text-white'}
+          activeClassName={'bg-yellow-500 text-white'}
           previousClassName={'px-3 py-1 border rounded-lg'}
           nextClassName={'px-3 py-1 border rounded-lg'}
           disabledClassName={'opacity-50 cursor-not-allowed'}

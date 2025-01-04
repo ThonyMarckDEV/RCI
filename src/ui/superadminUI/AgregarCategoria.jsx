@@ -66,7 +66,7 @@ function AgregarCategoria() {
         {/* Mostrar el LoaderScreen si loading es true */}
         {loading && <LoaderScreen />}
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-6">Agregar Categoría</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-yellow-500">Agregar Categoría</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Nombre de la Categoría (Requerido)</label>
@@ -97,7 +97,7 @@ function AgregarCategoria() {
             </div>
             <button
               type="submit"
-              className={`w-full py-3 px-4 bg-gray-900 text-white rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 px-4 bg-yellow-500 text-white font-bold rounded-md ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={loading}
             >
               {loading ? 'Cargando...' : 'Agregar Categoría'}
