@@ -50,10 +50,22 @@ function EditarModelo({ modelo, onClose }) {
 
       if (!response.ok) throw new Error('Error al guardar los cambios');
 
-      SweetAlert.showMessageAlert('Éxito', 'Modelo actualizado correctamente', 'success');
+      // Llamar a onClose si es necesario
       onClose();
+
+      SweetAlert.showMessageAlert('Éxito', 'Modelo actualizado correctamente', 'success');
+
+      // Espera 3 segundos antes de recargar la página
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // 3000 milisegundos = 3 segundos
+
     } catch (error) {
       SweetAlert.showMessageAlert('Error', 'Error al guardar los cambios', 'error');
+      // Espera 3 segundos antes de recargar la página
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); // 3000 milisegundos = 3 segundos
     } finally {
       setIsLoading(false);
     }
