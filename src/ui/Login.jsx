@@ -55,7 +55,7 @@ const Login = ({ closeLoginModal }) => {
         if (userRole === 'superadmin') {
             window.location.href = '/superAdmin';
         } else if (userRole === 'admin') {
-            window.location.href = '/admin';
+            window.location.href = '/admin/productos/agregar';
         } else {
             console.error('Rol no reconocido:', userRole);
             // Puedes redirigir a una página de error o hacer algo más aquí

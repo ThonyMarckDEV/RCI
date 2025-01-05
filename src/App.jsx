@@ -26,6 +26,9 @@ import Login from './ui/Login';
   import AgregarCategoria from './ui/superadminUI/AgregarCategoria';
   import EditarCategoria from './ui/superadminUI/EditarCategoria';
 
+  //UI ADMIN
+  import AgregarProductoAdmin from './ui/adminUI/AgregarProductoAdmin';
+  import EditarProductoAdmin from './ui/adminUI/EditarProductoAdmin';
 
 // Utilities
 import ProtectedRouteHome from './utilities/ProtectedRouteHome';
@@ -36,6 +39,7 @@ import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 
 // Scripts
  import { updateLastActivity } from './js/lastActivity';
+
 
 
 function AppContent() {
@@ -77,6 +81,10 @@ function AppContent() {
       <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarProducto />} />} />
       <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
       <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
+
+      {/* Rutas Admin */}
+      <Route path="/admin/productos/agregar" element={<ProtectedRouteRolAdmin element={<AgregarProductoAdmin />} />} />
+      <Route path="/admin/productos/editar" element={<ProtectedRouteRolAdmin element={<EditarProductoAdmin />} />} />
 
       <Route path="*" element={<ErrorPage />} />
     </Routes>
