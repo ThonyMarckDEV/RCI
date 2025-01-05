@@ -100,6 +100,11 @@ export const getTokenFromCookie = () => {
   return getCookie(tokenName);
 };
 
+export const removeTokenFromCookie = () => {
+  // Elimina el token de la cookie
+  document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+};
+
 export default {
   getEmailVerified,
   getPerfil,
@@ -110,5 +115,6 @@ export default {
   getTokenExpirationDate,
   verifyToken,
   getIdCarrito,
-  getTokenFromCookie
+  getTokenFromCookie,
+  removeTokenFromCookie
 };

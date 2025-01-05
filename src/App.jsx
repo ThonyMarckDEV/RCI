@@ -35,9 +35,6 @@ import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 // Scripts
  import { updateLastActivity } from './js/lastActivity';
 
-
-
-
 function AppContent() {
   const location = useLocation();
 

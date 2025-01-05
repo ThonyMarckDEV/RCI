@@ -4,8 +4,8 @@ import jwtUtils from '../utilities/jwtUtils'; // Asegúrate de tener esta utilid
 
 const ProtectedRoute = ({ element }) => {
   // Obtener el JWT desde localStorage
-  const token = localStorage.getItem('jwt');
-
+  const token = jwtUtils.getTokenFromCookie();
+  
   if (token) {
     // Si hay token, decodificar el JWT y verificar el estado de emailVerified
     const role = jwtUtils.getUserRole(token); // Extraer el rol del token

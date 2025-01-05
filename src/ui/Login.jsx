@@ -28,6 +28,7 @@ const Login = ({ closeLoginModal }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'User-Agent': navigator.userAgent,  // Aquí agregamos el User-Agent
         },
         body: JSON.stringify({
           correo: email,
@@ -38,9 +39,6 @@ const Login = ({ closeLoginModal }) => {
       const result = await response.json();
 
       if (response.ok) {
-        // const token = result.token;
-        // localStorage.setItem('jwt', token);
-        // updateLastActivity();
 
         const token = result.token;
 
