@@ -4,6 +4,7 @@ import './index.css';
 import API_BASE_URL from './js/urlHelper';
 import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de importar el icono de WhatsApp
 import jwtUtils from './utilities/jwtUtils';
+import ErrorPage from './components/home/ErrorPage'; // Asegúrate de que la ruta sea correcta
 
 // Componentes Home
 import Home from './ui/Home';
@@ -74,7 +75,7 @@ function AppContent() {
       <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
       <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
