@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
+import { FaWifi } from 'react-icons/fa'; // Ícono para error de conexión
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
@@ -46,7 +47,7 @@ const CategoriesGrid = () => {
         throw new Error('La respuesta de la API no es válida');
       }
     } catch (err) {
-      setError(err.message);
+      setError('Error de conexión con el servidor'); // Guardar el mensaje de error
     } finally {
       setLoading(false);
     }
@@ -66,8 +67,14 @@ const CategoriesGrid = () => {
 
   if (error) {
     return (
-      <div className="text-red-500 text-center p-4">
-        {error}
+      <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+        <FaWifi className="text-6xl mb-4" /> {/* Ícono de WiFi sin señal */}
+        <p className="text-xl font-semibold">
+          Error de conexión con el servidor
+        </p>
+        <p className="text-gray-400">
+          Por favor, verifica tu conexión a internet e intenta nuevamente.
+        </p>
       </div>
     );
   }
@@ -153,7 +160,6 @@ const CategoriesGrid = () => {
           ))}
         </nav>
       </div>
-      
     </div>
   );
 };

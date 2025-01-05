@@ -1,7 +1,7 @@
 // ProductosCatalogo.js
 import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
-import { FaSearch } from 'react-icons/fa'; // Ícono para búsqueda vacía
+import { FaSearch, FaWifi } from 'react-icons/fa'; // Íconos para búsqueda vacía y error de conexión
 import ProductoCard from './ProductoCard'; // Importa el componente ProductoCard
 
 const ProductosCatalogo = ({ filtros }) => {
@@ -28,7 +28,7 @@ const ProductosCatalogo = ({ filtros }) => {
       setProductos(data.data || []); // Asegúrate de que data.data sea un array
       setTotalPaginas(data.last_page || 1); // Total de páginas
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Captura el error y lo guarda en el estado
     } finally {
       setLoading(false);
     }
@@ -48,8 +48,12 @@ const ProductosCatalogo = ({ filtros }) => {
 
   if (error) {
     return (
-      <div className="text-red-500 text-center p-4">
-        {error}
+      <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+        <FaWifi className="text-6xl mb-4" /> {/* Ícono de WiFi sin señal */}
+        <p className="text-xl font-semibold">
+          Error de conexión con el servidor
+        </p>
+        <p className="text-gray-400">Por favor, verifica tu conexión a internet e intenta nuevamente.</p>
       </div>
     );
   }
