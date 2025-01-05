@@ -4,6 +4,7 @@ import SweetAlert from '../../components/SweetAlert';
 import LoaderScreen from '../../components/home/LoadingScreen';
 import API_BASE_URL from '../../js/urlHelper';
 import { Upload } from 'lucide-react';
+import jwtUtils from '../../utilities/jwtUtils';
 
 function AgregarProducto() {
   const initialProductState = {
@@ -31,7 +32,7 @@ function AgregarProducto() {
   }, []);
 
   const cargarCategorias = async () => {
-    const token = localStorage.getItem('jwt');
+    const token = jwtUtils.getTokenFromCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/api/categoriasproductos`, {
         headers: {
@@ -153,7 +154,7 @@ function AgregarProducto() {
     });
   
     try {
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const response = await fetch(`${API_BASE_URL}/api/agregarProductos`, {
         method: 'POST',
         body: formData,

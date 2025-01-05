@@ -6,6 +6,7 @@ import API_BASE_URL from '../../js/urlHelper';
 import EditarProductoModal from './ProductoEditarModal';
 import ReactPaginate from 'react-paginate';
 import LoadingScreen from '../../components/home/LoadingScreen';
+import jwtUtils from '../../utilities/jwtUtils';
 
 function EditarProductos() {
   const [productos, setProductos] = useState([]);
@@ -36,7 +37,7 @@ function EditarProductos() {
   const cargarProductos = async (page) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const response = await fetch(`${API_BASE_URL}/api/listarProductos?page=${page}&search=${searchTerm}&filters=${JSON.stringify(filters)}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -61,7 +62,7 @@ function EditarProductos() {
     setChangingEstado(true); // Activar el loader de toda la pantalla
     try {
       const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const response = await fetch(`${API_BASE_URL}/api/cambiarEstadoProducto/${idProducto}`, {
         method: 'PUT',
         headers: {
@@ -111,7 +112,7 @@ function EditarProductos() {
   const handleUpdateProducto = async (idProducto) => {
     setLoading(true); // Activar el loader de toda la pantalla
     try {
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const response = await fetch(`${API_BASE_URL}/api/actualizarProducto/${idProducto}`, {
         method: 'PUT',
         headers: {

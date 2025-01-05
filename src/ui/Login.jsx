@@ -38,8 +38,16 @@ const Login = ({ closeLoginModal }) => {
       const result = await response.json();
 
       if (response.ok) {
+        // const token = result.token;
+        // localStorage.setItem('jwt', token);
+        // updateLastActivity();
+
         const token = result.token;
-        localStorage.setItem('jwt', token);
+
+        // Crear una cookie de sesión
+        document.cookie = `jwt=${token}; path=/`;
+        
+        // Función para actualizar la actividad
         updateLastActivity();
     
         // Decodificar el JWT para obtener el rol

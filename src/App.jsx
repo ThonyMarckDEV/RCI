@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'r
 import './index.css';
 import API_BASE_URL from './js/urlHelper';
 import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de importar el icono de WhatsApp
+import jwtUtils from './utilities/jwtUtils';
 
 // Componentes Home
 import Home from './ui/Home';
@@ -41,7 +42,7 @@ function AppContent() {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
+    const token = jwtUtils.getTokenFromCookie();
   
     if (token) {
       updateLastActivity();

@@ -79,6 +79,27 @@ export const verifyToken = (token) => {
   return { valid: true, message: "Token válido" };
 };
 
+// Función para obtener el valor de una cookie por su nombre
+const getCookie = (name) => {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split(';').map(cookie => cookie.trim());
+
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue); // Decodifica el valor de la cookie
+    }
+  }
+
+  return null; // Si no se encuentra la cookie, devuelve null
+};
+
+// Función para obtener el token JWT de la cookie
+export const getTokenFromCookie = () => {
+  const tokenName = 'jwt'; // Nombre de la cookie donde se almacena el token
+  return getCookie(tokenName);
+};
+
 export default {
   getEmailVerified,
   getPerfil,
@@ -89,4 +110,5 @@ export default {
   getTokenExpirationDate,
   verifyToken,
   getIdCarrito,
+  getTokenFromCookie
 };

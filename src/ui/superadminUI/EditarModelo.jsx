@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import API_BASE_URL from '../../js/urlHelper';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
+import jwtUtils from '../../utilities/jwtUtils';
 
 function EditarModelo({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
@@ -74,7 +75,7 @@ function EditarModelo({ modelo, onClose }) {
   const handleSave = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const formData = new FormData();
     
       // Agregar datos básicos del modelo
@@ -133,7 +134,7 @@ function EditarModelo({ modelo, onClose }) {
   const handleRemoveExistingImage = async (idImagen) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('jwt');
+      const token = jwtUtils.getTokenFromCookie();
       const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
         method: 'DELETE',
         headers: {
