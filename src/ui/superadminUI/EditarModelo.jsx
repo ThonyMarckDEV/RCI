@@ -3,10 +3,13 @@ import { X, Save, Image, Upload, Trash2, Loader2 } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import API_BASE_URL from '../../js/urlHelper';
 import SweetAlert from '../../components/SweetAlert';
+import LoadingScreen from '../../components/home/LoadingScreen';
 
 function EditarModelo({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
   const [descripcion, setDescripcion] = useState(modelo.descripcion);
+  const [loading, setLoading] = useState(false);
+  const [changingEstado, setChangingEstado] = useState(false); // Define changingEstado
   // Asegurarnos de que todas las imágenes tengan un ID único
   const [imagenes, setImagenes] = useState(
     modelo.imagenes.map((imagen, index) => ({
@@ -69,7 +72,7 @@ function EditarModelo({ modelo, onClose }) {
   }, [imagenes]);
 
   const handleSave = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const token = localStorage.getItem('jwt');
       const formData = new FormData();
@@ -118,7 +121,7 @@ function EditarModelo({ modelo, onClose }) {
       console.error('Error:', error);
       SweetAlert.showMessageAlert('Error', 'Error al guardar los cambios', 'error');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
   
@@ -128,6 +131,7 @@ function EditarModelo({ modelo, onClose }) {
 
   // Eliminar imagen existente
   const handleRemoveExistingImage = async (idImagen) => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('jwt');
       const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
@@ -145,11 +149,15 @@ function EditarModelo({ modelo, onClose }) {
     } catch (error) {
       console.error('Error al eliminar la imagen:', error);
       SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
+    }finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        {/* Mostrar el LoadingScreen cuando loading o changingEstado sea true */}
+        {(loading || changingEstado) && <LoadingScreen />}
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
         <div className="border-b p-4 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">

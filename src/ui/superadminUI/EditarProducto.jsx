@@ -25,6 +25,7 @@ function EditarProductos() {
     descripcion: '',
     estado: ''
   });
+  const [changingEstado, setChangingEstado] = useState(false); // Estado para controlar el loader de toda la pantalla
 
   const itemsPerPage = 10; // Número de elementos por página
 
@@ -57,6 +58,7 @@ function EditarProductos() {
   };
 
   const toggleEstadoProducto = async (idProducto, estadoActual) => {
+    setChangingEstado(true); // Activar el loader de toda la pantalla
     try {
       const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
       const token = localStorage.getItem('jwt');
@@ -80,6 +82,8 @@ function EditarProductos() {
       SweetAlert.showMessageAlert('Éxito', 'Estado actualizado correctamente', 'success');
     } catch (error) {
       SweetAlert.showMessageAlert('Error', 'No se pudo actualizar el estado', 'error');
+    } finally {
+      setChangingEstado(false); // Desactivar el loader de toda la pantalla
     }
   };
 
@@ -105,6 +109,7 @@ function EditarProductos() {
 
   // Actualizar producto
   const handleUpdateProducto = async (idProducto) => {
+    setLoading(true); // Activar el loader de toda la pantalla
     try {
       const token = localStorage.getItem('jwt');
       const response = await fetch(`${API_BASE_URL}/api/actualizarProducto/${idProducto}`, {
@@ -115,14 +120,16 @@ function EditarProductos() {
         },
         body: JSON.stringify(formData)
       });
-
+  
       if (!response.ok) throw new Error('Error al actualizar producto');
-
+  
       SweetAlert.showMessageAlert('Éxito', 'Producto actualizado correctamente', 'success');
       setEditMode(null);
       cargarProductos(currentPage + 1); // Recargar la lista de productos
     } catch (error) {
       SweetAlert.showMessageAlert('Error', 'No se pudo actualizar el producto', 'error');
+    } finally {
+      setLoading(false); // Desactivar el loader de toda la pantalla
     }
   };
 
@@ -144,8 +151,8 @@ function EditarProductos() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Mostrar el LoadingScreen cuando loading sea true */}
-      {loading && <LoadingScreen />}
+      {/* Mostrar el LoadingScreen cuando loading o changingEstado sea true */}
+      {(loading || changingEstado) && <LoadingScreen />}
 
       <Sidebar />
       <div className="flex-1 p-2 sm:p-6">
@@ -168,9 +175,9 @@ function EditarProductos() {
             />
           </div>
 
-          {/* Contenedor de la tabla */}
-          <div className="overflow-auto">
-            <table className="w-full min-w-max table-auto border-collapse">
+          {/* Contenedor de la tabla con desplazamiento horizontal */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse">
               <thead className="bg-gray-200">
                 <tr>
                   <th className="px-4 py-2 text-xs font-medium text-gray-600 uppercase border-b">
@@ -243,9 +250,10 @@ function EditarProductos() {
                     <td className="px-4 py-2 text-sm text-gray-700 border-b">
                       <button
                         onClick={() => toggleEstadoProducto(producto.idProducto, producto.estado)}
-                        className={`inline-block px-3 py-1 rounded-full text-white font-bold ${
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-white font-bold ${
                           producto.estado === 'activo' ? 'bg-green-500' : 'bg-red-500'
                         }`}
+                        disabled={changingEstado} // Deshabilitar el botón mientras se cambia el estado
                       >
                         {producto.estado}
                       </button>
@@ -271,18 +279,20 @@ function EditarProductos() {
                           </>
                         ) : (
                           <>
-                            <button
-                              className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                              onClick={() => handleEditClick(producto)}
-                            >
-                              Editar
-                            </button>
-                            <button
-                              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                              onClick={() => handleVerModelos(producto)}
-                            >
-                              Ver Modelos
-                            </button>
+                            <div className="flex flex-col items-center space-y-2">
+                              <button
+                                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm w-full"
+                                onClick={() => handleEditClick(producto)}
+                              >
+                                Editar
+                              </button>
+                              <button
+                                className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 text-sm w-full"
+                                onClick={() => handleVerModelos(producto)}
+                              >
+                                Ver Modelos
+                              </button>
+                            </div>
                           </>
                         )}
                       </div>
