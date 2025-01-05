@@ -19,11 +19,6 @@ function EditarModelo({ modelo, onClose }) {
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Agregar console.log para debuggear
-  React.useEffect(() => {
-    console.log('Estado inicial de imágenes:', imagenes);
-  }, []);
-
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
   }, []);
@@ -71,45 +66,54 @@ function EditarModelo({ modelo, onClose }) {
         }
       });
     };
-  }, []);
+  }, [imagenes]);
 
   const handleSave = async () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('jwt');
       const formData = new FormData();
+    
+      // Agregar datos básicos del modelo
       formData.append('nombreModelo', nombreModelo);
-      formData.append('descripcion', descripcion);
-
+      formData.append('descripcion', descripcion || ''); // Asegúrate de que la descripción no sea undefined
+    
       // Agregar nuevas imágenes adicionales
       files.forEach((file, index) => {
         formData.append(`nuevasImagenes[${index}]`, file);
       });
-
-      // Solo enviar imágenes reemplazadas que tengan ID válido
-      const imagenesReemplazadas = imagenes.filter(img => img.newFile && img.idImagen && !img.idImagen.startsWith('temp-'));
+    
+      // Agregar imágenes reemplazadas
+      const imagenesReemplazadas = imagenes.filter(
+        (img) => img.newFile && img.idImagen && !String(img.idImagen).startsWith('temp-') // Convertimos idImagen a string
+      );
+    
       imagenesReemplazadas.forEach((imagen, index) => {
-        formData.append(`imagenesReemplazadas[${index}]`, imagen.newFile);
-        formData.append(`idImagenesReemplazadas[${index}]`, imagen.idImagen);
+        formData.append(`imagenesReemplazadas[${index}]`, imagen.newFile); // Archivo reemplazado
+        formData.append(`idImagenesReemplazadas[${index}]`, imagen.idImagen); // ID de la imagen reemplazada
       });
-      
-      const response = await fetch(`${API_BASE_URL}/api/editarModeloyImagen/${modelo.idModelo}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-
+    
+     
+      // Enviar la solicitud al servidor
+      const response = await fetch(
+        `${API_BASE_URL}/api/editarModeloyImagen/${modelo.idModelo}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+    
       if (!response.ok) throw new Error('Error al guardar los cambios');
-
+    
       onClose();
       SweetAlert.showMessageAlert('Éxito', 'Modelo actualizado correctamente', 'success');
-
+    
       setTimeout(() => {
         window.location.reload();
       }, 1500);
-
     } catch (error) {
       console.error('Error:', error);
       SweetAlert.showMessageAlert('Error', 'Error al guardar los cambios', 'error');
@@ -117,9 +121,31 @@ function EditarModelo({ modelo, onClose }) {
       setIsLoading(false);
     }
   };
-
+  
   const handleRemoveImage = (index) => {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
+
+  // Eliminar imagen existente
+  const handleRemoveExistingImage = async (idImagen) => {
+    try {
+      const token = localStorage.getItem('jwt');
+      const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('No se pudo eliminar la imagen');
+      }
+
+      setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
+      SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
+    } catch (error) {
+      console.error('Error al eliminar la imagen:', error);
+      SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
+    }
   };
 
   return (
@@ -169,10 +195,7 @@ function EditarModelo({ modelo, onClose }) {
                     className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100"
                   >
                     <img 
-                      src={
-                        imagen.objectUrl || 
-                        (imagen.urlImagen ? `${API_BASE_URL}/storage/${imagen.urlImagen}` : '')
-                      }
+                      src={imagen.objectUrl || (imagen.urlImagen ? `${API_BASE_URL}/storage/${imagen.urlImagen}` : '')}
                       alt={`Imagen ${imagen.idImagen}`}
                       className="w-full h-full object-cover"
                     />
@@ -190,11 +213,20 @@ function EditarModelo({ modelo, onClose }) {
                           e.target.value = '';
                         }}
                       />
+                      {/* Botón para reemplazar imagen */}
                       <button
                         onClick={() => document.getElementById(`file-input-${imagen.idImagen}`).click()}
                         className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
                       >
                         <Upload className="h-4 w-4" />
+                      </button>
+
+                      {/* Botón para eliminar imagen existente */}
+                      <button
+                        onClick={() => handleRemoveExistingImage(imagen.idImagen)}
+                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
