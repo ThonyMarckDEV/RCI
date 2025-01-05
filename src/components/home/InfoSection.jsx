@@ -30,7 +30,7 @@ const InfoSection = () => {
          </a>
 
           {/* Catálogo */}
-          <a href='/catelogo'>
+          <a href='/catalogo'>
             <div className="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transform transition duration-500 hover:scale-105">
               <div className="h-64">
                 <img
