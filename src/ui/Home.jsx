@@ -41,7 +41,7 @@ const Home = () => {
             className="mt-8 bg-yellow-500 text-white text-xl font-semibold py-3 px-8 rounded-lg opacity-0 animate-fade-in-up hover:bg-yellow-600 transition duration-300"
             style={{ animationDelay: '1.5s' }}
           >
-            <a href='/contacto'>¡Empecemos!</a>
+            <a href='/catalogo'>¡Empecemos!</a>
           </button>
         </div>
       </div>
