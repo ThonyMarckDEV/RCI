@@ -161,7 +161,7 @@ function EditarModelo({ modelo, onClose }) {
         {(loading || changingEstado) && <LoadingScreen />}
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="border-b p-4 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">
+        <div className="border-b p-4 flex items-center justify-between bg-yellow-500">
           <div className="flex items-center gap-2">
             <Image className="h-6 w-6 text-white" />
             <h2 className="text-xl font-semibold text-white">
@@ -170,7 +170,7 @@ function EditarModelo({ modelo, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-white hover:bg-blue-700 rounded-full transition-colors"
+            className="p-2 text-white hover:bg-yellow-700 rounded-full transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -183,7 +183,7 @@ function EditarModelo({ modelo, onClose }) {
               <div
                 {...getRootProps()}
                 className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-                  ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500'}`}
+                  ${isDragActive ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 hover:border-yellow-500'}`}
               >
                 <input {...getInputProps()} />
                 <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
@@ -225,7 +225,7 @@ function EditarModelo({ modelo, onClose }) {
                       {/* Botón para reemplazar imagen */}
                       <button
                         onClick={() => document.getElementById(`file-input-${imagen.idImagen}`).click()}
-                        className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                        className="p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors"
                       >
                         <Upload className="h-4 w-4" />
                       </button>
@@ -296,7 +296,7 @@ function EditarModelo({ modelo, onClose }) {
             <button
               onClick={handleSave}
               disabled={isLoading}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

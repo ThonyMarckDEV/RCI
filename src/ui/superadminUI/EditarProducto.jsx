@@ -160,7 +160,7 @@ function EditarProductos() {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <Package className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+              <Package className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500" />
               <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Productos</h1>
             </div>
           </div>

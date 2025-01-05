@@ -188,7 +188,7 @@ function AgregarProducto() {
       <Sidebar />
       <div className="flex-1 p-8 max-w-6xl mx-auto">
         <div className="bg-white rounded-xl shadow-sm p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">Agregar Producto</h1>
+          <h1 className="text-3xl font-bold text-yellow-500 mb-8">Agregar Producto</h1>
           
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -322,7 +322,7 @@ function AgregarProducto() {
 
             <button
               type="submit"
-              className="w-full p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+              className="w-full p-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition font-medium"
             >
               Agregar Producto
             </button>

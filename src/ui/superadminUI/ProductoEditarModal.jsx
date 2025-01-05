@@ -17,7 +17,7 @@ const ProductoEditarModal = ({ producto, onClose }) => {
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
         <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg overflow-hidden">
           {/* Header */}
-          <div className="border-b p-4 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">
+          <div className="border-b p-4 flex items-center justify-between bg-yellow-500 ">
             <div className="flex items-center gap-2">
               <Package className="h-6 w-6 text-white" />
               <h2 className="text-xl font-semibold text-white">
@@ -66,7 +66,7 @@ const ProductoEditarModal = ({ producto, onClose }) => {
                           {modelo.nombreModelo}
                         </span>
                         <button
-                          className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors flex items-center gap-2"
+                          className="px-3 py-1 text-sm text-yellow-500 hover:text-yellow-700 hover:bg-yellow-50 rounded-md transition-colors flex items-center gap-2"
                           onClick={() => setSelectedModelo(modelo)}
                         >
                           <Pencil className="h-4 w-4" />
