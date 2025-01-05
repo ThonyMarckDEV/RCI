@@ -13,7 +13,7 @@ export const checkUserStatus = async () => {
     if (!token || jwtUtils.isTokenExpired(token)) {
         // Si no hay token o está expirado, deslogueamos al usuario
         console.warn('No hay token o está expirado');
-        logoutAndRedirect();
+        logoutAndRedirect();  // Aquí se debe hacer logout y redirigir
         return;
     }
 
@@ -40,8 +40,13 @@ export const checkUserStatus = async () => {
                 jwtUtils.removeTokenFromCookie();
                 window.location.href = '/';  // Redirigir al inicio
             }
+        } else if (response.status === 403) {
+            // Si la respuesta es 403, el token no coincide o es inválido
+            console.error('Error 403: Token no válido o no coincide con el almacenado en la base de datos');
+            jwtUtils.removeTokenFromCookie();  // Eliminar el token de la cookie
+            window.location.href = '/';  // Redirigir a la página de inicio o login
         } else {
-           
+            console.error('Error en la respuesta del servidor:', response.statusText);
         }
     } catch (error) {
         // Si ocurre un error durante la solicitud, deslogueamos al usuario
