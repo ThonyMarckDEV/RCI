@@ -9,7 +9,6 @@ const Catalogo = () => {
   const [filtros, setFiltros] = useState({ nombre: '', categoria: '' });
   const [categorias, setCategorias] = useState([]);
 
-  // Carga de categorías desde la API
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -18,7 +17,7 @@ const Catalogo = () => {
           throw new Error('Error al cargar las categorías');
         }
         const data = await response.json();
-        setCategorias(data.data || []); // Asegúrate de que data.data sea un array
+        setCategorias(data.data || []);
       } catch (error) {
         console.error('Error fetching categorías:', error);
       }
@@ -27,33 +26,31 @@ const Catalogo = () => {
   }, []);
 
   return (
-    <div className="bg-white font-light text-gray-800">
-      {/* Navbar con animación fade-in */}
-      <Navbar className="animate-fade-in" />
-
-      {/* Título del catálogo con animación slide-down */}
-      <div className="container mx-auto px-6 pt-32 animate-slide-down">
-        <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center">
-          Catálogo
-        </h1>
-        <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
-      </div>
-
-      {/* Contenido principal con animación fade-in-up */}
-      <div className="container mx-auto px-6 pb-24 animate-fade-in-up">
-        {/* Filtrador con animación slide-up */}
-        <Filtrador
-          onFilterApply={setFiltros}
-          categorias={categorias}
-          className="animate-slide-up"
-        />
-
-        {/* ProductosCatalogo con animación fade-in */}
-        <ProductosCatalogo filtros={filtros} className="animate-fade-in" />
-      </div>
-
-      {/* Footer con animación fade-in-down */}
-      <Footer className="animate-fade-in-down" />
+    <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
+      {/* Navbar */}
+      <Navbar className="fixed top-0 w-full z-50" />
+      
+      {/* Filtrador */}
+      <Filtrador onFilterApply={setFiltros} categorias={categorias} />
+      
+      {/* Main content */}
+      <main className="flex-grow pt-32 lg:pt-20 lg:ml-80"> {/* Aumentado el padding-top en móviles */}
+        {/* Title section */}
+        <div className="px-6">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center">
+            Catálogo
+          </h1>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
+        </div>
+  
+        {/* Products section */}
+        <div className="px-6 mb-8">
+          <ProductosCatalogo filtros={filtros} />
+        </div>
+      </main>
+  
+      {/* Footer */}
+      <Footer className="lg:ml-80" />
     </div>
   );
 };

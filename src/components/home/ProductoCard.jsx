@@ -1,4 +1,3 @@
-// ProductoCard.js
 import React, { useState } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
 
@@ -7,48 +6,52 @@ const ProductoCard = ({ producto }) => {
   const [fade, setFade] = useState(false);
 
   const modeloActual = producto.modelos[modeloSeleccionado];
-  const imagenActual =
+  const imagenActual = 
     (Array.isArray(modeloActual.imagenes) && modeloActual.imagenes[0]?.urlImagen) ||
     '/placeholder.jpg';
 
   const handleModeloChange = (index) => {
-    setFade(true); // Activar el fade-out
+    setFade(true);
     setTimeout(() => {
       setModeloSeleccionado(index);
-      setFade(false); // Desactivar el fade-out
-    }, 300); // Duración de la animación
+      setFade(false);
+    }, 300);
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105">
-       {/* Imagen del producto con animación de fade */}
-      <div className="h-56 bg-gray-100 relative overflow-hidden">
-            <img
-              src={`${API_BASE_URL}/storage/${imagenActual}`}
-              alt={modeloActual.nombreModelo}
-              className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
-                fade ? 'opacity-0' : 'opacity-100'
-              }`}
-            />
+    <div className="group bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100">
+      {/* Imagen del producto con animación de fade */}
+      <div className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+        <img
+          src={`${API_BASE_URL}/storage/${imagenActual}`}
+          alt={modeloActual.nombreModelo}
+          className={`w-full h-full object-cover absolute inset-0 transition-all duration-300 ${
+            fade ? 'opacity-0' : 'opacity-100'
+          } group-hover:scale-105`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-
       {/* Contenido del producto */}
-      <div className="p-4">
-        <h3 className="text-xl font-semibold mb-2">{producto.nombreProducto}</h3>
-        <p className="text-sm text-gray-600 mb-4">{producto.descripcion}</p>
+      <div className="p-6">
+        <h3 className="text-xl font-bold mb-2 text-gray-800 group-hover:text-yellow-500 transition-colors duration-300">
+          {producto.nombreProducto}
+        </h3>
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {producto.descripcion}
+        </p>
 
         {/* Selector de modelos */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4">
           {Array.isArray(producto.modelos) &&
             producto.modelos.map((modelo, index) => (
               <button
                 key={modelo.idModelo}
                 onClick={() => handleModeloChange(index)}
-                className={`px-3 py-1 text-sm rounded-full ${
+                className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all duration-300 ${
                   modeloSeleccionado === index
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-yellow-500 text-white shadow-md shadow-black-200'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 {modelo.nombreModelo}
@@ -57,9 +60,11 @@ const ProductoCard = ({ producto }) => {
         </div>
 
         {/* Categoría */}
-        <p className="text-sm text-gray-500">
-          Categoría: {producto.nombreCategoria}
-        </p>
+        <div className="flex items-center">
+          <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+            {producto.nombreCategoria}
+          </span>
+        </div>
       </div>
     </div>
   );
