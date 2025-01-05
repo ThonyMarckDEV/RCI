@@ -12,6 +12,7 @@ import EcoAmigable from './ui/EcoAmigable';
 import LaEmpresa from './ui/LaEmpresa';
 import Clientes from './ui/Clientes';
 import Contacto from './ui/Contacto';
+import Catalogo from './ui/Catalogo';
 
 // UIS
 import Login from './ui/Login';
@@ -35,6 +36,7 @@ import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 
 // Scripts
  import { updateLastActivity } from './js/lastActivity';
+
 
 function AppContent() {
   const location = useLocation();
@@ -63,6 +65,7 @@ function AppContent() {
       <Route path="/laEmpresa" element={<ProtectedRouteHome element={<><WhatsAppIcon /><LaEmpresa /></>} />} />
       <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Clientes /></>} />} />
       <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Contacto /></>} />} />
+      <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Catalogo /></>} />} />
 
       <Route path="/login" element={<ProtectedRouteHome element={<Login />} />} />
 

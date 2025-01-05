@@ -44,7 +44,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/catalogo"
               className="text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
             >
               Catalogo
@@ -112,7 +112,7 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/catalogo"
               className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
               onClick={toggleMenu}
             >
