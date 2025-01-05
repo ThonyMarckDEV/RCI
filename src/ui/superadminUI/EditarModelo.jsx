@@ -7,17 +7,25 @@ import SweetAlert from '../../components/SweetAlert';
 function EditarModelo({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
   const [descripcion, setDescripcion] = useState(modelo.descripcion);
-  const [imagen, setImagen] = useState(modelo.imagenes[0]?.urlImagen);
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(
-    modelo.imagenes[0]?.urlImagen ? `${API_BASE_URL}/storage/${modelo.imagenes[0].urlImagen}` : null
+  // Asegurarnos de que todas las imágenes tengan un ID único
+  const [imagenes, setImagenes] = useState(
+    modelo.imagenes.map((imagen, index) => ({
+      ...imagen,
+      idImagen: imagen.idImagen || `temp-${index}`, // ID temporal si no existe
+      newFile: null,
+      objectUrl: null
+    }))
   );
+  const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Agregar console.log para debuggear
+  React.useEffect(() => {
+    console.log('Estado inicial de imágenes:', imagenes);
+  }, []);
+
   const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    setFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -25,9 +33,45 @@ function EditarModelo({ modelo, onClose }) {
     accept: {
       'image/*': ['.jpeg', '.jpg', '.png']
     },
-    maxSize: 5242880, // 5MB
-    multiple: false
+    maxSize: 5242880,
+    multiple: true
   });
+
+  const handleReplaceImage = (idImagen, file) => {
+    if (!idImagen) {
+      console.error('ID de imagen no definido');
+      return;
+    }
+
+    setImagenes(prevImagenes => {
+      return prevImagenes.map(img => {
+        if (img.idImagen === idImagen) {
+          // Revocar URL anterior si existe
+          if (img.objectUrl) {
+            URL.revokeObjectURL(img.objectUrl);
+          }
+          const objectUrl = URL.createObjectURL(file);
+          return {
+            ...img,
+            newFile: file,
+            objectUrl: objectUrl
+          };
+        }
+        return img;
+      });
+    });
+  };
+
+  // Limpiar URLs al desmontar
+  React.useEffect(() => {
+    return () => {
+      imagenes.forEach(img => {
+        if (img.objectUrl) {
+          URL.revokeObjectURL(img.objectUrl);
+        }
+      });
+    };
+  }, []);
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -36,10 +80,19 @@ function EditarModelo({ modelo, onClose }) {
       const formData = new FormData();
       formData.append('nombreModelo', nombreModelo);
       formData.append('descripcion', descripcion);
-      if (file) {
-        formData.append('imagen', file);
-      }
 
+      // Agregar nuevas imágenes adicionales
+      files.forEach((file, index) => {
+        formData.append(`nuevasImagenes[${index}]`, file);
+      });
+
+      // Solo enviar imágenes reemplazadas que tengan ID válido
+      const imagenesReemplazadas = imagenes.filter(img => img.newFile && img.idImagen && !img.idImagen.startsWith('temp-'));
+      imagenesReemplazadas.forEach((imagen, index) => {
+        formData.append(`imagenesReemplazadas[${index}]`, imagen.newFile);
+        formData.append(`idImagenesReemplazadas[${index}]`, imagen.idImagen);
+      });
+      
       const response = await fetch(`${API_BASE_URL}/api/editarModeloyImagen/${modelo.idModelo}`, {
         method: 'POST',
         headers: {
@@ -50,36 +103,28 @@ function EditarModelo({ modelo, onClose }) {
 
       if (!response.ok) throw new Error('Error al guardar los cambios');
 
-      // Llamar a onClose si es necesario
       onClose();
-
       SweetAlert.showMessageAlert('Éxito', 'Modelo actualizado correctamente', 'success');
 
-      // Espera 3 segundos antes de recargar la página
       setTimeout(() => {
         window.location.reload();
-      }, 1500); // 3000 milisegundos = 3 segundos
+      }, 1500);
 
     } catch (error) {
+      console.error('Error:', error);
       SweetAlert.showMessageAlert('Error', 'Error al guardar los cambios', 'error');
-      // Espera 3 segundos antes de recargar la página
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500); // 3000 milisegundos = 3 segundos
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleRemoveImage = () => {
-    setFile(null);
-    setPreviewUrl(null);
-    setImagen(null);
+  const handleRemoveImage = (index) => {
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="w-full max-w-xl bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
         <div className="border-b p-4 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">
           <div className="flex items-center gap-2">
@@ -99,40 +144,82 @@ function EditarModelo({ modelo, onClose }) {
         {/* Content */}
         <div className="p-6">
           <div className="space-y-6">
-            {/* Image Upload Area */}
             <div>
-              {previewUrl ? (
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100">
-                  <img 
-                    src={previewUrl}
-                    alt={nombreModelo}
-                    className="w-full h-full object-cover"
-                  />
-                  <button
-                    onClick={handleRemoveImage}
-                    className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              <div
+                {...getRootProps()}
+                className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+                  ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500'}`}
+              >
+                <input {...getInputProps()} />
+                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <p className="text-sm text-gray-600">
+                  {isDragActive ? 
+                    'Suelta las imágenes aquí...' : 
+                    'Arrastra imágenes aquí o haz clic para seleccionar'}
+                </p>
+                <p className="text-xs text-gray-500 mt-2">
+                  Formatos permitidos: JPG, JPEG, PNG (máx. 5MB)
+                </p>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-4">
+                {/* Imágenes existentes */}
+                {imagenes.map((imagen) => (
+                  <div 
+                    key={imagen.idImagen} // Ahora siempre tendrá un valor único
+                    className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100"
                   >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              ) : (
-                <div
-                  {...getRootProps()}
-                  className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-                    ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500'}`}
-                >
-                  <input {...getInputProps()} />
-                  <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-sm text-gray-600">
-                    {isDragActive ? 
-                      'Suelta la imagen aquí...' : 
-                      'Arrastra una imagen aquí o haz clic para seleccionar'}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Formatos permitidos: JPG, JPEG, PNG (máx. 5MB)
-                  </p>
-                </div>
-              )}
+                    <img 
+                      src={
+                        imagen.objectUrl || 
+                        (imagen.urlImagen ? `${API_BASE_URL}/storage/${imagen.urlImagen}` : '')
+                      }
+                      alt={`Imagen ${imagen.idImagen}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-2 right-2 flex gap-2">
+                      <input
+                        id={`file-input-${imagen.idImagen}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            handleReplaceImage(imagen.idImagen, file);
+                          }
+                          e.target.value = '';
+                        }}
+                      />
+                      <button
+                        onClick={() => document.getElementById(`file-input-${imagen.idImagen}`).click()}
+                        className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                      >
+                        <Upload className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Nuevas imágenes */}
+                {files.map((file, index) => (
+                  <div 
+                    key={`new-${index}-${file.name}`}
+                    className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100"
+                  >
+                    <img 
+                      src={URL.createObjectURL(file)}
+                      alt={`Nueva imagen ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Form Fields */}
