@@ -153,6 +153,7 @@ const CategoriesGrid = () => {
           ))}
         </nav>
       </div>
+      
     </div>
   );
 };
