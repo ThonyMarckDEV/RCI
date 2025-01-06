@@ -135,20 +135,6 @@ import jwtUtils from '../../utilities/jwtUtils';
                   </div>
                 </div>
   
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Acción</label>
-                  <div className="relative">
-                    <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      type="text"
-                      name="accion"
-                      value={filters.accion}
-                      onChange={handleFilterChange}
-                      placeholder="Buscar por acción..."
-                      className="pl-10 w-full rounded-md border border-gray-300 py-2"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
   
