@@ -28,7 +28,6 @@ const ProductosCatalogo = ({ filtros }) => {
         throw new Error('Error al cargar los productos');
       }
       const data = await response.json();
-      console.log(data); // Verifica la respuesta de la API
       setProductos(data.data || []); // Asegúrate de que data.data sea un array
       setTotalPaginas(data.last_page || 1);
     } catch (err) {
