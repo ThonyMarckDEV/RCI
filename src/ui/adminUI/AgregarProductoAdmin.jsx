@@ -224,7 +224,7 @@ function AgregarProductoAdmin() {
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-medium text-gray-700">Descripción (Opcional)</label>
+                <label className="text-sm font-medium text-gray-700">Descripción (Opcional) (Max. 60 Caracteres)</label>
                 <textarea
                   name="descripcion"
                   value={producto.descripcion}
