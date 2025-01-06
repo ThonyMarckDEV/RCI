@@ -6,9 +6,6 @@ import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de impo
 import jwtUtils from './utilities/jwtUtils';
 import ErrorPage from './components/home/ErrorPage'; // Asegúrate de que la ruta sea correcta
 
-// Error Logger
-import ErrorLog from './components/superAdminComponents/Errorlog';
-
 // Componentes Home
 import Home from './ui/Home';
 import EcoAmigable from './ui/EcoAmigable';
@@ -28,7 +25,8 @@ import Login from './ui/Login';
   import EditarProducto from './ui/superadminUI/EditarProducto';
   import AgregarCategoria from './ui/superadminUI/AgregarCategoria';
   import EditarCategoria from './ui/superadminUI/EditarCategoria';
-
+  import Configuracion from './components/superAdminComponents/Configuracion';
+  
   //UI ADMIN
   import AgregarProductoAdmin from './ui/adminUI/AgregarProductoAdmin';
   import EditarProductoAdmin from './ui/adminUI/EditarProductoAdmin';
@@ -36,12 +34,12 @@ import Login from './ui/Login';
 // Utilities
 import ProtectedRouteHome from './utilities/ProtectedRouteHome';
 import ProtectedRouteRolSuperAdmin from './utilities/ProtectedRouteRolSuperAdmin';
-import ProtectedRouteToken from './utilities/ProtectedRouteToken';
 import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 
 
 // Scripts
  import { updateLastActivity } from './js/lastActivity';
+
 
 
 
@@ -99,8 +97,6 @@ function AppContent() {
     }, []);
 
     return (
-      <>
-        {globalError && <ErrorLog initialError={globalError} />}
         <Routes>
           <Route path="/" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Home /></>} />} />
           <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<><WhatsAppIcon /><EcoAmigable /></>} />} />
@@ -119,6 +115,7 @@ function AppContent() {
           <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarProducto />} />} />
           <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
           <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
+          <Route path="/superAdmin/configuracion" element={<ProtectedRouteRolSuperAdmin element={<Configuracion />} />} />
   
           {/* Rutas Admin */}
           <Route path="/admin/productos/agregar" element={<ProtectedRouteRolAdmin element={<AgregarProductoAdmin />} />} />
@@ -126,7 +123,6 @@ function AppContent() {
   
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      </>
     );
   }
   

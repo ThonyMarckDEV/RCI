@@ -4,6 +4,7 @@ import LoadingScreen from '../../components/home/LoadingScreen';
 import SweetAlert from '../../components/SweetAlert';
 import API_BASE_URL from '../../js/urlHelper';
 import jwtUtils from '../../utilities/jwtUtils';
+import CambiarContrasena from '../superAdminComponents/Cambiarcontrasena';
 
 const UsersTable = () => {
   const [userData, setUserData] = useState([]);
@@ -22,6 +23,8 @@ const UsersTable = () => {
   const [editingId, setEditingId] = useState(null);
   const [tempData, setTempData] = useState({});
   const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const itemsPerPage = 10;
 
@@ -227,10 +230,10 @@ const UsersTable = () => {
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-
+  
       <div className="overflow-x-auto shadow-md rounded-lg">
         {loading && <LoadingScreen />}
-
+  
         <table className="w-full min-w-max table-auto border-collapse bg-white">
           <thead className="bg-gray-50">
             <tr>
@@ -343,11 +346,12 @@ const UsersTable = () => {
                     {user.status}
                   </span>
                 </td>
+  
                 <td className="px-4 py-3 text-sm">
                   {editingId === user.id ? (
-                    <div className="flex space-x-2">
+                    <>
                       <button
-                        className="bg-green-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-green-600 transition-colors"
+                        className="bg-green-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-green-600 transition-colors mr-2"
                         onClick={() => handleUpdate(user.id)}
                       >
                         Actualizar
@@ -358,14 +362,25 @@ const UsersTable = () => {
                       >
                         Cancelar
                       </button>
-                    </div>
+                    </>
                   ) : (
-                    <button
-                      className="bg-yellow-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-yellow-600 transition-colors"
-                      onClick={() => handleEdit(user)}
-                    >
-                      Editar
-                    </button>
+                    <>
+                      <button
+                        className="bg-yellow-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-yellow-600 transition-colors mr-2"
+                        onClick={() => handleEdit(user)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
+                        onClick={() => {
+                          setSelectedUserId(user.id);
+                          setShowPasswordModal(true);
+                        }}
+                      >
+                        Cambiar Contraseña
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>
@@ -373,23 +388,36 @@ const UsersTable = () => {
           </tbody>
         </table>
       </div>
-
+  
+      {/* Modal fuera de la tabla */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50">
+          <CambiarContrasena
+            userId={selectedUserId}
+            onClose={() => {
+              setShowPasswordModal(false);
+              setSelectedUserId(null);
+            }}
+          />
+        </div>
+      )}
+  
       <div className="mt-6">
         <ReactPaginate
-            previousLabel={'Anterior'}
-            nextLabel={'Siguiente'}
-            breakLabel={'...'}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={'flex justify-center space-x-2'}
-            pageClassName={'px-3 py-1 border rounded-lg'}
-            activeClassName={'bg-yellow-500 text-white'}
-            previousClassName={'px-3 py-1 border rounded-lg'}
-            nextClassName={'px-3 py-1 border rounded-lg'}
-            disabledClassName={'opacity-50 cursor-not-allowed'}
-          />
+          previousLabel={'Anterior'}
+          nextLabel={'Siguiente'}
+          breakLabel={'...'}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={'flex justify-center space-x-2'}
+          pageClassName={'px-3 py-1 border rounded-lg'}
+          activeClassName={'bg-yellow-500 text-white'}
+          previousClassName={'px-3 py-1 border rounded-lg'}
+          nextClassName={'px-3 py-1 border rounded-lg'}
+          disabledClassName={'opacity-50 cursor-not-allowed'}
+        />
       </div>
     </div>
   );

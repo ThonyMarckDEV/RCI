@@ -9,6 +9,7 @@ import {
   AiOutlineMenu,
   AiOutlineMenuFold,
   AiOutlineProduct,
+  AiTwotoneSetting,
 } from 'react-icons/ai';
 
 function SidebarSuperAdmin() {
@@ -143,6 +144,17 @@ function SidebarSuperAdmin() {
                     </li>
                   </ul>
                 )}
+              </li>
+
+                {/* Confoguiracion */}
+                <li className="mb-4">
+                <a
+                  href="/superAdmin/configuracion"
+                  className="flex items-center text-lg bg-white text-black hover:bg-gray-100 p-2 rounded-lg transition-all duration-300"
+                >
+                  <AiTwotoneSetting className="mr-4 text-xl" />
+                  <span>Configuracion</span>
+                </a>
               </li>
 
             </ul>
