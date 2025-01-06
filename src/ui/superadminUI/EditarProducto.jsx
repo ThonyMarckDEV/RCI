@@ -154,7 +154,7 @@ function EditarProductos() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Mostrar el LoadingScreen cuando loading o changingEstado sea true */}
       {(loading || changingEstado) && <LoadingScreen />}
-
+  
       <Sidebar />
       <div className="flex-1 p-2 sm:p-6">
         <div className="max-w-6xl mx-auto">
@@ -164,7 +164,7 @@ function EditarProductos() {
               <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Productos</h1>
             </div>
           </div>
-
+  
           {/* Contenedor del buscador */}
           <div className="mb-4">
             <input
@@ -175,7 +175,7 @@ function EditarProductos() {
               className="w-full px-3 py-2 border rounded-lg"
             />
           </div>
-
+  
           {/* Contenedor de la tabla con desplazamiento horizontal */}
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto border-collapse">
@@ -234,8 +234,7 @@ function EditarProductos() {
                         producto.nombreProducto
                       )}
                     </td>
-
-                    
+  
                     {/* Descripción del producto */}
                     <td className="px-4 py-2 text-sm text-gray-700 border-b">
                       {editMode === producto.idProducto ? (
@@ -248,7 +247,7 @@ function EditarProductos() {
                             name="descripcion"
                             value={formData.descripcion}
                             onChange={handleInputChange}
-                            maxLength={60}  // Limitar a 60 caracteres
+                            maxLength={60} // Limitar a 60 caracteres
                             className="w-full px-2 py-1 border rounded"
                           />
                         </div>
@@ -256,8 +255,7 @@ function EditarProductos() {
                         producto.descripcion
                       )}
                     </td>
-
-
+  
                     {/* Estado del producto */}
                     <td className="px-4 py-2 text-sm text-gray-700 border-b">
                       <button
@@ -270,7 +268,7 @@ function EditarProductos() {
                         {producto.estado}
                       </button>
                     </td>
-
+  
                     {/* Acciones */}
                     <td className="px-4 py-2 text-sm text-gray-700 border-b">
                       <div className="space-x-2">
@@ -314,7 +312,7 @@ function EditarProductos() {
               </tbody>
             </table>
           </div>
-
+  
           {/* Contenedor de la paginación */}
           <div className="mt-6">
             <ReactPaginate
@@ -335,7 +333,7 @@ function EditarProductos() {
           </div>
         </div>
       </div>
-
+  
       {selectedProducto && (
         <EditarProductoModal
           producto={selectedProducto}
