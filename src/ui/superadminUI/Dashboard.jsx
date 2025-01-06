@@ -41,19 +41,16 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="md:flex">
-        <Sidebar />
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 p-4 md:p-8 overflow-y-auto">
-        <div className="space-y-8">
-          <EstadoUsuarios stats={stats} />
-          <Logs />
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto">
+        <div className="p-4 md:p-8">
+          <div className="space-y-8">
+            <EstadoUsuarios stats={stats} />
+            <Logs />
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
