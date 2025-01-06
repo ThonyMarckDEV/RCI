@@ -302,18 +302,31 @@ const CategoryTable = () => {
                     categoria.nombreCategoria
                   )}
                 </td>
+
                 <td className="px-4 py-2 text-sm text-gray-700 border-b">
                   {editingId === categoria.idCategoria ? (
-                    <input
-                      type="text"
-                      value={editedCategoria.descripcion}
-                      onChange={(e) => handleEditChange(e, 'descripcion')}
-                      className="w-full px-2 py-1 border rounded"
-                    />
+                    <div>
+                      {/* Advertencia sobre el máximo de caracteres */}
+                      <span className="text-xs text-gray-500 mb-1 block">
+                        Máximo 110 caracteres
+                      </span>
+                      <input
+                        type="text"
+                        value={editedCategoria.descripcion}
+                        onChange={(e) => {
+                          if (e.target.value.length <= 110) {
+                            handleEditChange(e, 'descripcion');
+                          }
+                        }}
+                        className="w-full px-2 py-1 border rounded"
+                      />
+                    </div>
                   ) : (
                     categoria.descripcion || 'N/A'
                   )}
                 </td>
+
+
                 <td className="px-4 py-2 text-sm text-gray-700 border-b">
                   {editingId === categoria.idCategoria ? (
                     <input

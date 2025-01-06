@@ -236,12 +236,19 @@ function EditarProductos() {
                     {/* Descripción del producto */}
                     <td className="px-4 py-2 text-sm text-gray-700 border-b">
                       {editMode === producto.idProducto ? (
-                        <textarea
-                          name="descripcion"
-                          value={formData.descripcion}
-                          onChange={handleInputChange}
-                          className="w-full px-2 py-1 border rounded"
-                        />
+                        <div>
+                          {/* Advertencia sobre el máximo de caracteres */}
+                          <span className="text-xs text-gray-500 mb-1 block">
+                            Máximo 60 caracteres
+                          </span>
+                          <textarea
+                            name="descripcion"
+                            value={formData.descripcion}
+                            onChange={handleInputChange}
+                            maxLength={60}  // Limitar a 60 caracteres
+                            className="w-full px-2 py-1 border rounded"
+                          />
+                        </div>
                       ) : (
                         producto.descripcion
                       )}

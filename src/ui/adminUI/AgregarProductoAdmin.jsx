@@ -224,7 +224,9 @@ function AgregarProductoAdmin() {
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-medium text-gray-700">Descripción (Opcional) (Max. 60 Caracteres)</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Descripción (Opcional) (Max. 60 Caracteres)
+                </label>
                 <textarea
                   name="descripcion"
                   value={producto.descripcion}
@@ -232,8 +234,16 @@ function AgregarProductoAdmin() {
                   className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   rows="4"
                   placeholder="Descripción detallada del producto"
+                  maxLength={60}  // Límite de 60 caracteres
                 />
+                {/* Contador de caracteres */}
+                <div className="text-right text-xs text-gray-500">
+                  {producto.descripcion.length}/60 caracteres
+                </div>
               </div>
+
+
+
             </div>
 
             <div className="border-t pt-8">

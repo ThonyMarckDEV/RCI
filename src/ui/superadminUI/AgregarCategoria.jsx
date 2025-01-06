@@ -79,15 +79,27 @@ function AgregarCategoria() {
                 required
               />
             </div>
+
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700">Descripción (opcional)</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Descripción (opcional)(max. 110 caracteres)
+              </label>
               <input
                 type="text"
                 value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length <= 110) {
+                    setDescripcion(e.target.value);
+                  }
+                }}
                 className="mt-1 block w-full py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
+              <span className="text-xs text-gray-500">
+                {descripcion.length} / 110 caracteres
+              </span>
             </div>
+
+
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Imagen (Requerido)</label>
               <input
