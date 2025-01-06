@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';  // Importa useLocation
+import { useLocation, useNavigate } from 'react-router-dom';  // Importa useNavigate
 import API_BASE_URL from '../../js/urlHelper';
 import { FaSearch, FaWifi, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import ProductoCard from './ProductoCard';
@@ -12,17 +12,19 @@ const ProductosCatalogo = ({ filtros }) => {
   const [totalPaginas, setTotalPaginas] = useState(1);
   
   const location = useLocation();  // Obtén la ubicación actual de la URL
+  const navigate = useNavigate();  // Usa useNavigate en lugar de useHistory
   const categoria = new URLSearchParams(location.search).get('categoria'); // Extrae el parámetro 'categoria' de la URL
+  const nombreProducto = new URLSearchParams(location.search).get('nombre'); // Extrae el parámetro 'nombre' de la URL
 
   useEffect(() => {
     fetchProductos();
-  }, [filtros, paginaActual, categoria]);  // Incluye 'categoria' como dependencia
+  }, [filtros, paginaActual, categoria, nombreProducto]);  // Incluye 'categoria' y 'nombreProducto' como dependencias
 
   const fetchProductos = async () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${API_BASE_URL}/api/listarProductosCatalogo?nombre=${filtros.nombre}&categoria=${categoria || filtros.categoria}&page=${paginaActual}`
+        `${API_BASE_URL}/api/listarProductosCatalogo?nombre=${nombreProducto || filtros.nombre}&categoria=${categoria || filtros.categoria}&page=${paginaActual}`
       );
       if (!response.ok) {
         throw new Error('Error al cargar los productos');
@@ -41,6 +43,11 @@ const ProductosCatalogo = ({ filtros }) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
       setPaginaActual(pagina);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Actualizar la URL con los parámetros de búsqueda y la página seleccionada
+      const params = new URLSearchParams(location.search);
+      params.set('page', pagina);
+      navigate({ search: params.toString() });  // Usa navigate para actualizar la URL
     }
   };
 
