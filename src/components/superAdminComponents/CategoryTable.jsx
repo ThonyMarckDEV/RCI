@@ -33,7 +33,7 @@ const CategoryTable = () => {
     try {
       setLoading(true);
 
-      const url = new URL(`${API_BASE_URL}/api/obtenerCategoriasf`);
+      const url = new URL(`${API_BASE_URL}/api/obtenerCategorias`);
       url.searchParams.append('page', page + 1);
       url.searchParams.append('limit', itemsPerPage);
       url.searchParams.append('idCategoria', filters.idCategoria);
