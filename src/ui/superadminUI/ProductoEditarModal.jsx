@@ -6,12 +6,13 @@ import API_BASE_URL from '../../js/urlHelper';
 import jwtUtils from '../../utilities/jwtUtils';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
+import Swal from 'sweetalert2';
 
 const ProductoEditarModal = ({ producto, onClose }) => {
   const [modelos, setModelos] = useState(producto?.modelos || []);
   const [selectedModelo, setSelectedModelo] = useState(null);
   const [showNuevoModelo, setShowNuevoModelo] = useState(false);
- const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   if (!producto) return null;
 
@@ -29,7 +30,18 @@ const ProductoEditarModal = ({ producto, onClose }) => {
   };
 
   const handleDeleteModelo = async (idModelo) => {
-    if (window.confirm('¿Estás seguro que deseas eliminar este modelo?')) {
+    const result = await Swal.fire({
+      title: '¿Eliminar modelo?',
+      text: '¿Estás seguro que deseas eliminar este modelo? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+
+    if (result.isConfirmed) {
       setIsLoading(true);
       const token = jwtUtils.getTokenFromCookie();
       try {
@@ -42,19 +54,18 @@ const ProductoEditarModal = ({ producto, onClose }) => {
 
         if (!response.ok) {
           throw new Error('Error al eliminar el modelo');
-          SweetAlert.showMessageAlert('Error','Error al eliminar el modelo','error');
         }
 
         // Update the local state by removing the deleted modelo
         setModelos(modelos.filter(modelo => modelo.idModelo !== idModelo));
-        SweetAlert.showMessageAlert('Exito','Modelo Eliminado Exitosamente','success');
+        SweetAlert.showMessageAlert('¡Éxito!', 'Modelo eliminado exitosamente', 'success');
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       } catch (error) {
         console.error('Error:', error);
-        SweetAlert.showMessageAlert('Error','Hubo un error al eliminar el modelo','error');
-      }finally {
+        SweetAlert.showMessageAlert('Error', 'Hubo un error al eliminar el modelo', 'error');
+      } finally {
         setIsLoading(false);
       }
     }
