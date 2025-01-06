@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
 import { FaWifi } from 'react-icons/fa'; // Ícono para error de conexión
+import { Link } from 'react-router-dom'; // Importar Link para redirección
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
@@ -55,6 +56,8 @@ const CategoriesGrid = () => {
 
   const handlePageChange = (newPage) => {
     setPagination({ ...pagination, page: newPage });
+    // Desplazar la página al principio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (loading) {
@@ -85,8 +88,9 @@ const CategoriesGrid = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Primer grupo de 3 categorías */}
         {categories.slice(0, 3).map((category) => (
-          <div
+          <Link
             key={category.idCategoria}
+            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} // Agregar el enlace con el nombre de la categoría
             className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
           >
             {/* Imagen de la categoría */}
@@ -108,15 +112,16 @@ const CategoriesGrid = () => {
               </h3>
               <p className="text-sm text-gray-600 line-clamp-3">{category.descripcion}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* Segundo grupo de 3 categorías */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {categories.slice(3, 6).map((category) => (
-          <div
+          <Link
             key={category.idCategoria}
+            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} // Agregar el enlace con el nombre de la categoría
             className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
           >
             {/* Imagen de la categoría */}
@@ -138,7 +143,7 @@ const CategoriesGrid = () => {
               </h3>
               <p className="text-sm text-gray-600 line-clamp-3">{category.descripcion}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 

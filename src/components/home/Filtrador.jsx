@@ -1,27 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Filter } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom'; // Importamos useLocation para leer la URL
 
-const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) => {
+const Filtrador = ({ categorias = [] }) => {
   const [nombre, setNombre] = useState('');
-  const [categoria, setCategoria] = useState(categoriaSeleccionada || '');
+  const [categoria, setCategoria] = useState('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const filtradorRef = useRef(null);
   const mobilePanelRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation(); // Usamos useLocation para leer la URL
 
+  // Leer los parámetros de la URL al cargar el componente
   useEffect(() => {
-    if (categoriaSeleccionada) {
-      setCategoria(categoriaSeleccionada);
-    }
-  }, [categoriaSeleccionada]);
+    const queryParams = new URLSearchParams(location.search);
+    const nombreParam = queryParams.get('nombre');
+    const categoriaParam = queryParams.get('categoria');
+
+    if (nombreParam) setNombre(nombreParam);
+    if (categoriaParam) setCategoria(categoriaParam);
+  }, [location.search]);
 
   const handleApplyFilter = () => {
-    onFilterApply({ nombre, categoria });
+    // Construimos la URL con los filtros seleccionados
+    const params = new URLSearchParams();
+    if (nombre) params.set('nombre', nombre);
+    if (categoria) params.set('categoria', categoria);
+
+    // Redirigimos a la URL con los filtros
+    navigate(`/catalogo?${params.toString()}`);
   };
 
   const handleResetFilter = () => {
     setNombre('');
     setCategoria('');
-    onFilterApply({ nombre: '', categoria: '' });
+    // Redirigimos a la URL sin filtros
+    navigate('/catalogo');
   };
 
   useEffect(() => {
@@ -35,7 +49,6 @@ const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) =>
         const windowHeight = window.innerHeight;
         const alturaDisponible = windowHeight - navbarHeight - footerHeight;
         
-        // Aumentamos la altura un poco más (80px adicionales)
         filtradorRef.current.style.height = `${alturaDisponible + 80}px`;
       }
     };
@@ -48,7 +61,6 @@ const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) =>
     };
   }, []);
 
-  // Efecto para manejar la animación del panel móvil
   useEffect(() => {
     const panel = mobilePanelRef.current;
     if (panel) {
@@ -100,7 +112,7 @@ const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) =>
                 >
                   <option value="">Todas las categorías</option>
                   {Array.isArray(categorias) && categorias.map((cat) => (
-                    <option key={cat.idCategoria} value={cat.idCategoria}>
+                    <option key={cat.idCategoria} value={cat.nombreCategoria}>
                       {cat.nombreCategoria}
                     </option>
                   ))}
@@ -177,7 +189,7 @@ const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) =>
             >
               <option value="">Todas las categorías</option>
               {Array.isArray(categorias) && categorias.map((cat) => (
-                <option key={cat.idCategoria} value={cat.idCategoria}>
+                <option key={cat.idCategoria} value={cat.nombreCategoria}>
                   {cat.nombreCategoria}
                 </option>
               ))}

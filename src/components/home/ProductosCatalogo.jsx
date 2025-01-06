@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';  // Importa useLocation
 import API_BASE_URL from '../../js/urlHelper';
 import { FaSearch, FaWifi, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import ProductoCard from './ProductoCard';
@@ -9,16 +10,19 @@ const ProductosCatalogo = ({ filtros }) => {
   const [error, setError] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
+  
+  const location = useLocation();  // Obtén la ubicación actual de la URL
+  const categoria = new URLSearchParams(location.search).get('categoria'); // Extrae el parámetro 'categoria' de la URL
 
   useEffect(() => {
     fetchProductos();
-  }, [filtros, paginaActual]);
+  }, [filtros, paginaActual, categoria]);  // Incluye 'categoria' como dependencia
 
   const fetchProductos = async () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${API_BASE_URL}/api/listarProductosCatalogo?nombreProducto=${filtros.nombre}&categoria=${filtros.categoria}&page=${paginaActual}`
+        `${API_BASE_URL}/api/listarProductosCatalogo?nombre=${filtros.nombre}&categoria=${categoria || filtros.categoria}&page=${paginaActual}`
       );
       if (!response.ok) {
         throw new Error('Error al cargar los productos');
@@ -100,11 +104,7 @@ const ProductosCatalogo = ({ filtros }) => {
                 <button
                   onClick={() => handlePageChange(paginaActual - 1)}
                   disabled={paginaActual === 1}
-                  className={`p-2 rounded-lg ${
-                    paginaActual === 1
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                  className={`p-2 rounded-lg ${paginaActual === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
                 >
                   <FaChevronLeft className="w-4 h-4" />
                 </button>
@@ -112,23 +112,13 @@ const ProductosCatalogo = ({ filtros }) => {
                 {/* Números de página */}
                 <div className="flex items-center">
                   {Array.from({ length: totalPaginas }, (_, i) => i + 1)
-                    .filter(page => 
-                      page === 1 || 
-                      page === totalPaginas || 
-                      (page >= paginaActual - 1 && page <= paginaActual + 1)
-                    )
+                    .filter(page => page === 1 || page === totalPaginas || (page >= paginaActual - 1 && page <= paginaActual + 1))
                     .map((page, index, array) => (
                       <React.Fragment key={page}>
-                        {index > 0 && array[index - 1] !== page - 1 && (
-                          <span className="px-2 text-gray-400">...</span>
-                        )}
+                        {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
                         <button
                           onClick={() => handlePageChange(page)}
-                          className={`px-4 py-2 mx-1 rounded-lg transition-colors ${
-                            paginaActual === page
-                              ? 'bg-yellow-500 text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
-                          }`}
+                          className={`px-4 py-2 mx-1 rounded-lg transition-colors ${paginaActual === page ? 'bg-yellow-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
                         >
                           {page}
                         </button>
@@ -140,11 +130,7 @@ const ProductosCatalogo = ({ filtros }) => {
                 <button
                   onClick={() => handlePageChange(paginaActual + 1)}
                   disabled={paginaActual === totalPaginas}
-                  className={`p-2 rounded-lg ${
-                    paginaActual === totalPaginas
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                  className={`p-2 rounded-lg ${paginaActual === totalPaginas ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
                 >
                   <FaChevronRight className="w-4 h-4" />
                 </button>

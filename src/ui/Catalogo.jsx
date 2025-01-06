@@ -11,6 +11,7 @@ const Catalogo = () => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Desplazar al principio sin animación
     const fetchCategorias = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/listarCategorias`);
