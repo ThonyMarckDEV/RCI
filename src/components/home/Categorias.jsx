@@ -75,9 +75,6 @@ const CategoriesGrid = () => {
         <p className="text-xl font-semibold">
           Error de conexión con el servidor
         </p>
-        <p className="text-gray-400">
-          Por favor, verifica tu conexión a internet e intenta nuevamente.
-        </p>
       </div>
     );
   }

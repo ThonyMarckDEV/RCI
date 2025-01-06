@@ -14,7 +14,7 @@ const Catalogo = () => {
     window.scrollTo(0, 0); // Desplazar al principio sin animación
     const fetchCategorias = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/listarCategorias`);
+        const response = await fetch(`${API_BASE_URL}/api/listarCategoriasFiltrador`);
         if (!response.ok) {
           throw new Error('Error al cargar las categorías');
         }
