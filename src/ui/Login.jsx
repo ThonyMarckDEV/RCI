@@ -28,7 +28,7 @@ const Login = ({ closeLoginModal }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': navigator.userAgent,  // Aquí agregamos el User-Agent
+          'User-Agent': navigator.userAgent,
         },
         body: JSON.stringify({
           correo: email,
@@ -39,7 +39,6 @@ const Login = ({ closeLoginModal }) => {
       const result = await response.json();
 
       if (response.ok) {
-
         const token = result.token;
 
         // Crear una cookie de sesión
@@ -58,10 +57,14 @@ const Login = ({ closeLoginModal }) => {
             window.location.href = '/admin/productos/agregar';
         } else {
             console.error('Rol no reconocido:', userRole);
-            // Puedes redirigir a una página de error o hacer algo más aquí
         }
       } else {
-        setError(result.error || 'Hubo un error al iniciar sesión.');
+        // Mostrar mensaje de error específico para usuario inactivo
+        if (response.status === 403) {
+          setError('Su cuenta está inactiva. Por favor, contacte al administrador del sistema.');
+        } else {
+          setError(result.error || 'Hubo un error al iniciar sesión.');
+        }
       }
     } catch (error) {
       setError('Error en la conexión con el servidor.');
