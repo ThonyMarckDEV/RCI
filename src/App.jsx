@@ -6,6 +6,9 @@ import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de impo
 import jwtUtils from './utilities/jwtUtils';
 import ErrorPage from './components/home/ErrorPage'; // Asegúrate de que la ruta sea correcta
 
+// Error Logger
+import ErrorLog from './components/superAdminComponents/Errorlog';
+
 // Componentes Home
 import Home from './ui/Home';
 import EcoAmigable from './ui/EcoAmigable';
@@ -44,6 +47,7 @@ import ProtectedRouteRolAdmin from './utilities/ProtectedRouteRolAdmin';
 
 function AppContent() {
   const location = useLocation();
+  const [globalError, setGlobalError] = useState(null);
 
   useEffect(() => {
     const token = jwtUtils.getTokenFromCookie();
@@ -59,45 +63,79 @@ function AppContent() {
     }
   }, [location.pathname]);
   
+    // Capturar errores globales
+    useEffect(() => {
+      const handleGlobalError = (event) => {
+        const newError = {
+          message: event.error?.message || 'Error desconocido',
+          severity: 'critical',
+          location: event.filename || 'Unknown location',
+          timestamp: new Date().toISOString(),
+          stack: event.error?.stack,
+          user: 'Usuario actual'
+        };
+        setGlobalError(newError);
+      };
 
-  return (
-    <Routes>
-        {/* Componente de WhatsApp en todas las páginas */}
-        
-      <Route path="/" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Home /></>} />} />
-      <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<><WhatsAppIcon /><EcoAmigable /></>} />} />
-      <Route path="/laEmpresa" element={<ProtectedRouteHome element={<><WhatsAppIcon /><LaEmpresa /></>} />} />
-      <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Clientes /></>} />} />
-      <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Contacto /></>} />} />
-      <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Catalogo /></>} />} />
+      const handleUnhandledRejection = (event) => {
+        const newError = {
+          message: event.reason?.message || 'Promise rejection no manejada',
+          severity: 'warning',
+          location: 'Promise rejection',
+          timestamp: new Date().toISOString(),
+          stack: event.reason?.stack,
+          user: 'Usuario actual'
+        };
+        setGlobalError(newError);
+      };
+  
+      window.addEventListener('error', handleGlobalError);
+      window.addEventListener('unhandledrejection', handleUnhandledRejection);
+  
+      return () => {
+        window.removeEventListener('error', handleGlobalError);
+        window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      };
+    }, []);
 
-      <Route path="/login" element={<ProtectedRouteHome element={<Login />} />} />
-
-      {/* Rutas SuperAdmin */}
-      <Route path="/superAdmin/dashboard" element={<ProtectedRouteRolSuperAdmin element={<SuperAdminDashboard />} />} />
-      <Route path="/superAdmin/usuarios/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarUsuario />} />} />
-      <Route path="/superAdmin/usuarios/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarUsuario />} />} />
-      <Route path="/superAdmin/productos/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarProducto />} />} />
-      <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarProducto />} />} />
-      <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
-      <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
-
-      {/* Rutas Admin */}
-      <Route path="/admin/productos/agregar" element={<ProtectedRouteRolAdmin element={<AgregarProductoAdmin />} />} />
-      <Route path="/admin/productos/editar" element={<ProtectedRouteRolAdmin element={<EditarProductoAdmin />} />} />
-
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
-}
-
-
-export default App;
+    return (
+      <>
+        {globalError && <ErrorLog initialError={globalError} />}
+        <Routes>
+          <Route path="/" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Home /></>} />} />
+          <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<><WhatsAppIcon /><EcoAmigable /></>} />} />
+          <Route path="/laEmpresa" element={<ProtectedRouteHome element={<><WhatsAppIcon /><LaEmpresa /></>} />} />
+          <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Clientes /></>} />} />
+          <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Contacto /></>} />} />
+          <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Catalogo /></>} />} />
+  
+          <Route path="/login" element={<ProtectedRouteHome element={<Login />} />} />
+  
+          {/* Rutas SuperAdmin */}
+          <Route path="/superAdmin/dashboard" element={<ProtectedRouteRolSuperAdmin element={<SuperAdminDashboard />} />} />
+          <Route path="/superAdmin/usuarios/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarUsuario />} />} />
+          <Route path="/superAdmin/usuarios/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarUsuario />} />} />
+          <Route path="/superAdmin/productos/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarProducto />} />} />
+          <Route path="/superAdmin/productos/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarProducto />} />} />
+          <Route path="/superAdmin/categorias/agregar" element={<ProtectedRouteRolSuperAdmin element={<AgregarCategoria />} />} />
+          <Route path="/superAdmin/categorias/editar" element={<ProtectedRouteRolSuperAdmin element={<EditarCategoria />} />} />
+  
+          {/* Rutas Admin */}
+          <Route path="/admin/productos/agregar" element={<ProtectedRouteRolAdmin element={<AgregarProductoAdmin />} />} />
+          <Route path="/admin/productos/editar" element={<ProtectedRouteRolAdmin element={<EditarProductoAdmin />} />} />
+  
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </>
+    );
+  }
+  
+  function App() {
+    return (
+      <Router>
+        <AppContent />
+      </Router>
+    );
+  }
+  
+  export default App;

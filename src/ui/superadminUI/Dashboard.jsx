@@ -6,6 +6,7 @@ import LoaderScreen from '../../components/home/LoadingScreen';
 import jwtUtils from '../../utilities/jwtUtils';
 import EstadoUsuarios from '../../components/superAdminComponents/Estadousuarios';
 import Logs from '../../components/superAdminComponents/Log';
+import ErrorLog from '../../components/superAdminComponents/Errorlog';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -47,6 +48,7 @@ const Dashboard = () => {
         <div className="p-4 md:p-8">
           <div className="space-y-8">
             <EstadoUsuarios stats={stats} />
+            <ErrorLog />
             <Logs />
           </div>
         </div>
