@@ -156,7 +156,7 @@ const CategoriesGrid = () => {
               onClick={() => handlePageChange(page)}
               className={`px-6 py-3 border-2 rounded-lg mx-1 ${
                 pagination.page === page
-                  ? 'bg-yellow-500 text-white border-yellow-500 hover:bg-blue-700'
+                  ? 'bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
               } transition-all duration-300`}
             >
