@@ -1,39 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Filter } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom'; // Importa useSearchParams para leer la URL
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
-const Filtrador = ({ onFilterApply, categorias = [] }) => {
+const Filtrador = ({ onFilterApply, categorias = [], categoriaSeleccionada }) => {
   const [nombre, setNombre] = useState('');
-  const [categoria, setCategoria] = useState('');
+  const [categoria, setCategoria] = useState(categoriaSeleccionada || '');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const filtradorRef = useRef(null);
   const mobilePanelRef = useRef(null);
-  const navigate = useNavigate(); // Define el hook useNavigate
 
-  // Leer el parámetro de la URL
-  const [searchParams] = useSearchParams();
-  const categoriaParam = searchParams.get('categoria');
-
-  // Aplicar el filtro automáticamente si hay un parámetro en la URL
   useEffect(() => {
-    if (categoriaParam) {
-      setCategoria(categoriaParam);
-      onFilterApply({ nombre: '', categoria: categoriaParam });
+    if (categoriaSeleccionada) {
+      setCategoria(categoriaSeleccionada);
     }
-  }, [categoriaParam, onFilterApply]);
+  }, [categoriaSeleccionada]);
 
   const handleApplyFilter = () => {
     onFilterApply({ nombre, categoria });
   };
 
-
   const handleResetFilter = () => {
-      setNombre('');
-      setCategoria('');
-      onFilterApply({ nombre: '', categoria: '' });
-      navigate('/catalogo'); // Redirige a /catalogo sin recargar la página
-    };
+    setNombre('');
+    setCategoria('');
+    onFilterApply({ nombre: '', categoria: '' });
+  };
 
   useEffect(() => {
     const ajustarAlturaFiltrador = () => {
@@ -75,7 +64,7 @@ const Filtrador = ({ onFilterApply, categorias = [] }) => {
 
   return (
     <>
-      {/* Desktop sidebar - ahora siempre visible y sin opción de colapsar */}
+      {/* Desktop sidebar */}
       <aside
         ref={filtradorRef}
         className="hidden lg:block fixed left-0 top-20 w-80 bg-white"
@@ -138,10 +127,10 @@ const Filtrador = ({ onFilterApply, categorias = [] }) => {
         </div>
       </aside>
 
-      {/* Botón flotante para móviles - ahora sigue el scroll */}
+      {/* Botón flotante para móviles */}
       <button
         onClick={() => setShowMobileFilters(!showMobileFilters)}
-        className="lg:hidden fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-colors"
+        className="lg:hidden fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-700 transition-colors"
       >
         <Filter size={24} />
       </button>
