@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import API_BASE_URL from '../../js/urlHelper';
 import { FaWifi } from 'react-icons/fa'; // Ícono para error de conexión
 
@@ -12,6 +13,8 @@ const CategoriesGrid = () => {
     total: 0,
     lastPage: 1,
   });
+
+  const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
     fetchCategories();
@@ -57,6 +60,11 @@ const CategoriesGrid = () => {
     setPagination({ ...pagination, page: newPage });
   };
 
+  // Función para manejar el clic en una categoría
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/catalogo?categoria=${categoryId}`); // Redirige a /catalogo con el ID de la categoría
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -83,41 +91,12 @@ const CategoriesGrid = () => {
     <div className="container mx-auto p-6 space-y-12">
       {/* Grid de categorías - 3 arriba y 3 abajo */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Primer grupo de 3 categorías */}
-        {categories.slice(0, 3).map((category) => (
+        {/* Mapear todas las categorías */}
+        {categories.map((category) => (
           <div
             key={category.idCategoria}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
-          >
-            {/* Imagen de la categoría */}
-            <div className="h-56 bg-gray-200 relative overflow-hidden rounded-t-2xl">
-              <img
-                src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
-                alt={category.nombreCategoria}
-                className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
-                onError={(e) => {
-                  e.target.src = '/api/placeholder/400/300';
-                }}
-              />
-            </div>
-
-            {/* Contenido de la categoría */}
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                {category.nombreCategoria}
-              </h3>
-              <p className="text-sm text-gray-600 line-clamp-3">{category.descripcion}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Segundo grupo de 3 categorías */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {categories.slice(3, 6).map((category) => (
-          <div
-            key={category.idCategoria}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
+            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden cursor-pointer"
+            onClick={() => handleCategoryClick(category.idCategoria)} // Redirige al hacer clic
           >
             {/* Imagen de la categoría */}
             <div className="h-56 bg-gray-200 relative overflow-hidden rounded-t-2xl">

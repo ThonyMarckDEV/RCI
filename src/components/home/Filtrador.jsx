@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Filter } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom'; // Importa useSearchParams para leer la URL
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 const Filtrador = ({ onFilterApply, categorias = [] }) => {
   const [nombre, setNombre] = useState('');
@@ -7,16 +9,31 @@ const Filtrador = ({ onFilterApply, categorias = [] }) => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const filtradorRef = useRef(null);
   const mobilePanelRef = useRef(null);
+  const navigate = useNavigate(); // Define el hook useNavigate
+
+  // Leer el parámetro de la URL
+  const [searchParams] = useSearchParams();
+  const categoriaParam = searchParams.get('categoria');
+
+  // Aplicar el filtro automáticamente si hay un parámetro en la URL
+  useEffect(() => {
+    if (categoriaParam) {
+      setCategoria(categoriaParam);
+      onFilterApply({ nombre: '', categoria: categoriaParam });
+    }
+  }, [categoriaParam, onFilterApply]);
 
   const handleApplyFilter = () => {
     onFilterApply({ nombre, categoria });
   };
 
+
   const handleResetFilter = () => {
-    setNombre('');
-    setCategoria('');
-    onFilterApply({ nombre: '', categoria: '' });
-  };
+      setNombre('');
+      setCategoria('');
+      onFilterApply({ nombre: '', categoria: '' });
+      navigate('/catalogo'); // Redirige a /catalogo sin recargar la página
+    };
 
   useEffect(() => {
     const ajustarAlturaFiltrador = () => {

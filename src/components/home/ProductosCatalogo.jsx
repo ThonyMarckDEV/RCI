@@ -1,4 +1,3 @@
-// ProductosCatalogo.js
 import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
 import { FaSearch, FaWifi, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
@@ -25,7 +24,8 @@ const ProductosCatalogo = ({ filtros }) => {
         throw new Error('Error al cargar los productos');
       }
       const data = await response.json();
-      setProductos(data.data || []);
+      console.log(data); // Verifica la respuesta de la API
+      setProductos(data.data || []); // Asegúrate de que data.data sea un array
       setTotalPaginas(data.last_page || 1);
     } catch (err) {
       setError(err.message);
@@ -61,12 +61,33 @@ const ProductosCatalogo = ({ filtros }) => {
     );
   }
 
+  // Dividir los productos en dos grupos: primeros 3 y siguientes 3
+  const primerosTresProductos = productos.slice(0, 3);
+  const siguientesTresProductos = productos.slice(3, 6);
+
   return (
     <div className="flex flex-col min-h-[500px]">
-      {productos.length > 0 ? (
+      {/* Mostrar mensaje si no hay productos */}
+      {productos.length === 0 && !loading ? (
+        <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+          <FaSearch className="text-6xl mb-4" />
+          <p className="text-xl font-semibold">
+            No se encontraron productos con los filtros aplicados.
+          </p>
+          <p className="text-gray-400">Intenta modificar los criterios de búsqueda.</p>
+        </div>
+      ) : (
         <>
+          {/* Primera fila de productos (primeros 3) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {productos.map((producto) => (
+            {primerosTresProductos.map((producto) => (
+              <ProductoCard key={producto.idProducto} producto={producto} />
+            ))}
+          </div>
+
+          {/* Segunda fila de productos (siguientes 3) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {siguientesTresProductos.map((producto) => (
               <ProductoCard key={producto.idProducto} producto={producto} />
             ))}
           </div>
@@ -131,14 +152,6 @@ const ProductosCatalogo = ({ filtros }) => {
             </div>
           )}
         </>
-      ) : (
-        <div className="flex flex-col items-center justify-center text-gray-500 py-16">
-          <FaSearch className="text-6xl mb-4" />
-          <p className="text-xl font-semibold">
-            No se encontraron productos con los filtros aplicados.
-          </p>
-          <p className="text-gray-400">Intenta modificar los criterios de búsqueda.</p>
-        </div>
       )}
     </div>
   );
