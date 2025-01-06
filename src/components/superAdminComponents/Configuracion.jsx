@@ -15,21 +15,27 @@ function Configuracion() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (password !== confirmPassword) {
-      SweetAlert('Error', 'Las contraseñas no coinciden', 'error');
+        SweetAlert.showMessageAlert('Error', 'Las contraseñas no coinciden', 'error');
       return;
     }
-
+  
+    if (password.length < 8) {
+        SweetAlert.showMessageAlert('Error', 'La contraseña debe tener al menos 8 caracteres', 'error');
+      return;
+    }
+  
     const token = jwtUtils.getTokenFromCookie(); // Obtener el token
     const userId = jwtUtils.getIdUsuario(token); // Obtener el ID del token
-
+  
     const requestBody = {
-      password
+      password,
+      password_confirmation: confirmPassword, // Agregar este campo
     };
-
+  
     setLoading(true);
-
+  
     try {
       const response = await fetch(`${API_BASE_URL}/api/password/${userId}`, {
         method: 'PUT',
@@ -39,18 +45,19 @@ function Configuracion() {
         },
         body: JSON.stringify(requestBody),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         SweetAlert.showMessageAlert('Success', 'Contraseña actualizada correctamente', 'success');
         setPassword('');
         setConfirmPassword('');
       } else {
+        // Mostrar el error de validación o cualquier otro error
         SweetAlert.showMessageAlert('Error', data.message || 'No se pudo actualizar la contraseña', 'error');
       }
     } catch (error) {
-        SweetAlert.showMessageAlert('Error', 'Hubo un problema con la solicitud', 'error');
+      SweetAlert.showMessageAlert('Error', 'Hubo un problema con la solicitud', 'error');
     } finally {
       setLoading(false);
     }
@@ -85,7 +92,7 @@ function Configuracion() {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+              className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition-colors"
               disabled={loading}
             >
               {loading ? 'Actualizando...' : 'Actualizar Contraseña'}
