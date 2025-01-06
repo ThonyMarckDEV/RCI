@@ -17,7 +17,7 @@ const ProtectedRouteRolAdmin = ({ element }) => {
     const userRole = jwtUtils.getUserRole(token); // Extraer el rol del token
    
      if (userRole === 'superAdmin'){
-      return <Navigate to="/superAdmin" />;
+      return <Navigate to="/superAdmin/dashboard" />;
     }
     return element;
   } catch (error) {

@@ -53,7 +53,7 @@ const Login = ({ closeLoginModal }) => {
     
         // Redirigir según el rol
         if (userRole === 'superadmin') {
-            window.location.href = '/superAdmin';
+            window.location.href = '/superAdmin/dashboard';
         } else if (userRole === 'admin') {
             window.location.href = '/admin/productos/agregar';
         } else {
