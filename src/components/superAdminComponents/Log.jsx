@@ -59,10 +59,12 @@ import jwtUtils from '../../utilities/jwtUtils';
       }));
     };
   
-    if (loading) return <LoaderScreen />;
-  
+
     return (
       <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+
+        {loading && <LoaderScreen />} 
+
         <div className="flex-1 p-4 md:p-8">
           <div className="max-w-7xl mx-auto">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Registro de Actividades</h1>

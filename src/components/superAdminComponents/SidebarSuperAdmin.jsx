@@ -52,7 +52,7 @@ function SidebarSuperAdmin() {
               {/* Dashboard */}
               <li className="mb-4">
                 <a
-                  href="/dashboard"
+                  href="/superAdmin/dashboard"
                   className="flex items-center text-lg bg-white text-black hover:bg-gray-100 p-2 rounded-lg transition-all duration-300"
                 >
                   <AiFillHome className="mr-4 text-xl" />
