@@ -146,6 +146,9 @@ function EditarModelo({ modelo, onClose }) {
 
       setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
       SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('Error al eliminar la imagen:', error);
       SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');

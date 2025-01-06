@@ -80,7 +80,6 @@ function EditarModelo({ modelo, onClose }) {
     
       // Agregar datos básicos del modelo
       formData.append('nombreModelo', nombreModelo);
-      formData.append('descripcion', descripcion || ''); // Asegúrate de que la descripción no sea undefined
     
       // Agregar nuevas imágenes adicionales
       files.forEach((file, index) => {
@@ -117,7 +116,7 @@ function EditarModelo({ modelo, onClose }) {
     
       setTimeout(() => {
         window.location.reload();
-      }, 1500);
+      }, 1000);
     } catch (error) {
       console.error('Error:', error);
       SweetAlert.showMessageAlert('Error', 'Error al guardar los cambios', 'error');
@@ -147,6 +146,9 @@ function EditarModelo({ modelo, onClose }) {
 
       setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
       SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('Error al eliminar la imagen:', error);
       SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
@@ -273,18 +275,6 @@ function EditarModelo({ modelo, onClose }) {
                   type="text"
                   value={nombreModelo}
                   onChange={(e) => setNombreModelo(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Descripción
-                </label>
-                <textarea
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                  rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
