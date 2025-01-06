@@ -156,17 +156,15 @@ function EditarModelo({ modelo, onClose }) {
       setLoading(false);
     }
   };
-
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        {/* Mostrar el LoadingScreen cuando loading o changingEstado sea true */}
-        {(loading || changingEstado) && <LoadingScreen />}
+      {(loading || changingEstado) && <LoadingScreen />}
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
         <div className="border-b p-4 flex items-center justify-between bg-yellow-500">
           <div className="flex items-center gap-2">
             <Image className="h-6 w-6 text-white" />
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-white truncate">
               Editar Modelo: {modelo.nombreModelo}
             </h2>
           </div>
@@ -177,18 +175,18 @@ function EditarModelo({ modelo, onClose }) {
             <X className="h-5 w-5" />
           </button>
         </div>
-
-        {/* Content */}
-        <div className="p-6">
+  
+        {/* Content - Added overflow container */}
+        <div className="p-6 max-h-[calc(100vh-10rem)] overflow-y-auto">
           <div className="space-y-6">
             <div>
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+                className={`border-2 border-dashed rounded-lg p-4 md:p-8 text-center cursor-pointer transition-colors
                   ${isDragActive ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 hover:border-yellow-500'}`}
               >
                 <input {...getInputProps()} />
-                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <Upload className="h-8 w-8 md:h-12 md:w-12 mx-auto text-gray-400 mb-4" />
                 <p className="text-sm text-gray-600">
                   {isDragActive ? 
                     'Suelta las imágenes aquí...' : 
@@ -198,73 +196,74 @@ function EditarModelo({ modelo, onClose }) {
                   Formatos permitidos: JPG, JPEG, PNG (máx. 5MB)
                 </p>
               </div>
-              <div className="mt-4 flex flex-wrap gap-4">
-                {/* Imágenes existentes */}
-                {imagenes.map((imagen) => (
-                  <div 
-                    key={imagen.idImagen} // Ahora siempre tendrá un valor único
-                    className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100"
-                  >
-                    <img 
-                      src={imagen.objectUrl || (imagen.urlImagen ? `${API_BASE_URL}/storage/${imagen.urlImagen}` : '')}
-                      alt={`Imagen ${imagen.idImagen}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 flex gap-2">
-                      <input
-                        id={`file-input-${imagen.idImagen}`}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            handleReplaceImage(imagen.idImagen, file);
-                          }
-                          e.target.value = '';
-                        }}
+  
+              {/* Image grid container with horizontal scroll */}
+              <div className="mt-4 overflow-x-auto">
+                <div className="flex flex-nowrap gap-4 pb-4 min-w-min">
+                  {/* Existing images */}
+                  {imagenes.map((imagen) => (
+                    <div 
+                      key={imagen.idImagen}
+                      className="flex-none w-28 h-28 md:w-32 md:h-32 relative rounded-lg overflow-hidden bg-gray-100"
+                    >
+                      <img 
+                        src={imagen.objectUrl || (imagen.urlImagen ? `${API_BASE_URL}/storage/${imagen.urlImagen}` : '')}
+                        alt={`Imagen ${imagen.idImagen}`}
+                        className="w-full h-full object-cover"
                       />
-                      {/* Botón para reemplazar imagen */}
+                      <div className="absolute bottom-2 right-2 flex gap-2">
+                        <input
+                          id={`file-input-${imagen.idImagen}`}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleReplaceImage(imagen.idImagen, file);
+                            }
+                            e.target.value = '';
+                          }}
+                        />
+                        <button
+                          onClick={() => document.getElementById(`file-input-${imagen.idImagen}`).click()}
+                          className="p-1.5 md:p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors"
+                        >
+                          <Upload className="h-3 w-3 md:h-4 md:w-4" />
+                        </button>
+                        <button
+                          onClick={() => handleRemoveExistingImage(imagen.idImagen)}
+                          className="p-1.5 md:p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                        >
+                          <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* New images */}
+                  {files.map((file, index) => (
+                    <div 
+                      key={`new-${index}-${file.name}`}
+                      className="flex-none w-28 h-28 md:w-32 md:h-32 relative rounded-lg overflow-hidden bg-gray-100"
+                    >
+                      <img 
+                        src={URL.createObjectURL(file)}
+                        alt={`Nueva imagen ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                       <button
-                        onClick={() => document.getElementById(`file-input-${imagen.idImagen}`).click()}
-                        className="p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-2 right-2 p-1.5 md:p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
                       >
-                        <Upload className="h-4 w-4" />
-                      </button>
-
-                      {/* Botón para eliminar imagen existente */}
-                      <button
-                        onClick={() => handleRemoveExistingImage(imagen.idImagen)}
-                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                      >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-3 w-3 md:h-4 md:w-4" />
                       </button>
                     </div>
-                  </div>
-                ))}
-                
-                {/* Nuevas imágenes */}
-                {files.map((file, index) => (
-                  <div 
-                    key={`new-${index}-${file.name}`}
-                    className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100"
-                  >
-                    <img 
-                      src={URL.createObjectURL(file)}
-                      alt={`Nueva imagen ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      onClick={() => handleRemoveImage(index)}
-                      className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-
+  
             {/* Form Fields */}
             <div className="space-y-4">
               <div>
@@ -280,7 +279,7 @@ function EditarModelo({ modelo, onClose }) {
               </div>
             </div>
           </div>
-
+  
           {/* Footer */}
           <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
             <button
