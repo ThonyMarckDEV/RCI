@@ -6,7 +6,7 @@ import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
 import jwtUtils from '../../utilities/jwtUtils';
 
-function EditarModelo({ modelo, onClose }) {
+function EditarModeloAdmin({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
   const [descripcion, setDescripcion] = useState(modelo.descripcion);
   const [loading, setLoading] = useState(false);
@@ -310,4 +310,4 @@ function EditarModelo({ modelo, onClose }) {
   );
 }
 
-export default EditarModelo;
+export default EditarModeloAdmin;

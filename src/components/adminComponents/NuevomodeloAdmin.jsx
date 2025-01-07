@@ -6,7 +6,7 @@ import jwtUtils from '../../utilities/jwtUtils';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
 
-const NuevoModelo = ({ idProducto, onClose, onModeloCreated }) => {
+const NuevoModeloAdmin = ({ idProducto, onClose, onModeloCreated }) => {
   const [nombreModelo, setNombreModelo] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -105,4 +105,4 @@ const NuevoModelo = ({ idProducto, onClose, onModeloCreated }) => {
   );
 };
 
-export default NuevoModelo;
+export default NuevoModeloAdmin;

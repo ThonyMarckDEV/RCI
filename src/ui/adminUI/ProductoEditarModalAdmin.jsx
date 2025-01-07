@@ -8,7 +8,7 @@ import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
 import Swal from 'sweetalert2';
 
-const ProductoEditarModal = ({ producto, onClose }) => {
+const ProductoEditarModalAdmin = ({ producto, onClose }) => {
   const [modelos, setModelos] = useState(producto?.modelos || []);
   const [selectedModelo, setSelectedModelo] = useState(null);
   const [showNuevoModelo, setShowNuevoModelo] = useState(false);
@@ -193,4 +193,4 @@ const ProductoEditarModal = ({ producto, onClose }) => {
   );
 };
 
-export default ProductoEditarModal;
+export default ProductoEditarModalAdmin;
