@@ -56,8 +56,6 @@ const CategoriesGrid = () => {
 
   const handlePageChange = (newPage) => {
     setPagination({ ...pagination, page: newPage });
-    // Desplazar la página al principio
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (loading) {
