@@ -52,7 +52,7 @@ const Catalogo = () => {
         <div className="px-6">
           <ProductosCatalogo 
             filtros={filtros} 
-            className="animate-fade-in"
+            className="animate-slide-down"
           />
         </div>
       </main>
