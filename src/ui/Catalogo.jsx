@@ -1,4 +1,3 @@
-// Catalogo.js
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/home/NavBar';
 import Footer from '../components/home/Footer';
@@ -30,29 +29,36 @@ const Catalogo = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
       {/* Navbar */}
-      <Navbar className="fixed top-0 w-full z-50" />
+      <Navbar className="fixed top-0 w-full z-50 animate-slide-down" />
       
       {/* Filtrador */}
-      <Filtrador onFilterApply={setFiltros} categorias={categorias} />
+      <Filtrador 
+        onFilterApply={setFiltros} 
+        categorias={categorias} 
+        className="animate-fade-in"
+      />
       
       {/* Main content */}
       <main className="flex-grow pt-32 lg:pt-20 lg:ml-80 pb-16"> {/* Added padding bottom for pagination */}
         {/* Title section */}
         <div className="px-6">
-          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
             Catálogo
           </h1>
-          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
         </div>
         
         {/* Products section */}
         <div className="px-6">
-          <ProductosCatalogo filtros={filtros} />
+          <ProductosCatalogo 
+            filtros={filtros} 
+            className="animate-fade-in"
+          />
         </div>
       </main>
       
       {/* Footer */}
-      <Footer className="lg:ml-80" />
+      <Footer className="lg:ml-80 animate-slide-up" />
     </div>
   );
 };
