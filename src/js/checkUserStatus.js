@@ -36,8 +36,8 @@ export const checkUserStatus = async () => {
             // Verificamos si el token en la base de datos es distinto al token de la cookie
             if (data.token !== token) {
                 console.warn('Token en la base de datos no coincide con el local');
-                // Eliminar el token de la cookie y redirigir al usuario a la página de inicio
-                logoutAndRedirect()
+                jwtUtils.removeTokenFromCookie();  // Eliminar el token de la cookie
+                window.location.href = '/';  // Redirigir a la página de inicio o login
             }
         } else if (response.status === 403) {
             // Si la respuesta es 403, el token no coincide o es inválido
@@ -46,6 +46,8 @@ export const checkUserStatus = async () => {
             window.location.href = '/';  // Redirigir a la página de inicio o login
         } else {
             console.error('Error en la respuesta del servidor:', response.statusText);
+            jwtUtils.removeTokenFromCookie();  // Eliminar el token de la cookie
+            window.location.href = '/';  // Redirigir a la página de inicio o login
         }
     } catch (error) {
         // Si ocurre un error durante la solicitud, deslogueamos al usuario
