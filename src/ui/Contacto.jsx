@@ -48,13 +48,12 @@ const Contacto = () => {
     }
   };
 
-  if (loading) {
-      return <LoaderScreen />;
-  }
-
   return (
     <div className="bg-white font-light text-gray-800 min-h-screen flex flex-col">
       <Navbar />
+      
+    {/* Mostrar el LoaderScreen si loading es true */}
+    {loading && <LoaderScreen />}
 
       {/* Hero Section */}
       <div className="container mx-auto px-6 pt-24 pb-16">
