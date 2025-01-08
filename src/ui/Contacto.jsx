@@ -6,9 +6,10 @@ import Footer from '../components/home/Footer';
 import { motion } from 'framer-motion';
 import 'leaflet/dist/leaflet.css';
 import pinImage from '../img/marcadorRci.png';
+import API_BASE_URL from '../js/urlHelper';
 
 const Contacto = () => {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,9 +19,29 @@ const Contacto = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Formulario enviado');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/send-message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Mensaje enviado correctamente');
+        setForm({ name: '', email: '', phone: '', message: '' }); // Limpiar el formulario
+      } else {
+        alert('Error al enviar el mensaje: ' + (data.error || 'Inténtalo más tarde'));
+      }
+    } catch (error) {
+      alert('Error de conexión: ' + error.message);
+    }
   };
 
   return (
@@ -134,6 +155,8 @@ const Contacto = () => {
                 <input
                   type="text"
                   name="name"
+                  value={form.name}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 border-b border-gray-300 focus:border-gray-900 outline-none transition-colors duration-300"
                   required
                 />
@@ -145,6 +168,8 @@ const Contacto = () => {
                 <input
                   type="email"
                   name="email"
+                  value={form.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 border-b border-gray-300 focus:border-gray-900 outline-none transition-colors duration-300"
                   required
                 />
@@ -157,6 +182,8 @@ const Contacto = () => {
               <input
                 type="tel"
                 name="phone"
+                value={form.phone}
+                onChange={handleChange}
                 className="w-full px-4 py-3 border-b border-gray-300 focus:border-gray-900 outline-none transition-colors duration-300"
                 required
               />
@@ -167,6 +194,8 @@ const Contacto = () => {
               </label>
               <textarea
                 name="message"
+                value={form.message}
+                onChange={handleChange}
                 rows="4"
                 className="w-full px-4 py-3 border-b border-gray-300 focus:border-gray-900 outline-none transition-colors duration-300"
                 required
