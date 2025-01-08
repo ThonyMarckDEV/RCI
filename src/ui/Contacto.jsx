@@ -7,9 +7,11 @@ import { motion } from 'framer-motion';
 import 'leaflet/dist/leaflet.css';
 import pinImage from '../img/marcadorRci.png';
 import API_BASE_URL from '../js/urlHelper';
+import LoaderScreen from '../../components/home/LoadingScreen';
 
 const Contacto = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,8 +23,8 @@ const Contacto = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
+      setLoading(true);
       const response = await fetch(`${API_BASE_URL}/api/send-message`, {
         method: 'POST',
         headers: {
@@ -41,8 +43,14 @@ const Contacto = () => {
       }
     } catch (error) {
       alert('Error de conexión: ' + error.message);
+    } finally{
+      setLoading(false);
     }
   };
+
+  if (loading) {
+      return <LoaderScreen />;
+  }
 
   return (
     <div className="bg-white font-light text-gray-800 min-h-screen flex flex-col">
