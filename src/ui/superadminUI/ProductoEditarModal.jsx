@@ -6,7 +6,6 @@ import API_BASE_URL from '../../js/urlHelper';
 import jwtUtils from '../../utilities/jwtUtils';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
-import Swal from 'sweetalert2';
 
 const ProductoEditarModal = ({ producto, onClose }) => {
   const [modelos, setModelos] = useState(producto?.modelos || []);
@@ -30,15 +29,10 @@ const ProductoEditarModal = ({ producto, onClose }) => {
   };
 
   const handleDeleteModelo = async (idModelo) => {
-    const result = await Swal.fire({
+
+    const result = SweetAlert.showConfirmationAlert({
       title: '¿Eliminar modelo?',
-      text: '¿Estás seguro que deseas eliminar este modelo? Esta acción no se puede deshacer.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      text: '¿Estás seguro que deseas eliminar este modelo? Esta acción no se puede deshacer.'
     });
 
     if (result.isConfirmed) {

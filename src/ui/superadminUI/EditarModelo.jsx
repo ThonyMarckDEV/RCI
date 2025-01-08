@@ -131,31 +131,50 @@ function EditarModelo({ modelo, onClose }) {
 
   // Eliminar imagen existente
   const handleRemoveExistingImage = async (idImagen) => {
-    setLoading(true);
-    try {
-      const token = jwtUtils.getTokenFromCookie();
-      const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error('No se pudo eliminar la imagen');
-      }
 
-      setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
-      SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error) {
-      console.error('Error al eliminar la imagen:', error);
-      SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
-    }finally {
-      setLoading(false);
+    const result = SweetAlert.showConfirmationAlert({
+      title: '¿Estás seguro?',
+      text: '¿Deseas eliminar esta imagen? Esta acción no se puede deshacer.'
+    });
+  
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const token = jwtUtils.getTokenFromCookie();
+        const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('No se pudo eliminar la imagen');
+        }
+  
+        setImagenes((prevImagenes) => 
+          prevImagenes.filter((img) => img.idImagen !== idImagen)
+        );
+  
+  
+        SweetAlert.showMessageAlert('Exito!','Imagen Eliminada Exitosamente','success',);
+  
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+  
+      } catch (error) {
+        console.error('Error al eliminar la imagen:', error);
+        
+       
+        SweetAlert.showMessageAlert('Error!','Error al eliminar la imagen','error',);
+      } finally {
+        setLoading(false);
+      }
     }
   };
+  
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       {(loading || changingEstado) && <LoadingScreen />}
