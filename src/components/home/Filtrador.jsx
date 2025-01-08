@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Filter } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Importamos useLocation para leer la URL
+import { useNavigate, useLocation } from 'react-router-dom'; // UseLocation para leer la URL
 
 const Filtrador = ({ categorias = [] }) => {
   const [nombre, setNombre] = useState('');
@@ -9,7 +9,7 @@ const Filtrador = ({ categorias = [] }) => {
   const filtradorRef = useRef(null);
   const mobilePanelRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation(); // Usamos useLocation para leer la URL
+  const location = useLocation(); // UseLocation para leer la URL
 
   // Leer los parámetros de la URL al cargar el componente
   useEffect(() => {

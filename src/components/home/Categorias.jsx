@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
-import { FaWifi } from 'react-icons/fa'; // Ícono para error de conexión
-import { Link } from 'react-router-dom'; // Importar Link para redirección
+import { FaWifi } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
@@ -85,7 +85,7 @@ const CategoriesGrid = () => {
         {categories.slice(0, 3).map((category) => (
           <Link
             key={category.idCategoria}
-            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} // Agregar el enlace con el nombre de la categoría
+            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} 
             className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
           >
             {/* Imagen de la categoría */}
@@ -116,7 +116,7 @@ const CategoriesGrid = () => {
         {categories.slice(3, 6).map((category) => (
           <Link
             key={category.idCategoria}
-            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} // Agregar el enlace con el nombre de la categoría
+            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
             className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
           >
             {/* Imagen de la categoría */}

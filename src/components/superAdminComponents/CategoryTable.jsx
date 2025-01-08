@@ -130,10 +130,10 @@ const CategoryTable = () => {
     setImagenFile(null);
   };
 
-  // Modify handleEditChange to prevent empty strings
+
   const handleEditChange = (e, field) => {
     const value = e.target.value;
-    if (value.trim() !== '' || value === '') { // Allow empty string for intentional clearing
+    if (value.trim() !== '' || value === '') { 
       setEditedCategoria(prev => ({
         ...prev,
         [field]: value
@@ -141,7 +141,6 @@ const CategoryTable = () => {
     }
   };
 
-  // Update handleEdit to properly initialize edit state
   const handleEdit = (categoria) => {
     setEditingId(categoria.idCategoria);
     setEditedCategoria({
@@ -162,11 +161,11 @@ const CategoryTable = () => {
     try {
       setLoading(true);
   
-      // Create FormData and explicitly set the ID
+     
       const formData = new FormData();
-      formData.append('id', editingId); // Explicitly add the ID
+      formData.append('id', editingId); 
       
-      // Only append if values exist and are different from current
+
       if (editedCategoria.nombreCategoria) {
         formData.append('nombreCategoria', editedCategoria.nombreCategoria);
       }
@@ -179,12 +178,11 @@ const CategoryTable = () => {
         formData.append('imagen', imagenFile);
       }
   
-      // Make sure to use the correct ID in the URL
+
       const response = await fetch(`${API_BASE_URL}/api/actualizarCategoria/${editingId}`, {
-        method: 'POST', // Change to POST and override with _method
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          // Remove Content-Type to let browser set it correctly for FormData
         },
         body: formData,
       });
@@ -196,10 +194,9 @@ const CategoryTable = () => {
   
       const data = await response.json();
   
-      // Refresh the categories after successful update
       await fetchCategorias(currentPage);
   
-      // Reset states
+    
       setEditingId(null);
       setEditedCategoria({
         nombreCategoria: '',

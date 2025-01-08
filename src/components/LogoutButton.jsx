@@ -1,6 +1,6 @@
 // LogoutButton.jsx
 import React from 'react';
-import { logout } from '../js/logout'; // Cambiar a importación nombrada
+import { logout } from '../js/logout';
 
 function LogoutButton() {
    const handleLogout = () => {

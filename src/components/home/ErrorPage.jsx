@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaRegSadTear } from 'react-icons/fa'; // Ícono de error
-import Navbar from './NavBar'; // Asegúrate de tener un componente Navbar
+import { FaRegSadTear } from 'react-icons/fa'; 
+import Navbar from './NavBar';
 
 const ErrorPage = () => {
   return (

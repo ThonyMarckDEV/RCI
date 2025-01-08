@@ -11,8 +11,8 @@ const ProductosCatalogo = ({ filtros }) => {
   const [paginaActual, setPaginaActual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   
-  const location = useLocation();  // Obtén la ubicación actual de la URL
-  const navigate = useNavigate();  // Usa useNavigate en lugar de useHistory
+  const location = useLocation();  // Ubicación actual de la URL
+  const navigate = useNavigate();  
   const categoria = new URLSearchParams(location.search).get('categoria'); // Extrae el parámetro 'categoria' de la URL
   const nombreProducto = new URLSearchParams(location.search).get('nombre'); // Extrae el parámetro 'nombre' de la URL
 
@@ -30,7 +30,7 @@ const ProductosCatalogo = ({ filtros }) => {
         throw new Error('Error al cargar los productos');
       }
       const data = await response.json();
-      setProductos(data.data || []); // Asegúrate de que data.data sea un array
+      setProductos(data.data || []);
       setTotalPaginas(data.last_page || 1);
     } catch (err) {
       setError(err.message);
@@ -47,7 +47,7 @@ const ProductosCatalogo = ({ filtros }) => {
       // Actualizar la URL con los parámetros de búsqueda y la página seleccionada
       const params = new URLSearchParams(location.search);
       params.set('page', pagina);
-      navigate({ search: params.toString() });  // Usa navigate para actualizar la URL
+      navigate({ search: params.toString() });
     }
   };
 

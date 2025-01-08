@@ -10,7 +10,7 @@ import jwtUtils from '../../utilities/jwtUtils';
 function ProductTableAdmin() {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0); // Cambiado para usar con ReactPaginate
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [editMode, setEditMode] = useState(null); // ID del producto en modo edición
   const [selectedProducto, setSelectedProducto] = useState(null);
@@ -30,7 +30,7 @@ function ProductTableAdmin() {
   const itemsPerPage = 10; // Número de elementos por página
 
   useEffect(() => {
-    cargarProductos(currentPage + 1); // ReactPaginate empieza en 0, la API en 1
+    cargarProductos(currentPage + 1);
   }, [currentPage, searchTerm, filters]);
 
   const cargarProductos = async (page) => {

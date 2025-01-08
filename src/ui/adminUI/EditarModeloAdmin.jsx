@@ -129,31 +129,63 @@ function EditarModeloAdmin({ modelo, onClose }) {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
-  // Eliminar imagen existente
   const handleRemoveExistingImage = async (idImagen) => {
-    setLoading(true);
-    try {
-      const token = jwtUtils.getTokenFromCookie();
-      const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error('No se pudo eliminar la imagen');
-      }
 
-      setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
-      SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } catch (error) {
-      console.error('Error al eliminar la imagen:', error);
-      SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
-    }finally {
-      setLoading(false);
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas eliminar esta imagen? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+  
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const token = jwtUtils.getTokenFromCookie();
+        const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('No se pudo eliminar la imagen');
+        }
+  
+        setImagenes((prevImagenes) => 
+          prevImagenes.filter((img) => img.idImagen !== idImagen)
+        );
+  
+  
+        await Swal.fire({
+          title: 'Éxito',
+          text: 'Imagen eliminada correctamente',
+          icon: 'success',
+          timer: 1500
+        });
+  
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+  
+      } catch (error) {
+        console.error('Error al eliminar la imagen:', error);
+        
+       
+        await Swal.fire({
+          title: 'Error',
+          text: 'No se pudo eliminar la imagen',
+          icon: 'error'
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

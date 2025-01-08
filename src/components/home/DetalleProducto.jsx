@@ -85,7 +85,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         break;
       case 'instagram':
-        // Instagram no tiene API de compartir directa, abrimos stories si está disponible
         if (navigator.share) {
           navigator.share({
             title: producto.nombreProducto,

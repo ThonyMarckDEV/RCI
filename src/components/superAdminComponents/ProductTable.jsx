@@ -10,7 +10,7 @@ import jwtUtils from '../../utilities/jwtUtils';
 function ProductTable() {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0); // Cambiado para usar con ReactPaginate
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [editMode, setEditMode] = useState(null); // ID del producto en modo edición
   const [selectedProducto, setSelectedProducto] = useState(null);
