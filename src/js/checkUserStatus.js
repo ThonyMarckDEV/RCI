@@ -37,8 +37,7 @@ export const checkUserStatus = async () => {
             if (data.token !== token) {
                 console.warn('Token en la base de datos no coincide con el local');
                 // Eliminar el token de la cookie y redirigir al usuario a la página de inicio
-                jwtUtils.removeTokenFromCookie();
-                window.location.href = '/';  // Redirigir al inicio
+                logoutAndRedirect()
             }
         } else if (response.status === 403) {
             // Si la respuesta es 403, el token no coincide o es inválido
