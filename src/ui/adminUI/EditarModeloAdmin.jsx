@@ -131,15 +131,9 @@ function EditarModeloAdmin({ modelo, onClose }) {
 
   const handleRemoveExistingImage = async (idImagen) => {
 
-    const result = await Swal.fire({
+    const result = SweetAlert.showConfirmationAlert({
       title: '¿Estás seguro?',
-      text: '¿Deseas eliminar esta imagen? Esta acción no se puede deshacer.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      text: '¿Deseas eliminar esta imagen? Esta acción no se puede deshacer.'
     });
   
 
@@ -163,12 +157,7 @@ function EditarModeloAdmin({ modelo, onClose }) {
         );
   
   
-        await Swal.fire({
-          title: 'Éxito',
-          text: 'Imagen eliminada correctamente',
-          icon: 'success',
-          timer: 1500
-        });
+        SweetAlert.showMessageAlert('Exito!','Imagen Eliminada Exitosamente','success',);
   
         setTimeout(() => {
           window.location.reload();
@@ -178,11 +167,7 @@ function EditarModeloAdmin({ modelo, onClose }) {
         console.error('Error al eliminar la imagen:', error);
         
        
-        await Swal.fire({
-          title: 'Error',
-          text: 'No se pudo eliminar la imagen',
-          icon: 'error'
-        });
+        SweetAlert.showMessageAlert('Error!','Error al eliminar la imagen','error',);
       } finally {
         setLoading(false);
       }
