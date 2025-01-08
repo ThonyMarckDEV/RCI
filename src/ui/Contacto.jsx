@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import 'leaflet/dist/leaflet.css';
 import pinImage from '../img/marcadorRci.png';
 import API_BASE_URL from '../js/urlHelper';
-import LoaderScreen from '../../components/home/LoadingScreen';
+import LoaderScreen from '../components/home/LoadingScreen';
 
 const Contacto = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
@@ -51,7 +51,7 @@ const Contacto = () => {
   return (
     <div className="bg-white font-light text-gray-800 min-h-screen flex flex-col">
       <Navbar />
-      
+
     {/* Mostrar el LoaderScreen si loading es true */}
     {loading && <LoaderScreen />}
 
