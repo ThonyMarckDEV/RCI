@@ -51,7 +51,7 @@ function AgregarProductoAdmin() {
     setProducto(initialProductState);
     setModelos([initialModeloState]);
     setSelectedFiles([null]);
-    // Reset all file inputs
+    
     const fileInputs = document.querySelectorAll('input[type="file"]');
     fileInputs.forEach(input => input.value = '');
   };
@@ -74,7 +74,7 @@ function AgregarProductoAdmin() {
       // Validate file type
       if (!file.type.startsWith('image/')) {
         SweetAlert.showMessageAlert('Error', 'Por favor seleccione un archivo de imagen válido', 'error');
-        e.target.value = ''; // Reset input
+        e.target.value = ''; 
         return;
       }
 

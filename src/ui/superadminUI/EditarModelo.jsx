@@ -5,6 +5,7 @@ import API_BASE_URL from '../../js/urlHelper';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
 import jwtUtils from '../../utilities/jwtUtils';
+import Swal from 'sweetalert2';
 
 function EditarModelo({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
@@ -131,13 +132,17 @@ function EditarModelo({ modelo, onClose }) {
 
   // Eliminar imagen existente
   const handleRemoveExistingImage = async (idImagen) => {
-
-    const result = SweetAlert.showConfirmationAlert({
-      title: '¿Estás seguro?',
-      text: '¿Deseas eliminar esta imagen? Esta acción no se puede deshacer.'
-    });
-  
-
+     const result = await Swal.fire({
+          title: '¿Eliminar imagen?',
+          text: '¿Estás seguro que deseas eliminar la imagen? Esta acción no se puede deshacer.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+        });
+    
     if (result.isConfirmed) {
       setLoading(true);
       try {
@@ -148,33 +153,24 @@ function EditarModelo({ modelo, onClose }) {
             'Authorization': `Bearer ${token}`,
           },
         });
-  
         if (!response.ok) {
           throw new Error('No se pudo eliminar la imagen');
         }
-  
-        setImagenes((prevImagenes) => 
-          prevImagenes.filter((img) => img.idImagen !== idImagen)
-        );
-  
-  
-        SweetAlert.showMessageAlert('Exito!','Imagen Eliminada Exitosamente','success',);
-  
+
+        setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
+        SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
         setTimeout(() => {
           window.location.reload();
         }, 1000);
-  
       } catch (error) {
         console.error('Error al eliminar la imagen:', error);
-        
-       
-        SweetAlert.showMessageAlert('Error!','Error al eliminar la imagen','error',);
-      } finally {
+        SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
+      }finally {
         setLoading(false);
       }
     }
   };
-  
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       {(loading || changingEstado) && <LoadingScreen />}
