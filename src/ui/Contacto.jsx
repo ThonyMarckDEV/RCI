@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import pinImage from '../img/marcadorRci.png';
 import API_BASE_URL from '../js/urlHelper';
 import LoaderScreen from '../components/home/LoadingScreen';
+import SweetAlert from '../../components/SweetAlert';
 
 const Contacto = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
@@ -36,13 +37,13 @@ const Contacto = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Mensaje enviado correctamente');
+        SweetAlert.showMessageAlert('Éxito', 'Mensaje enviado correctamente', 'success');
         setForm({ name: '', email: '', phone: '', message: '' }); // Limpiar el formulario
       } else {
-        alert('Error al enviar el mensaje: ' + (data.error || 'Inténtalo más tarde'));
+        SweetAlert.showMessageAlert('Error', 'Error al enviar el mensaje: ' + (data.error || 'Inténtalo más tarde'), 'error');
       }
     } catch (error) {
-      alert('Error de conexión: ' + error.message);
+      SweetAlert.showMessageAlert('Error', 'Error de conexión: ' + error.message, 'error');
     } finally{
       setLoading(false);
     }
