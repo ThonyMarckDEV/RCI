@@ -118,7 +118,7 @@ function SidebarSuperAdmin() {
               </li>
 
               
-              {/* Categorías */}
+              {/* Productos */}
               <li className="mb-4">
                 <div
                   className="flex items-center justify-between text-lg bg-white text-black hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition-all duration-300"
