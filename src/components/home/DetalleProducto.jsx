@@ -15,11 +15,15 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
 
-  // Obtener características del producto
   useEffect(() => {
     const fetchCaracteristicas = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/productos/${producto.idProducto}/caracteristicas`);
+        const response = await fetch(`${API_BASE_URL}/api/productos/${producto.idProducto}/caracteristicas`);
+        
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+        }
+  
         const data = await response.json();
         if (data.success) {
           setCaracteristicas(data.data);
@@ -31,7 +35,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
         setCaracteristicas(null);
       }
     };
-
+  
     fetchCaracteristicas();
   }, [producto.idProducto]);
 
