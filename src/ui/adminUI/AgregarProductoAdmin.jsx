@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/superAdminComponents/SidebarSuperAdmin';
+import Sidebar from '../../components/adminComponents/SidebarAdmin';
 import SweetAlert from '../../components/SweetAlert';
 import LoaderScreen from '../../components/home/LoadingScreen';
 import API_BASE_URL from '../../js/urlHelper';
