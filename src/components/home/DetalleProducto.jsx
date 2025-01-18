@@ -25,6 +25,14 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
 
+  // Deshabilitar el desplazamiento del fondo cuando el modal está abierto
+  useEffect(() => {
+    document.body.classList.add('overflow-hidden'); // Deshabilita el desplazamiento del fondo
+    return () => {
+      document.body.classList.remove('overflow-hidden'); // Restaura el desplazamiento del fondo
+    };
+  }, []);
+
   // Obtener características del producto
   useEffect(() => {
     const fetchCaracteristicas = async () => {
@@ -168,7 +176,12 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+      <div
+        className={`bg-white rounded-xl max-w-4xl w-full ${
+          caracteristicas ? 'max-h-[90vh] overflow-y-auto' : 'max-h-auto overflow-y-visible'
+        } relative overscroll-contain`}
+        style={{ overscrollBehaviorY: 'contain' }} // Evita el desplazamiento del fondo
+      >
         {/* Botón para cerrar */}
         <button
           onClick={onClose}
@@ -368,7 +381,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
         </div>
 
         {/* Mostrar características usando el nuevo componente */}
-        <CaracteristicasProducto caracteristicas={caracteristicas} />
+        {caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />}
       </div>
     </div>
   );
