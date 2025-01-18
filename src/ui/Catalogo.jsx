@@ -3,11 +3,14 @@ import Navbar from '../components/home/NavBar';
 import Footer from '../components/home/Footer';
 import Filtrador from '../components/home/Filtrador';
 import ProductosCatalogo from '../components/home/ProductosCatalogo';
+import CatalogoSearch from '../components/home/CatalogoSearch';
 import API_BASE_URL from '../js/urlHelper';
 
 const Catalogo = () => {
   const [filtros, setFiltros] = useState({ nombre: '', categoria: '' });
   const [categorias, setCategorias] = useState([]);
+  const [sortOrder, setSortOrder] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,6 +28,15 @@ const Catalogo = () => {
     };
     fetchCategorias();
   }, []);
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    setFiltros(prev => ({ ...prev, nombre: term }));
+  };
+
+  const handleSort = (order) => {
+    setSortOrder(order);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
@@ -47,11 +59,17 @@ const Catalogo = () => {
           </h1>
           <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
         </div>
+
+        {/* Search section */}
+        <CatalogoSearch
+          onSearch={handleSearch}
+          onSort={handleSort}
+        />
         
         {/* Products section */}
         <div className="px-6">
           <ProductosCatalogo 
-            filtros={filtros} 
+            filtros={{ ...filtros, sortOrder }}
             className="animate-slide-down"
           />
         </div>
