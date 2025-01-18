@@ -1,29 +1,31 @@
-import React, { useState, useCallback } from 'react';
-import { X, Save, Image, Upload, Trash2, Loader2 } from 'lucide-react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { X, Save, Image, Upload, Trash2, Loader2, Plus } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import API_BASE_URL from '../../js/urlHelper';
 import SweetAlert from '../../components/SweetAlert';
 import LoadingScreen from '../../components/home/LoadingScreen';
 import jwtUtils from '../../utilities/jwtUtils';
 import Swal from 'sweetalert2';
+import { verificarYRenovarToken } from '../../js/authToken';
 
 function EditarModelo({ modelo, onClose }) {
   const [nombreModelo, setNombreModelo] = useState(modelo.nombreModelo);
   const [descripcion, setDescripcion] = useState(modelo.descripcion);
   const [loading, setLoading] = useState(false);
-  const [changingEstado, setChangingEstado] = useState(false); // Define changingEstado
-  // Asegurarnos de que todas las imágenes tengan un ID único
+  const [changingEstado, setChangingEstado] = useState(false);
   const [imagenes, setImagenes] = useState(
-    modelo.imagenes.map((imagen, index) => ({
+    modelo?.imagenes?.map((imagen, index) => ({
       ...imagen,
-      idImagen: imagen.idImagen || `temp-${index}`, // ID temporal si no existe
+      idImagen: imagen.idImagen || `temp-${index}`,
       newFile: null,
-      objectUrl: null
-    }))
-  );
+      objectUrl: null,
+    })) || []
+  );  
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Nuevos estados para el manejo de tallas
+  // Mantener todos los handlers existentes...
   const onDrop = useCallback((acceptedFiles) => {
     setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
   }, []);
@@ -31,7 +33,7 @@ function EditarModelo({ modelo, onClose }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png']
+      'image/*': ['.jpeg', '.jpg', '.png' , '.avif' , '.wemp']
     },
     maxSize: 5242880,
     multiple: true
@@ -75,6 +77,7 @@ function EditarModelo({ modelo, onClose }) {
 
   const handleSave = async () => {
     setLoading(true);
+    await verificarYRenovarToken();
     try {
       const token = jwtUtils.getTokenFromCookie();
       const formData = new FormData();
@@ -130,42 +133,43 @@ function EditarModelo({ modelo, onClose }) {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
-  // Eliminar imagen existente
+
   const handleRemoveExistingImage = async (idImagen) => {
-     const result = await Swal.fire({
-          title: '¿Eliminar imagen?',
-          text: '¿Estás seguro que deseas eliminar la imagen? Esta acción no se puede deshacer.',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, eliminar',
-          cancelButtonText: 'Cancelar',
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-        });
-    
+    const result = await Swal.fire({
+      title: '¿Eliminar imagen?',
+      text: '¿Estás seguro que deseas eliminar la imagen? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    });
+  
     if (result.isConfirmed) {
       setLoading(true);
+      await verificarYRenovarToken();
       try {
         const token = jwtUtils.getTokenFromCookie();
         const response = await fetch(`${API_BASE_URL}/api/eliminarImagenModelo/${idImagen}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
+  
         if (!response.ok) {
           throw new Error('No se pudo eliminar la imagen');
         }
-
+  
+        // Actualizar el estado local eliminando la imagen
         setImagenes((prevImagenes) => prevImagenes.filter((img) => img.idImagen !== idImagen));
+  
         SweetAlert.showMessageAlert('Éxito', 'Imagen eliminada correctamente', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       } catch (error) {
         console.error('Error al eliminar la imagen:', error);
         SweetAlert.showMessageAlert('Error', 'No se pudo eliminar la imagen', 'error');
-      }finally {
+      } finally {
         setLoading(false);
       }
     }
@@ -185,7 +189,7 @@ function EditarModelo({ modelo, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-white hover:bg-yellow-700 rounded-full transition-colors"
+            className="p-2 text-white hover:bg-yellow-600 rounded-full transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -198,7 +202,7 @@ function EditarModelo({ modelo, onClose }) {
               <div
                 {...getRootProps()}
                 className={`border-2 border-dashed rounded-lg p-4 md:p-8 text-center cursor-pointer transition-colors
-                  ${isDragActive ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 hover:border-yellow-500'}`}
+                  ${isDragActive ? 'border-yellow-500 bg-yellow-600' : 'border-yellow-500 hover:border-yellow-500'}`}
               >
                 <input {...getInputProps()} />
                 <Upload className="h-8 w-8 md:h-12 md:w-12 mx-auto text-gray-400 mb-4" />
@@ -208,7 +212,7 @@ function EditarModelo({ modelo, onClose }) {
                     'Arrastra imágenes aquí o haz clic para seleccionar'}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
-                  Formatos permitidos: JPG, JPEG, PNG (máx. 5MB)
+                  Formatos permitidos: JPG, JPEG, PNG , AVIF , WEMP (máx. 5MB)
                 </p>
               </div>
   
@@ -277,21 +281,22 @@ function EditarModelo({ modelo, onClose }) {
                   ))}
                 </div>
               </div>
-            </div>
   
             {/* Form Fields */}
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nombre del Modelo
-                </label>
-                <input
-                  type="text"
-                  value={nombreModelo}
-                  onChange={(e) => setNombreModelo(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nombre del Modelo
+              </label>
+              <input
+                type="text"
+                value={nombreModelo}
+                onChange={(e) => setNombreModelo(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                disabled
+              />
+            </div>
+     
+
             </div>
           </div>
   
