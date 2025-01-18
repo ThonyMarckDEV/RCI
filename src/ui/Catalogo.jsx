@@ -10,7 +10,7 @@ const Catalogo = () => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Desplazar al principio sin animación
+    window.scrollTo(0, 0);
     const fetchCategorias = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/listarCategoriasFiltrador`);
@@ -39,7 +39,7 @@ const Catalogo = () => {
       />
       
       {/* Main content */}
-      <main className="flex-grow pt-32 lg:pt-20 lg:ml-80 pb-16"> {/* Added padding bottom for pagination */}
+      <main className="flex-grow pt-32 lg:pt-20 pb-16">
         {/* Title section */}
         <div className="px-6">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
@@ -58,7 +58,7 @@ const Catalogo = () => {
       </main>
       
       {/* Footer */}
-      <Footer className="lg:ml-80 animate-slide-up" />
+      <Footer className="animate-slide-up" />
     </div>
   );
 };
