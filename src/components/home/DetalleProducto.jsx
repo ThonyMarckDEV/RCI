@@ -21,6 +21,8 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [caracteristicas, setCaracteristicas] = useState(null);
+  const [isZoomed, setIsZoomed] = useState(false); // Estado para el zoom
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Posición del cursor
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
@@ -174,6 +176,14 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     window.open(`https://wa.me/+51902207108?text=${message}`, '_blank');
   };
 
+  // Manejar el movimiento del cursor sobre la imagen
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setCursorPosition({ x, y });
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div
@@ -195,7 +205,12 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           {/* Sección de imágenes */}
           <div>
             {/* Carrusel de imágenes */}
-            <div className="relative h-[400px] bg-gray-100 rounded-lg overflow-hidden">
+            <div
+              className="relative h-[400px] bg-gray-100 rounded-lg overflow-hidden"
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              onMouseMove={handleMouseMove}
+            >
               <div className="relative w-full h-full">
                 <img
                   key={`${modeloSeleccionado}-${imagenActual}`}
@@ -205,7 +220,14 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                     transitioning
                       ? `translate-x-${direction > 0 ? '-full' : 'full'} opacity-0`
                       : 'translate-x-0 opacity-100'
+                  } ${
+                    isZoomed
+                      ? 'scale-150 transform-origin-center'
+                      : 'scale-100'
                   }`}
+                  style={{
+                    transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
+                  }}
                 />
 
                 {/* Imagen previa para transición suave */}
