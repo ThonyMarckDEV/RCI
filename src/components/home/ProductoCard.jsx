@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
 import DetalleProducto from './DetalleProducto';
 
@@ -7,8 +7,25 @@ const ProductoCard = ({ producto }) => {
   const [fade, setFade] = useState(false);
   const [showDetalle, setShowDetalle] = useState(false);
   const [imagenActual, setImagenActual] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Validación de producto y modelos
+  // Detectar si el dispositivo es móvil
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768; // Ajusta el valor según tus necesidades
+      setIsMobile(isMobileDevice);
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+
   const modelos = producto?.modelos || [];
   const modeloActual = modelos[modeloSeleccionado] || {};
   const imagenes = Array.isArray(modeloActual.imagenes) ? modeloActual.imagenes : [];
@@ -18,7 +35,7 @@ const ProductoCard = ({ producto }) => {
     setFade(true);
     setTimeout(() => {
       setModeloSeleccionado(index);
-      setImagenActual(0); // Resetear la imagen actual al cambiar de modelo
+      setImagenActual(0);
       setFade(false);
     }, 300);
   };
@@ -31,14 +48,49 @@ const ProductoCard = ({ producto }) => {
     }, 300);
   };
 
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
+    const touch = e.touches ? e.touches[0] : e;
+    setTouchStartX(touch.clientX);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isMobile || !isDragging) return;
+
+    const touch = e.touches ? e.touches[0] : e;
+    const touchEndX = touch.clientX;
+    const deltaX = touchEndX - touchStartX;
+
+    if (Math.abs(deltaX) > 50) {
+      if (deltaX > 0) {
+        const newIndex = (imagenActual - 1 + imagenes.length) % imagenes.length;
+        handleImageChange(newIndex);
+      } else {
+        const newIndex = (imagenActual + 1) % imagenes.length;
+        handleImageChange(newIndex);
+      }
+      setIsDragging(false);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!isMobile) return;
+    setIsDragging(false);
+  };
+
   return (
     <>
       <div
         className="group bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 cursor-pointer"
         onClick={() => setShowDetalle(true)}
       >
-        {/* Imagen del producto con animación de fade */}
-        <div className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+        <div
+          className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200"
+          onTouchStart={isMobile ? handleTouchStart : undefined}
+          onTouchMove={isMobile ? handleTouchMove : undefined}
+          onTouchEnd={isMobile ? handleTouchEnd : undefined}
+        >
           <img
             src={`${API_BASE_URL}/storage/${imagenUrl}`}
             alt={modeloActual.nombreModelo}
@@ -48,11 +100,10 @@ const ProductoCard = ({ producto }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          {/* Indicadores de imagen con fondo negro transparente */}
           {imagenes.length > 1 && (
             <div
               className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 p-2 bg-black/50 rounded-full"
-              onClick={(e) => e.stopPropagation()} // Evita que el clic abra el detalle
+              onClick={(e) => e.stopPropagation()}
             >
               {imagenes.map((_, index) => (
                 <button
@@ -70,7 +121,6 @@ const ProductoCard = ({ producto }) => {
           )}
         </div>
 
-        {/* Contenido del producto */}
         <div className="p-6">
           <h3 className="text-xl font-bold mb-2 text-gray-800 group-hover:text-yellow-500 transition-colors duration-300">
             {producto.nombreProducto}
@@ -79,7 +129,6 @@ const ProductoCard = ({ producto }) => {
             {producto.descripcion}
           </p>
 
-          {/* Selector de modelos */}
           <div className="flex flex-wrap gap-2 mb-4" onClick={(e) => e.stopPropagation()}>
             {Array.isArray(producto.modelos) &&
               producto.modelos.map((modelo, index) => (
@@ -97,7 +146,6 @@ const ProductoCard = ({ producto }) => {
               ))}
           </div>
 
-          {/* Categoría */}
           <div className="flex items-center">
             <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
               {producto.nombreCategoria}
@@ -106,7 +154,6 @@ const ProductoCard = ({ producto }) => {
         </div>
       </div>
 
-      {/* Modal de detalle */}
       {showDetalle && (
         <DetalleProducto
           producto={producto}
