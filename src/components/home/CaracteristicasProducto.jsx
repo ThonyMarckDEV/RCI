@@ -1,7 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CaracteristicasProducto = ({ caracteristicas }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [error, setError] = useState(null); // Estado para manejar errores
+
+  // Efecto para simular la detección de un error 404
+  useEffect(() => {
+    if (caracteristicas === null || caracteristicas === undefined) {
+      setError("No hay características disponibles para este producto.");
+    } else {
+      setError(null); // Limpiar el error si hay características
+    }
+  }, [caracteristicas]);
+
+  // Si hay un error, mostrar el mensaje
+  if (error) {
+    return (
+      <div className="p-4 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Características del producto</h3>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Si no hay características, no mostrar nada
   if (!caracteristicas || Object.keys(caracteristicas).length === 0) {
