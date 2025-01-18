@@ -6,18 +6,27 @@ const ProductoCard = ({ producto }) => {
   const [modeloSeleccionado, setModeloSeleccionado] = useState(0);
   const [fade, setFade] = useState(false);
   const [showDetalle, setShowDetalle] = useState(false);
+  const [imagenActual, setImagenActual] = useState(0);
 
   // Validación de producto y modelos
   const modelos = producto?.modelos || [];
   const modeloActual = modelos[modeloSeleccionado] || {};
-  const imagenActual =
-    (Array.isArray(modeloActual.imagenes) && modeloActual.imagenes[0]?.urlImagen) ||
-    '/placeholder.jpg';
+  const imagenes = Array.isArray(modeloActual.imagenes) ? modeloActual.imagenes : [];
+  const imagenUrl = imagenes[imagenActual]?.urlImagen || '/placeholder.jpg';
 
   const handleModeloChange = (index) => {
     setFade(true);
     setTimeout(() => {
       setModeloSeleccionado(index);
+      setImagenActual(0); // Resetear la imagen actual al cambiar de modelo
+      setFade(false);
+    }, 300);
+  };
+
+  const handleImageChange = (index) => {
+    setFade(true);
+    setTimeout(() => {
+      setImagenActual(index);
       setFade(false);
     }, 300);
   };
@@ -31,13 +40,34 @@ const ProductoCard = ({ producto }) => {
         {/* Imagen del producto con animación de fade */}
         <div className="relative h-56 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
           <img
-            src={`${API_BASE_URL}/storage/${imagenActual}`}
+            src={`${API_BASE_URL}/storage/${imagenUrl}`}
             alt={modeloActual.nombreModelo}
             className={`w-full h-full object-cover absolute inset-0 transition-all duration-300 ${
               fade ? 'opacity-0' : 'opacity-100'
             } group-hover:scale-105`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Indicadores de imagen con fondo negro transparente */}
+          {imagenes.length > 1 && (
+            <div
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 p-2 bg-black/50 rounded-full"
+              onClick={(e) => e.stopPropagation()} // Evita que el clic abra el detalle
+            >
+              {imagenes.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageChange(index);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === imagenActual ? 'bg-yellow-500 w-4' : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Contenido del producto */}
