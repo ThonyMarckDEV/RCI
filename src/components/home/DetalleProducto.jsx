@@ -10,7 +10,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [caracteristicas, setCaracteristicas] = useState(null);
-  const [showAllCharacteristics, setShowAllCharacteristics] = useState(false);
+  const [isCharacteristicsExpanded, setIsCharacteristicsExpanded] = useState(false);
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
@@ -26,7 +26,14 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   
         const data = await response.json();
         if (data.success) {
-          setCaracteristicas(data.data);
+          // Filtramos las características para excluir IDs
+          const filteredData = Object.fromEntries(
+            Object.entries(data.data).filter(([key]) => 
+              !key.toLowerCase().includes('id') && 
+              !key.toLowerCase().includes('_id')
+            )
+          );
+          setCaracteristicas(filteredData);
         } else {
           setCaracteristicas(null);
         }
@@ -342,34 +349,54 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           </div>
         </div>
 
-        {/* Apartado de características */}
-        <div className="p-6 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Características</h3>
-
-          {caracteristicas ? (
-            <div className="space-y-4">
-              <div className={`space-y-2 ${!showAllCharacteristics ? 'max-h-48 overflow-hidden' : ''}`}>
-                {Object.entries(caracteristicas).map(([key, value]) => (
-                  <div key={key} className="flex justify-between text-gray-700">
-                    <span className="font-medium">{key}:</span>
-                    <span>{value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {Object.keys(caracteristicas).length > 4 && (
-                <button
-                  onClick={() => setShowAllCharacteristics(!showAllCharacteristics)}
-                  className="text-blue-500 hover:text-blue-600 font-medium"
-                >
-                  {showAllCharacteristics ? 'Ver menos' : 'Ver más'}
-                </button>
-              )}
-            </div>
-          ) : (
-            <p className="text-gray-600">No hay características disponibles para este producto.</p>
+        {/* Characteristics Section */}
+        {caracteristicas && (
+  <div className="p-4 bg-gray-50">
+    <div className="max-w-5xl mx-auto">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-medium">Características del producto</h3>
+          {Object.keys(caracteristicas).length > 5 && (
+            <button
+              onClick={() => setIsCharacteristicsExpanded(!isCharacteristicsExpanded)}
+              className="text-sm font-medium text-black hover:text-gray-700 transition-colors flex items-center gap-1"
+            >
+              {isCharacteristicsExpanded ? "Ver menos" : "Ver más"}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-4 w-4 transform transition-transform ${
+                  isCharacteristicsExpanded ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
           )}
         </div>
+        <div className="bg-white rounded-xl p-6 relative overflow-hidden">
+          <div
+            className={`text-gray-600 whitespace-pre-wrap transition-all duration-300 ease-in-out ${
+              !isCharacteristicsExpanded ? "max-h-32 overflow-hidden" : "max-h-none"
+            }`}
+          >
+            {Object.entries(caracteristicas).map(([key, value]) => (
+              <div key={key} className="mb-2">
+                <strong>{key}:</strong> {value}
+              </div>
+            ))}
+          </div>
+          {Object.keys(caracteristicas).length > 5 && !isCharacteristicsExpanded && (
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
