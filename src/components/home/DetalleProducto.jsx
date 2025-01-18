@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { FaWhatsapp, FaChevronLeft, FaChevronRight, FaTimes, FaShare, FaInstagram, FaFacebook, FaCopy, FaCheck } from 'react-icons/fa';
+import {
+  FaWhatsapp,
+  FaChevronLeft,
+  FaChevronRight,
+  FaTimes,
+  FaShare,
+  FaInstagram,
+  FaFacebook,
+  FaCopy,
+  FaCheck,
+} from 'react-icons/fa';
 import API_BASE_URL from '../../js/urlHelper';
+import CaracteristicasProducto from './CaracteristicasProducto'; // Importar el nuevo componente
 
 const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [modeloSeleccionado, setModeloSeleccionado] = useState(modeloInicial);
@@ -10,27 +21,24 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [caracteristicas, setCaracteristicas] = useState(null);
-  const [isCharacteristicsExpanded, setIsCharacteristicsExpanded] = useState(false);
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
 
+  // Obtener características del producto
   useEffect(() => {
     const fetchCaracteristicas = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/productos/${producto.idProducto}/caracteristicas`);
-        
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
         }
-  
         const data = await response.json();
         if (data.success) {
-          // Filtramos las características para excluir IDs
+          // Filtrar características para excluir IDs
           const filteredData = Object.fromEntries(
-            Object.entries(data.data).filter(([key]) => 
-              !key.toLowerCase().includes('id') && 
-              !key.toLowerCase().includes('_id')
+            Object.entries(data.data).filter(
+              ([key]) => !key.toLowerCase().includes('id') && !key.toLowerCase().includes('_id')
             )
           );
           setCaracteristicas(filteredData);
@@ -42,10 +50,11 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
         setCaracteristicas(null);
       }
     };
-  
+
     fetchCaracteristicas();
   }, [producto.idProducto]);
 
+  // Cambiar modelo seleccionado
   const handleModeloChange = (index) => {
     setTransitioning(true);
     setTimeout(() => {
@@ -55,6 +64,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }, 300);
   };
 
+  // Cambiar imagen con transición
   const handleImageTransition = (newIndex, newDirection) => {
     if (!transitioning) {
       setDirection(newDirection);
@@ -66,11 +76,13 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
+  // Siguiente imagen
   const nextImage = () => {
     const newIndex = (imagenActual + 1) % imagenes.length;
     handleImageTransition(newIndex, 1);
   };
 
+  // Imagen anterior
   const prevImage = () => {
     const newIndex = (imagenActual - 1 + imagenes.length) % imagenes.length;
     handleImageTransition(newIndex, -1);
@@ -79,6 +91,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   // Generar enlace compartible
   const shareUrl = `${window.location.origin}/catalogo?nombre=${encodeURIComponent(producto.nombreProducto)}`;
 
+  // Compartir en redes sociales
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -95,6 +108,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
+  // Copiar enlace
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
@@ -105,6 +119,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
+  // Compartir en redes sociales específicas
   const handleSocialShare = (platform) => {
     const text = encodeURIComponent(`¡Mira este producto: ${producto.nombreProducto} - ${modeloActual.nombreModelo}!`);
     const url = encodeURIComponent(shareUrl);
@@ -134,6 +149,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
+  // Enviar mensaje por WhatsApp
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
       `¡Hola! 👋\n\n` +
@@ -153,6 +169,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+        {/* Botón para cerrar */}
         <button
           onClick={onClose}
           className="absolute right-4 top-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -160,6 +177,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           <FaTimes className="w-5 h-5 text-gray-600" />
         </button>
 
+        {/* Contenido principal */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
           {/* Sección de imágenes */}
           <div>
@@ -169,7 +187,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                 <img
                   key={`${modeloSeleccionado}-${imagenActual}`}
                   src={`${API_BASE_URL}/storage/${imagenes[imagenActual]?.urlImagen}`}
-                  alt={modeloActual.nombreModelo}
+                  alt={modeloSeleccionado.nombreModelo}
                   className={`absolute inset-0 w-full h-full object-contain transform transition-all duration-300 ease-in-out ${
                     transitioning
                       ? `translate-x-${direction > 0 ? '-full' : 'full'} opacity-0`
@@ -349,54 +367,8 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           </div>
         </div>
 
-        {/* Characteristics Section */}
-        {caracteristicas && (
-  <div className="p-4 bg-gray-50">
-    <div className="max-w-5xl mx-auto">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium">Características del producto</h3>
-          {Object.keys(caracteristicas).length > 5 && (
-            <button
-              onClick={() => setIsCharacteristicsExpanded(!isCharacteristicsExpanded)}
-              className="text-sm font-medium text-black hover:text-gray-700 transition-colors flex items-center gap-1"
-            >
-              {isCharacteristicsExpanded ? "Ver menos" : "Ver más"}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transform transition-transform ${
-                  isCharacteristicsExpanded ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          )}
-        </div>
-        <div className="bg-white rounded-xl p-6 relative overflow-hidden">
-          <div
-            className={`text-gray-600 whitespace-pre-wrap transition-all duration-300 ease-in-out ${
-              !isCharacteristicsExpanded ? "max-h-32 overflow-hidden" : "max-h-none"
-            }`}
-          >
-            {Object.entries(caracteristicas).map(([key, value]) => (
-              <div key={key} className="mb-2">
-                <strong>{key}:</strong> {value}
-              </div>
-            ))}
-          </div>
-          {Object.keys(caracteristicas).length > 5 && !isCharacteristicsExpanded && (
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
+        {/* Mostrar características usando el nuevo componente */}
+        <CaracteristicasProducto caracteristicas={caracteristicas} />
       </div>
     </div>
   );
