@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Sidebar from '../../components/superAdminComponents/SidebarSuperAdmin'; // Importamos el Sidebar
+import Sidebar from '../../components/superAdminComponents/SidebarSuperAdmin';
 import API_BASE_URL from '../../js/urlHelper';
 import SweetAlert from '../../components/SweetAlert';
-import LoaderScreen from '../../components/home/LoadingScreen'; // Importar tu componente LoaderScreen
+import LoaderScreen from '../../components/home/LoadingScreen';
 import jwtUtils from '../../utilities/jwtUtils';
 
 function AgregarCategoria() {
@@ -47,6 +47,9 @@ function AgregarCategoria() {
         setDescripcion('');
         setImagen(null); // Limpiar el campo de imagen
         e.target.reset(); // Resetea el formulario, incluyendo el campo de imagen
+      } else if (response.status === 409) {
+        // Manejar el caso en que la categoría ya existe
+        SweetAlert.showMessageAlert('Error', 'Ya existe una categoría con el mismo nombre.', 'error');
       } else {
         const errorData = await response.json();
         console.error('Error al agregar categoría:', errorData);
@@ -98,7 +101,6 @@ function AgregarCategoria() {
                 {descripcion.length} / 110 caracteres
               </span>
             </div>
-
 
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">Imagen (Requerido)</label>
