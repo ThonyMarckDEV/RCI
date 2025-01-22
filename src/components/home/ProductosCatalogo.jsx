@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';  // Importa useNavigate
+import { useLocation, useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../../js/urlHelper';
-import { FaSearch, FaWifi, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { Search, Wifi, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import ProductoCard from './ProductoCard';
 
 const ProductosCatalogo = ({ filtros }) => {
@@ -10,15 +10,16 @@ const ProductosCatalogo = ({ filtros }) => {
   const [error, setError] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
-  
-  const location = useLocation();  // Ubicación actual de la URL
-  const navigate = useNavigate();  
-  const categoria = new URLSearchParams(location.search).get('categoria'); // Extrae el parámetro 'categoria' de la URL
-  const nombreProducto = new URLSearchParams(location.search).get('nombre'); // Extrae el parámetro 'nombre' de la URL
+  const [totalProductos, setTotalProductos] = useState(0);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const categoria = new URLSearchParams(location.search).get('categoria');
+  const nombreProducto = new URLSearchParams(location.search).get('nombre');
 
   useEffect(() => {
     fetchProductos();
-  }, [filtros, paginaActual, categoria, nombreProducto]);  // Incluye 'categoria' y 'nombreProducto' como dependencias
+  }, [filtros, paginaActual, categoria, nombreProducto]);
 
   const fetchProductos = async () => {
     try {
@@ -32,6 +33,7 @@ const ProductosCatalogo = ({ filtros }) => {
       const data = await response.json();
       setProductos(data.data || []);
       setTotalPaginas(data.last_page || 1);
+      setTotalProductos(data.total || 0);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -43,8 +45,6 @@ const ProductosCatalogo = ({ filtros }) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
       setPaginaActual(pagina);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Actualizar la URL con los parámetros de búsqueda y la página seleccionada
       const params = new URLSearchParams(location.search);
       params.set('page', pagina);
       navigate({ search: params.toString() });
@@ -53,65 +53,74 @@ const ProductosCatalogo = ({ filtros }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <div className="w-8 h-8 border-4 border-gray-300 border-t-yellow-500 rounded-full animate-spin"></div>
+      <div className="min-h-[600px] flex flex-col items-center justify-center space-y-4">
+        <div className="w-12 h-12 border-4 border-gray-200 border-t-yellow-500 rounded-full animate-spin" />
+        <p className="text-gray-500 font-medium">Cargando productos...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center text-gray-500 py-16">
-        <FaWifi className="text-6xl mb-4" />
-        <p className="text-xl font-semibold">
-          Error de conexión con el servidor
-        </p>
+      <div className="min-h-[600px] flex flex-col items-center justify-center text-gray-500 py-16">
+        <Wifi className="w-16 h-16 mb-4 text-gray-400" />
+        <h3 className="text-2xl font-semibold mb-2">Error de conexión</h3>
+        <p className="text-gray-400">No pudimos conectar con el servidor. Intenta de nuevo más tarde.</p>
       </div>
     );
   }
 
-  // Dividir los productos en dos grupos: primeros 3 y siguientes 3
-  const primerosTresProductos = productos.slice(0, 3);
-  const siguientesTresProductos = productos.slice(3, 6);
-
   return (
-    <div className="flex flex-col min-h-[500px]">
-      {/* Mostrar mensaje si no hay productos */}
-      {productos.length === 0 && !loading ? (
+    <div className="flex flex-col min-h-[600px] bg-gray-50">
+      {/* Header con resultados y filtros */}
+      <div className="sticky top-0 z-20 bg-white border-b border-gray-100 shadow-sm mb-8">
+        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl font-medium text-gray-900">
+                {totalProductos} productos encontrados
+              </h2>
+              {(categoria || nombreProducto) && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Mostrando resultados para {categoria && `categoría "${categoria}"`}
+                  {categoria && nombreProducto && ' y '}
+                  {nombreProducto && `búsqueda "${nombreProducto}"`}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {productos.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-gray-500 py-16">
-          <FaSearch className="text-6xl mb-4" />
-          <p className="text-xl font-semibold">
-            No se encontraron productos con los filtros aplicados.
-          </p>
-          <p className="text-gray-400">Intenta modificar los criterios de búsqueda.</p>
+          <Search className="w-16 h-16 mb-4 text-gray-400" />
+          <h3 className="text-2xl font-semibold mb-2">No hay resultados</h3>
+          <p className="text-gray-400">Intenta modificar los filtros de búsqueda</p>
         </div>
       ) : (
-        <>
-          {/* Primera fila de productos (primeros 3) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {primerosTresProductos.map((producto) => (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Grid de productos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {productos.map((producto) => (
               <ProductoCard key={producto.idProducto} producto={producto} />
             ))}
           </div>
 
-          {/* Segunda fila de productos (siguientes 3) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {siguientesTresProductos.map((producto) => (
-              <ProductoCard key={producto.idProducto} producto={producto} />
-            ))}
-          </div>
-
-          {/* Paginación */}
+          {/* Paginación mejorada */}
           {totalPaginas > 1 && (
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 py-4 mt-8">
+            <div className="mt-12 mb-8">
               <div className="flex justify-center items-center space-x-2">
-                {/* Botón anterior */}
                 <button
                   onClick={() => handlePageChange(paginaActual - 1)}
                   disabled={paginaActual === 1}
-                  className={`p-2 rounded-lg ${paginaActual === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    paginaActual === 1
+                      ? 'text-gray-300 cursor-not-allowed'
+                      : 'text-gray-600 hover:bg-gray-100'
+                  }`}
                 >
-                  <FaChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-6 h-6" />
                 </button>
 
                 {/* Números de página */}
@@ -137,12 +146,12 @@ const ProductosCatalogo = ({ filtros }) => {
                   disabled={paginaActual === totalPaginas}
                   className={`p-2 rounded-lg ${paginaActual === totalPaginas ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
                 >
-                  <FaChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-6 h-6" />
                 </button>
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
