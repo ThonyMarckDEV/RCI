@@ -9,7 +9,7 @@ import {
   FaFacebook,
   FaCopy,
   FaCheck,
-} from 'react-icons/fa';
+} from 'react-icons/fa';  
 import API_BASE_URL from '../../js/urlHelper';
 import CaracteristicasProducto from './CaracteristicasProducto'; // Importar el nuevo componente
 
@@ -207,9 +207,13 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                 aspectRatio: '1/1',
                 maxHeight: '70vh'
               }}
-              onMouseEnter={() => setIsZoomed(true)}
+              onClick={() => setIsZoomed(!isZoomed)}
+              onMouseMove={(e) => {
+                if (isZoomed) {
+                  handleMouseMove(e);
+                }
+              }}
               onMouseLeave={() => setIsZoomed(false)}
-              onMouseMove={handleMouseMove}
             >
               <div className="relative w-full h-full flex items-center justify-center">
                 <img
@@ -247,14 +251,20 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
               {imagenes.length > 1 && (
                 <>
                   <button
-                    onClick={prevImage}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Evitar que el click se propague
+                      prevImage();
+                    }}
                     disabled={transitioning}
                     className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FaChevronLeft className="w-5 h-5 text-gray-800" />
                   </button>
                   <button
-                    onClick={nextImage}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Evitar que el click se propague
+                      nextImage();
+                    }}
                     disabled={transitioning}
                     className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -265,7 +275,8 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                     {imagenes.map((_, index) => (
                       <button
                         key={index}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation(); // Evitar que el click se propague
                           const newDirection = index > imagenActual ? 1 : -1;
                           handleImageTransition(index, newDirection);
                         }}
