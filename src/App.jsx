@@ -14,6 +14,8 @@ import LaEmpresa from './ui/LaEmpresa';
 import Clientes from './ui/Clientes';
 import Contacto from './ui/Contacto';
 import Catalogo from './ui/Catalogo';
+import Favoritos from './ui/Favoritos';
+
 // UIS
 import Login from './ui/Login';
 
@@ -101,6 +103,7 @@ function AppContent() {
           <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Clientes /></>} />} />
           <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Contacto /></>} />} />
           <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Catalogo /></>} />} />
+          <Route path="/favoritos" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Favoritos /></>} />} />
 
           <Route path="/login" element={<ProtectedRouteHome element={<Login />} />} />
   

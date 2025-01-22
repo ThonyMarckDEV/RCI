@@ -3,6 +3,7 @@ import { useState } from 'react';
 import logo from '../../img/logorci.png';
 import { Heart } from 'lucide-react';
 import { useFavoritos } from '../../context/FavoritosContext'; // Importar el contexto
+import { Link } from 'react-router-dom'; // Importar Link para la navegación
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,24 +73,26 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* Contador de favoritos */}
+        {/* Contador de favoritos y botón de menú (móvil) */}
         <div className="flex items-center space-x-4">
-          <div className="relative">
+          {/* Contador de favoritos */}
+          <Link to="/favoritos" className="relative"> {/* Enlace a /favoritos */}
             <Heart className="w-6 h-6 text-red-500" />
             {favoritos.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
                 {favoritos.length}
               </span>
             )}
-          </div>
+          </Link>
+
+          {/* Botón de menú hamburguesa */}
+          <button 
+            onClick={toggleMenu}
+            className="md:hidden text-black focus:outline-none hover:scale-110 transition-transform duration-300 text-3xl p-3"
+          >
+            {isOpen ? '✕' : '☰'}
+          </button>
         </div>
-  
-        <button 
-          onClick={toggleMenu}
-          className="md:hidden text-black focus:outline-none hover:scale-110 transition-transform duration-300 text-3xl p-3"
-        >
-          {isOpen ? '✕' : '☰'}
-        </button>
       </nav>
   
       {/* Mobile Menu Overlay */}
