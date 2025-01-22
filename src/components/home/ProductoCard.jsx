@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Heart } from 'lucide-react';
 import API_BASE_URL from '../../js/urlHelper';
 import DetalleProducto from './DetalleProducto';
-import { useFavoritos } from '../../context/FavoritosContext'; // Importar el contexto
+import { useFavoritos } from '../../context/FavoritosContext';
 
 const ProductoCard = ({ producto }) => {
   const [modeloSeleccionado, setModeloSeleccionado] = useState(0);
@@ -12,7 +12,8 @@ const ProductoCard = ({ producto }) => {
   const [imagenActual, setImagenActual] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { favoritos, agregarFavorito, eliminarFavorito } = useFavoritos(); // Usar el contexto
+  const [touchStartX, setTouchStartX] = useState(null);
+  const { favoritos, agregarFavorito, eliminarFavorito } = useFavoritos();
 
   const isFavorite = favoritos.includes(producto.nombreProducto);
 
@@ -32,7 +33,6 @@ const ProductoCard = ({ producto }) => {
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
 
-    // Manejar el scroll cuando el modal está abierto
     if (showDetalle) {
       document.body.style.overflow = 'hidden';
     }
@@ -77,6 +77,32 @@ const ProductoCard = ({ producto }) => {
     setShowDetalle(false);
   };
 
+  // Funcionalidad de deslizamiento con el dedo (solo en móvil)
+  const handleTouchStart = (e) => {
+    if (isMobile) {
+      setTouchStartX(e.touches[0].clientX);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (isMobile && touchStartX !== null) {
+      const touchEndX = e.touches[0].clientX;
+      const deltaX = touchStartX - touchEndX;
+
+      if (deltaX > 50) {
+        handleImageChange('next'); // Deslizar hacia la izquierda
+        setTouchStartX(null);
+      } else if (deltaX < -50) {
+        handleImageChange('prev'); // Deslizar hacia la derecha
+        setTouchStartX(null);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStartX(null);
+  };
+
   return (
     <>
       <div 
@@ -105,7 +131,12 @@ const ProductoCard = ({ producto }) => {
         </button>
 
         {/* Contenedor de imagen principal */}
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
+        <div 
+          className="relative aspect-[4/5] overflow-hidden bg-gray-100"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div
             className="absolute inset-0 cursor-pointer"
             onClick={handleShowDetalle}
@@ -130,7 +161,9 @@ const ProductoCard = ({ producto }) => {
                   e.stopPropagation();
                   handleImageChange('prev');
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                className={`absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 shadow-lg flex items-center justify-center ${
+                  isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                } transition-all duration-300 hover:scale-110`}
               >
                 <ChevronLeft className="w-6 h-6 text-gray-800" />
               </button>
@@ -139,7 +172,9 @@ const ProductoCard = ({ producto }) => {
                   e.stopPropagation();
                   handleImageChange('next');
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                className={`absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 shadow-lg flex items-center justify-center ${
+                  isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                } transition-all duration-300 hover:scale-110`}
               >
                 <ChevronRight className="w-6 h-6 text-gray-800" />
               </button>
@@ -148,7 +183,9 @@ const ProductoCard = ({ producto }) => {
 
           {/* Indicador de imágenes mejorado */}
           {imagenes.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 ${
+              isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            } transition-opacity duration-300`}>
               {imagenes.map((_, index) => (
                 <div
                   key={index}
