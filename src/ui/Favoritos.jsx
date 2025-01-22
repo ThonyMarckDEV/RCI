@@ -68,18 +68,13 @@ const ProductosFavoritos = () => {
       <Navbar />
 
       {/* Contenido principal */}
-      <div className="flex-grow">
-        {/* Header con resultados */}
-        <div className="sticky top-0 z-20 bg-white border-b border-gray-100 shadow-sm mb-8">
-          <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h2 className="text-xl font-medium text-gray-900">
-                  {productos.length} productos favoritos
-                </h2>
-              </div>
-            </div>
-          </div>
+      <div className="flex-grow pt-20"> {/* Ajustado a pt-20 para mayor separación */}
+        {/* Title section */}
+        <div className="px-6 pt-8"> {/* Añadido pt-8 para separar del Navbar */}
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
+            Favoritos
+          </h1>
+          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
         </div>
 
         {productos.length === 0 ? (
