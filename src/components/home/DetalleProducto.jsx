@@ -9,9 +9,9 @@ import {
   FaFacebook,
   FaCopy,
   FaCheck,
-} from 'react-icons/fa';  
+} from 'react-icons/fa';
 import API_BASE_URL from '../../js/urlHelper';
-import CaracteristicasProducto from './CaracteristicasProducto'; // Importar el nuevo componente
+import CaracteristicasProducto from './CaracteristicasProducto';
 
 const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [modeloSeleccionado, setModeloSeleccionado] = useState(modeloInicial);
@@ -23,6 +23,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [caracteristicas, setCaracteristicas] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false); // Estado para el zoom
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Posición del cursor
+  const [loadingCaracteristicas, setLoadingCaracteristicas] = useState(true); // Estado de carga
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
@@ -39,6 +40,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   useEffect(() => {
     const fetchCaracteristicas = async () => {
       try {
+        setLoadingCaracteristicas(true); // Activar el estado de carga
         const response = await fetch(`${API_BASE_URL}/api/productos/${producto.idProducto}/caracteristicas`);
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
@@ -58,12 +60,15 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
       } catch (error) {
         console.error('Error al obtener las características:', error);
         setCaracteristicas(null);
+      } finally {
+        setLoadingCaracteristicas(false); // Desactivar el estado de carga
       }
     };
 
     fetchCaracteristicas();
   }, [producto.idProducto]);
 
+  
   // Cambiar modelo seleccionado
   const handleModeloChange = (index) => {
     setTransitioning(true);
@@ -410,8 +415,23 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           </div>
         </div>
 
-        {/* Mostrar características usando el nuevo componente */}
-        {caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />}
+        {/* Sección de características con estado de carga */}
+        <div className="p-4">
+          {loadingCaracteristicas ? (
+            // Esqueleto de carga
+            <div className="animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-1/2 mb-4"></div>
+              <div className="space-y-3">
+                {[...Array(5)].map((_, index) => (
+                  <div key={index} className="h-4 bg-gray-200 rounded w-full"></div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            // Mostrar características cuando los datos estén listos
+            caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />
+          )}
+        </div>
       </div>
     </div>
   );
