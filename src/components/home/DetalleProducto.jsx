@@ -183,54 +183,52 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     const y = ((e.clientY - top) / height) * 100;
     setCursorPosition({ x, y });
   };
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    // Cambiado de 'items-center' a 'items-start' y agregado pt-4
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center overflow-y-auto">
       <div
-        className={`bg-white rounded-xl max-w-4xl w-full ${
-          caracteristicas ? 'max-h-[90vh] overflow-y-auto' : 'max-h-auto overflow-y-visible'
-        } relative overscroll-contain`}
-        style={{ overscrollBehaviorY: 'contain' }} // Evita el desplazamiento del fondo
+        className={`bg-white rounded-xl max-w-4xl w-full mx-4 my-4 relative`}
       >
-        {/* Botón para cerrar */}
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-        >
-          <FaTimes className="w-5 h-5 text-gray-600" />
-        </button>
+        {/* Botón para cerrar - ajustado z-index y sticky */}
+        <div className="sticky top-0 right-0 z-50 flex justify-end p-4 bg-white rounded-t-xl">
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+          >
+            <FaTimes className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
 
-        {/* Contenido principal */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-          {/* Sección de imágenes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 pt-0">
           <div>
-            {/* Carrusel de imágenes */}
-            <div
-              className="relative h-[400px] bg-gray-100 rounded-lg overflow-hidden"
+            <div 
+              className="relative bg-gray-100 rounded-lg overflow-hidden"
+              style={{
+                aspectRatio: '1/1',
+                maxHeight: '70vh'
+              }}
               onMouseEnter={() => setIsZoomed(true)}
               onMouseLeave={() => setIsZoomed(false)}
               onMouseMove={handleMouseMove}
             >
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full flex items-center justify-center">
                 <img
                   key={`${modeloSeleccionado}-${imagenActual}`}
                   src={`${API_BASE_URL}/storage/${imagenes[imagenActual]?.urlImagen}`}
                   alt={modeloSeleccionado.nombreModelo}
-                  className={`absolute inset-0 w-full h-full object-contain transform transition-all duration-300 ease-in-out ${
+                  className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
                     transitioning
-                      ? `translate-x-${direction > 0 ? '-full' : 'full'} opacity-0`
+                      ? direction > 0 
+                        ? '-translate-x-full opacity-0'
+                        : 'translate-x-full opacity-0'
                       : 'translate-x-0 opacity-100'
-                  } ${
-                    isZoomed
-                      ? 'scale-150 transform-origin-center'
-                      : 'scale-100'
-                  }`}
+                  } ${isZoomed ? 'scale-150' : 'scale-100'}`}
                   style={{
                     transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
+                    objectFit: 'contain'
                   }}
                 />
 
-                {/* Imagen previa para transición suave */}
                 {transitioning && (
                   <img
                     src={`${API_BASE_URL}/storage/${
@@ -238,9 +236,10 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                         ?.urlImagen
                     }`}
                     alt="Next"
-                    className={`absolute inset-0 w-full h-full object-contain transform transition-all duration-300 ease-in-out translate-x-${
-                      direction > 0 ? 'full' : '-full'
+                    className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
+                      direction > 0 ? 'translate-x-full' : '-translate-x-full'
                     }`}
+                    style={{ objectFit: 'contain' }}
                   />
                 )}
               </div>
@@ -262,7 +261,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                     <FaChevronRight className="w-5 h-5 text-gray-800" />
                   </button>
 
-                  {/* Indicadores de imagen */}
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                     {imagenes.map((_, index) => (
                       <button
@@ -281,7 +279,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
               )}
             </div>
 
-            {/* Imágenes adicionales */}
             {imagenes.length > 1 && (
               <div className="mt-4">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Imágenes adicionales</h3>
@@ -293,14 +290,14 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                         const newDirection = index > imagenActual ? 1 : -1;
                         handleImageTransition(index, newDirection);
                       }}
-                      className={`rounded-lg overflow-hidden border-2 ${
+                      className={`aspect-square rounded-lg overflow-hidden border-2 ${
                         imagenActual === index ? 'border-yellow-500' : 'border-transparent'
                       }`}
                     >
                       <img
                         src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
                         alt={`Imagen ${index + 1}`}
-                        className="w-full h-20 object-cover"
+                        className="w-full h-full object-cover"
                       />
                     </button>
                   ))}
