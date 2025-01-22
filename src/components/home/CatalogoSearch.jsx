@@ -33,6 +33,8 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
   const handleSearchSubmit = () => {
     if (searchTerm.trim()) {
       onSearch(searchTerm);
+
+      // Guardar la búsqueda reciente solo cuando se presiona Enter o se hace clic en el botón de búsqueda
       const updatedSearches = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
       setRecentSearches(updatedSearches);
       localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
@@ -56,7 +58,7 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
   };
 
   const removeRecentSearch = (searchToRemove, e) => {
-    e.stopPropagation(); // Prevent triggering the parent button click
+    e.stopPropagation(); // Evita que se active el clic del botón padre
     const updatedSearches = recentSearches.filter(term => term !== searchToRemove);
     setRecentSearches(updatedSearches);
     localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
@@ -84,7 +86,7 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
   const removeFilter = (filter) => {
     const updatedFilters = activeFilters.filter(f => f !== filter);
     setActiveFilters(updatedFilters);
-    
+
     if (filter.startsWith('Ordenar:')) {
       setSortOrder('');
       onSort('');
@@ -146,8 +148,8 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
                     <button
                       key={index}
                       onClick={() => {
-                        setSearchTerm(term);
-                        handleSearchSubmit();
+                        setSearchTerm(term); // Actualiza el término de búsqueda
+                        handleSearchSubmit(); // Ejecuta la búsqueda
                       }}
                       className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md flex items-center gap-2 text-gray-700 group relative"
                     >
@@ -172,24 +174,24 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
         </div>
       </div>
       {activeFilters.length > 0 && (
-      <div className="flex flex-wrap gap-2 mt-4">
-        {activeFilters.map((filter, index) => (
-          <span
-            key={index}
-            className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm flex items-center gap-1"
-          >
-            <Tag size={14} />
-            {filter}
-            <button
-              onClick={() => removeFilter(filter)}
-              className="ml-1 text-yellow-800 hover:text-yellow-900" // La X siempre visible
+        <div className="flex flex-wrap gap-2 mt-4">
+          {activeFilters.map((filter, index) => (
+            <span
+              key={index}
+              className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm flex items-center gap-1"
             >
-              <X size={14} />
-            </button>
-          </span>
-        ))}
-      </div>
-    )}
+              <Tag size={14} />
+              {filter}
+              <button
+                onClick={() => removeFilter(filter)}
+                className="ml-1 text-yellow-800 hover:text-yellow-900"
+              >
+                <X size={14} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
