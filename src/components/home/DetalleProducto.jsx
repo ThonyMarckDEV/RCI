@@ -23,7 +23,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
   const [caracteristicas, setCaracteristicas] = useState(null);
   const [isZoomed, setIsZoomed] = useState(false); // Estado para el zoom
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Posición del cursor
-  const [loadingCaracteristicas, setLoadingCaracteristicas] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true); // Estado de carga global
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
@@ -36,11 +36,13 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     };
   }, []);
 
-  // Obtener características del producto
+  // Simular la carga de datos
   useEffect(() => {
-    const fetchCaracteristicas = async () => {
+    const fetchData = async () => {
       try {
-        setLoadingCaracteristicas(true); // Activar el estado de carga
+        setLoading(true); // Activar el estado de carga global
+
+        // Simular la carga de características
         const response = await fetch(`${API_BASE_URL}/api/productos/${producto.idProducto}/caracteristicas`);
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
@@ -57,17 +59,19 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
         } else {
           setCaracteristicas(null);
         }
+
+        // Simular un tiempo de carga (por ejemplo, 1 segundo)
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
-        console.error('Error al obtener las características:', error);
+        console.error('Error al obtener los datos:', error);
         setCaracteristicas(null);
       } finally {
-        setLoadingCaracteristicas(false); // Desactivar el estado de carga
+        setLoading(false); // Desactivar el estado de carga global
       }
     };
 
-    fetchCaracteristicas();
+    fetchData();
   }, [producto.idProducto]);
-
   
   // Cambiar modelo seleccionado
   const handleModeloChange = (index) => {
@@ -188,13 +192,12 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     const y = ((e.clientY - top) / height) * 100;
     setCursorPosition({ x, y });
   };
+
+
   return (
-    // Cambiado de 'items-center' a 'items-start' y agregado pt-4
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center overflow-y-auto">
-      <div
-        className={`bg-white rounded-xl max-w-4xl w-full mx-4 my-4 relative`}
-      >
-        {/* Botón para cerrar - ajustado z-index y sticky */}
+      <div className={`bg-white rounded-xl max-w-4xl w-full mx-4 my-4 relative`}>
+        {/* Botón para cerrar */}
         <div className="sticky top-0 right-0 z-50 flex justify-end p-4 bg-white rounded-t-xl">
           <button
             onClick={onClose}
@@ -204,234 +207,264 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 pt-0">
-          <div>
-            <div 
-              className="relative bg-gray-100 rounded-lg overflow-hidden"
-              style={{
-                aspectRatio: '1/1',
-                maxHeight: '70vh'
-              }}
-              onClick={() => setIsZoomed(!isZoomed)}
-              onMouseMove={(e) => {
-                if (isZoomed) {
-                  handleMouseMove(e);
-                }
-              }}
-              onMouseLeave={() => setIsZoomed(false)}
-            >
-              <div className="relative w-full h-full flex items-center justify-center">
-                <img
-                  key={`${modeloSeleccionado}-${imagenActual}`}
-                  src={`${API_BASE_URL}/storage/${imagenes[imagenActual]?.urlImagen}`}
-                  alt={modeloSeleccionado.nombreModelo}
-                  className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
-                    transitioning
-                      ? direction > 0 
-                        ? '-translate-x-full opacity-0'
-                        : 'translate-x-full opacity-0'
-                      : 'translate-x-0 opacity-100'
-                  } ${isZoomed ? 'scale-150' : 'scale-100'}`}
+        {/* Esqueleto de carga para todo el modal */}
+        {loading ? (
+         <div className="p-4">
+         {/* Esqueleto para la sección de imágenes */}
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <div>
+             <div
+               className="bg-gray-200 rounded-lg  animate-blink"
+               style={{ aspectRatio: '1/1', maxHeight: '40vh' }}
+             ></div>
+             <div className="mt-4 space-y-2">
+               <div className="h-4 bg-gray-200 rounded w-1/2  animate-blink"></div>
+               <div className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
+             </div>
+           </div>
+       
+           {/* Esqueleto para la sección de contenido */}
+           <div className="space-y-4">
+             <div className="h-8 bg-gray-200 rounded w-3/4  animate-blink"></div>
+             <div className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
+             <div className="h-4 bg-gray-200 rounded w-2/3  animate-blink"></div>
+             <div className="h-4 bg-gray-200 rounded w-1/2  animate-blink"></div>
+             <div className="h-12 bg-gray-200 rounded  animate-blink"></div>
+             <div className="h-12 bg-gray-200 rounded  animate-blink"></div>
+           </div>
+         </div>
+       
+         {/* Esqueleto para la sección de características */}
+         <div className="mt-8">
+           <div className="h-6 bg-gray-200 rounded w-1/2 mb-4  animate-blink"></div>
+           <div className="space-y-3">
+             {[...Array(5)].map((_, index) => (
+               <div key={index} className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
+             ))}
+           </div>
+         </div>
+       </div>
+        ) : (
+          /* Contenido real del modal */
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 pt-0">
+              {/* Sección de imágenes */}
+              <div>
+                <div 
+                  className="relative bg-gray-100 rounded-lg overflow-hidden"
                   style={{
-                    transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
-                    objectFit: 'contain'
+                    aspectRatio: '1/1',
+                    maxHeight: '70vh'
                   }}
-                />
+                  onClick={() => setIsZoomed(!isZoomed)}
+                  onMouseMove={(e) => {
+                    if (isZoomed) {
+                      handleMouseMove(e);
+                    }
+                  }}
+                  onMouseLeave={() => setIsZoomed(false)}
+                >
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <img
+                      key={`${modeloSeleccionado}-${imagenActual}`}
+                      src={`${API_BASE_URL}/storage/${imagenes[imagenActual]?.urlImagen}`}
+                      alt={modeloSeleccionado.nombreModelo}
+                      className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
+                        transitioning
+                          ? direction > 0 
+                            ? '-translate-x-full opacity-0'
+                            : 'translate-x-full opacity-0'
+                          : 'translate-x-0 opacity-100'
+                      }`}
+                      style={{
+                        transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
+                        objectFit: 'contain'
+                      }}
+                    />
 
-                {transitioning && (
-                  <img
-                    src={`${API_BASE_URL}/storage/${
-                      imagenes[direction > 0 ? (imagenActual + 1) % imagenes.length : (imagenActual - 1 + imagenes.length) % imagenes.length]
-                        ?.urlImagen
-                    }`}
-                    alt="Next"
-                    className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
-                      direction > 0 ? 'translate-x-full' : '-translate-x-full'
-                    }`}
-                    style={{ objectFit: 'contain' }}
-                  />
-                )}
-              </div>
+                    {transitioning && (
+                      <img
+                        src={`${API_BASE_URL}/storage/${
+                          imagenes[direction > 0 ? (imagenActual + 1) % imagenes.length : (imagenActual - 1 + imagenes.length) % imagenes.length]
+                            ?.urlImagen
+                        }`}
+                        alt="Next"
+                        className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
+                          direction > 0 ? 'translate-x-full' : '-translate-x-full'
+                        }`}
+                        style={{ objectFit: 'contain' }}
+                      />
+                    )}
+                  </div>
 
-              {imagenes.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation(); // Evitar que el click se propague
-                      prevImage();
-                    }}
-                    disabled={transitioning}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <FaChevronLeft className="w-5 h-5 text-gray-800" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation(); // Evitar que el click se propague
-                      nextImage();
-                    }}
-                    disabled={transitioning}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <FaChevronRight className="w-5 h-5 text-gray-800" />
-                  </button>
-
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {imagenes.map((_, index) => (
+                  {imagenes.length > 1 && (
+                    <>
                       <button
-                        key={index}
                         onClick={(e) => {
                           e.stopPropagation(); // Evitar que el click se propague
-                          const newDirection = index > imagenActual ? 1 : -1;
-                          handleImageTransition(index, newDirection);
+                          prevImage();
                         }}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          index === imagenActual ? 'bg-yellow-500 w-4' : 'bg-gray-300 hover:bg-gray-400'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {imagenes.length > 1 && (
-              <div className="mt-4">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">Imágenes adicionales</h3>
-                <div className="grid grid-cols-4 gap-2">
-                  {imagenes.map((imagen, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        const newDirection = index > imagenActual ? 1 : -1;
-                        handleImageTransition(index, newDirection);
-                      }}
-                      className={`aspect-square rounded-lg overflow-hidden border-2 ${
-                        imagenActual === index ? 'border-yellow-500' : 'border-transparent'
-                      }`}
-                    >
-                      <img
-                        src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
-                        alt={`Imagen ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Contenido del producto */}
-          <div className="flex flex-col">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">{producto.nombreProducto}</h2>
-
-            <p className="text-gray-600 mb-6">{producto.descripcion}</p>
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              {producto.modelos.map((modelo, index) => (
-                <button
-                  key={modelo.idModelo}
-                  onClick={() => handleModeloChange(index)}
-                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
-                    modeloSeleccionado === index
-                      ? 'bg-yellow-500 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {modelo.nombreModelo}
-                </button>
-              ))}
-            </div>
-
-            <div className="mb-8">
-              <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
-                {producto.nombreCategoria}
-              </span>
-            </div>
-
-            {/* Botones de acción */}
-            <div className="flex flex-col gap-3 mt-auto">
-              {/* Botón de compartir */}
-              <div className="relative">
-                <button
-                  onClick={handleShare}
-                  className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                >
-                  <FaShare className="w-5 h-5" />
-                  Compartir
-                </button>
-
-                {/* Menú de compartir */}
-                {showShareMenu && (
-                  <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg p-4">
-                    <div className="flex flex-col gap-3">
-                      <button
-                        onClick={handleCopyLink}
-                        className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        disabled={transitioning}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {copied ? (
-                          <FaCheck className="w-5 h-5 text-green-500" />
-                        ) : (
-                          <FaCopy className="w-5 h-5 text-gray-600" />
-                        )}
-                        {copied ? '¡Enlace copiado!' : 'Copiar enlace'}
+                        <FaChevronLeft className="w-5 h-5 text-gray-800" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Evitar que el click se propague
+                          nextImage();
+                        }}
+                        disabled={transitioning}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <FaChevronRight className="w-5 h-5 text-gray-800" />
                       </button>
 
-                      <div className="flex justify-center gap-4">
-                        <button
-                          onClick={() => handleSocialShare('whatsapp')}
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                        >
-                          <FaWhatsapp className="w-6 h-6 text-green-500" />
-                        </button>
-                        <button
-                          onClick={() => handleSocialShare('facebook')}
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                        >
-                          <FaFacebook className="w-6 h-6 text-blue-600" />
-                        </button>
-                        <button
-                          onClick={() => handleSocialShare('instagram')}
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                        >
-                          <FaInstagram className="w-6 h-6 text-pink-600" />
-                        </button>
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                        {imagenes.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={(e) => {
+                              e.stopPropagation(); // Evitar que el click se propague
+                              const newDirection = index > imagenActual ? 1 : -1;
+                              handleImageTransition(index, newDirection);
+                            }}
+                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                              index === imagenActual ? 'bg-yellow-500 w-4' : 'bg-gray-300 hover:bg-gray-400'
+                            }`}
+                          />
+                        ))}
                       </div>
+                    </>
+                  )}
+                </div>
+
+                {imagenes.length > 1 && (
+                  <div className="mt-4">
+                    <h3 className="text-lg font-bold text-gray-800 mb-2">Imágenes adicionales</h3>
+                    <div className="grid grid-cols-4 gap-2">
+                      {imagenes.map((imagen, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            const newDirection = index > imagenActual ? 1 : -1;
+                            handleImageTransition(index, newDirection);
+                          }}
+                          className={`aspect-square rounded-lg overflow-hidden border-2 ${
+                            imagenActual === index ? 'border-yellow-500' : 'border-transparent'
+                          }`}
+                        >
+                          <img
+                            src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
+                            alt={`Imagen ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Botón de WhatsApp */}
-              <button
-                onClick={handleWhatsAppClick}
-                className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-              >
-                <FaWhatsapp className="w-5 h-5" />
-                Cotízalo aquí
-              </button>
-            </div>
-          </div>
-        </div>
+              {/* Contenido del producto */}
+              <div className="flex flex-col">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">{producto.nombreProducto}</h2>
 
-        {/* Sección de características con estado de carga */}
-        <div className="p-4">
-          {loadingCaracteristicas ? (
-            // Esqueleto de carga
-            <div className="animate-pulse">
-              <div className="h-6 bg-gray-200 rounded w-1/2 mb-4"></div>
-              <div className="space-y-3">
-                {[...Array(5)].map((_, index) => (
-                  <div key={index} className="h-4 bg-gray-200 rounded w-full"></div>
-                ))}
+                <p className="text-gray-600 mb-6">{producto.descripcion}</p>
+
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {producto.modelos.map((modelo, index) => (
+                    <button
+                      key={modelo.idModelo}
+                      onClick={() => handleModeloChange(index)}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                        modeloSeleccionado === index
+                          ? 'bg-yellow-500 text-white shadow-md'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {modelo.nombreModelo}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mb-8">
+                  <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                    {producto.nombreCategoria}
+                  </span>
+                </div>
+
+                {/* Botones de acción */}
+                <div className="flex flex-col gap-3 mt-auto">
+                  {/* Botón de compartir */}
+                  <div className="relative">
+                    <button
+                      onClick={handleShare}
+                      className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                    >
+                      <FaShare className="w-5 h-5" />
+                      Compartir
+                    </button>
+
+                    {/* Menú de compartir */}
+                    {showShareMenu && (
+                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg p-4">
+                        <div className="flex flex-col gap-3">
+                          <button
+                            onClick={handleCopyLink}
+                            className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          >
+                            {copied ? (
+                              <FaCheck className="w-5 h-5 text-green-500" />
+                            ) : (
+                              <FaCopy className="w-5 h-5 text-gray-600" />
+                            )}
+                            {copied ? '¡Enlace copiado!' : 'Copiar enlace'}
+                          </button>
+
+                          <div className="flex justify-center gap-4">
+                            <button
+                              onClick={() => handleSocialShare('whatsapp')}
+                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            >
+                              <FaWhatsapp className="w-6 h-6 text-green-500" />
+                            </button>
+                            <button
+                              onClick={() => handleSocialShare('facebook')}
+                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            >
+                              <FaFacebook className="w-6 h-6 text-blue-600" />
+                            </button>
+                            <button
+                              onClick={() => handleSocialShare('instagram')}
+                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            >
+                              <FaInstagram className="w-6 h-6 text-pink-600" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Botón de WhatsApp */}
+                  <button
+                    onClick={handleWhatsAppClick}
+                    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                  >
+                    <FaWhatsapp className="w-5 h-5" />
+                    Cotízalo aquí
+                  </button>
+                </div>
               </div>
             </div>
-          ) : (
-            // Mostrar características cuando los datos estén listos
-            caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />
-          )}
-        </div>
+
+            {/* Sección de características */}
+            <div className="p-4">
+              {caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
