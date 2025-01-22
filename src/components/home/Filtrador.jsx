@@ -24,27 +24,37 @@ const Filtrador = ({ categorias = [] }) => {
     if (nombre) params.set('nombre', nombre);
     if (categoria) params.set('categoria', categoria);
     navigate(`/catalogo?${params.toString()}`);
-
-    // Cerrar el filtro automáticamente en dispositivos móviles
-    if (window.innerWidth < 1024) {
-      setIsOpen(false);
-    }
+    
+    // Cerrar el filtro siempre después de aplicar, sin importar el tamaño de pantalla
+    setIsOpen(false);
   };
 
   const handleResetFilter = () => {
     setNombre('');
     setCategoria('');
     navigate('/catalogo');
-
-    // Cerrar el filtro automáticamente en dispositivos móviles
-    if (window.innerWidth < 1024) {
-      setIsOpen(false);
-    }
+    
+    // Cerrar el filtro siempre después de reiniciar, sin importar el tamaño de pantalla
+    setIsOpen(false);
   };
 
   const toggleFilter = () => {
     setIsOpen(!isOpen);
   };
+
+  // Manejador para cerrar el filtrador con la tecla Escape
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isOpen]);
 
   const FilterContent = () => (
     <div className="h-full flex flex-col">
@@ -135,7 +145,7 @@ const Filtrador = ({ categorias = [] }) => {
       {/* Floating button */}
       <button
         onClick={toggleFilter}
-        className="fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-colors"
+        className="fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-colors lg:hidden"
       >
         <Filter size={24} />
       </button>
