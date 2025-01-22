@@ -30,16 +30,36 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSearch = (term) => {
-    setSearchTerm(term);
-    onSearch(term);
-    
-    if (term.trim()) {
-      const updatedSearches = [term, ...recentSearches.filter(s => s !== term)].slice(0, 5);
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim()) {
+      onSearch(searchTerm);
+      const updatedSearches = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
       setRecentSearches(updatedSearches);
       localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
     }
     setShowRecent(false);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
+
+  const handleInputChange = (value) => {
+    setSearchTerm(value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    onSearch('');
+  };
+
+  const removeRecentSearch = (searchToRemove, e) => {
+    e.stopPropagation(); // Prevent triggering the parent button click
+    const updatedSearches = recentSearches.filter(term => term !== searchToRemove);
+    setRecentSearches(updatedSearches);
+    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
   };
 
   const handleSortChange = (order) => {
@@ -47,7 +67,6 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
     onSort(order);
     setShowSortDropdown(false);
 
-    // Remove previous sort filter if exists
     const updatedFilters = activeFilters.filter(f => !f.startsWith('Ordenar:'));
     setActiveFilters(updatedFilters);
 
@@ -80,21 +99,26 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 mb-8">
       <div className="flex gap-2">
-        {/* Search input */}
         <div className="relative flex-grow" ref={searchRef}>
           <div className="relative">
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleInputChange(e.target.value)}
+              onKeyPress={handleKeyPress}
               onFocus={() => setShowRecent(true)}
               placeholder="Buscar productos..."
-              className="w-full px-4 py-3 pl-12 pr-10 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-200"
+              className="w-full px-4 py-3 pl-12 pr-20 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-200"
             />
-            <Search className="absolute left-4 top-3.5 text-gray-400" size={20} />
+            <button
+              onClick={handleSearchSubmit}
+              className="absolute left-4 top-3.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+            >
+              <Search size={20} />
+            </button>
             {searchTerm && (
               <button
-                onClick={() => handleSearch('')}
+                onClick={clearSearch}
                 className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
               >
                 <X size={20} />
@@ -102,7 +126,6 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
             )}
           </div>
 
-          {/* Recent searches dropdown */}
           {showRecent && (
             <div className="absolute z-50 w-full mt-2 bg-white rounded-lg shadow-lg border border-gray-100">
               <div className="flex items-center justify-between p-3 border-b border-gray-100">
@@ -122,11 +145,20 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
                   {recentSearches.map((term, index) => (
                     <button
                       key={index}
-                      onClick={() => handleSearch(term)}
-                      className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md flex items-center gap-2 text-gray-700"
+                      onClick={() => {
+                        setSearchTerm(term);
+                        handleSearchSubmit();
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md flex items-center gap-2 text-gray-700 group relative"
                     >
                       <Clock size={14} className="text-gray-400" />
                       {term}
+                      <button
+                        onClick={(e) => removeRecentSearch(term, e)}
+                        className="absolute right-2 opacity-100 transition-opacity text-gray-400 hover:text-gray-600"
+                      >
+                        <X size={14} />
+                      </button>
                     </button>
                   ))}
                 </div>
@@ -138,29 +170,26 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
             </div>
           )}
         </div>
-
       </div>
-
-      {/* Active filters */}
       {activeFilters.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-4">
-          {activeFilters.map((filter, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm flex items-center gap-1"
+      <div className="flex flex-wrap gap-2 mt-4">
+        {activeFilters.map((filter, index) => (
+          <span
+            key={index}
+            className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm flex items-center gap-1"
+          >
+            <Tag size={14} />
+            {filter}
+            <button
+              onClick={() => removeFilter(filter)}
+              className="ml-1 text-yellow-800 hover:text-yellow-900" // La X siempre visible
             >
-              <Tag size={14} />
-              {filter}
-              <button
-                onClick={() => removeFilter(filter)}
-                className="ml-1 hover:text-yellow-900"
-              >
-                <X size={14} />
-              </button>
-            </span>
-          ))}
-        </div>
-      )}
+              <X size={14} />
+            </button>
+          </span>
+        ))}
+      </div>
+    )}
     </div>
   );
 };
