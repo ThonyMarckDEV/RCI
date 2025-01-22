@@ -5,7 +5,7 @@ import API_BASE_URL from './js/urlHelper';
 import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de importar el icono de WhatsApp
 import jwtUtils from './utilities/jwtUtils';
 import ErrorPage from './components/home/ErrorPage'; // Asegúrate de que la ruta sea correcta
-
+import { FavoritosProvider } from './context/FavoritosContext';
 
 // Componentes Home
 import Home from './ui/Home';
@@ -125,9 +125,11 @@ function AppContent() {
   
   function App() {
     return (
-      <Router>
-        <AppContent />
-      </Router>
+      <FavoritosProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </FavoritosProvider>
     );
   }
   

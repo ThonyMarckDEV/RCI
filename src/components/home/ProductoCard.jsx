@@ -1,18 +1,28 @@
+// ProductoCard.js
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Heart } from 'lucide-react';
 import API_BASE_URL from '../../js/urlHelper';
 import DetalleProducto from './DetalleProducto';
+import { useFavoritos } from '../../context/FavoritosContext'; // Importar el contexto
 
 const ProductoCard = ({ producto }) => {
   const [modeloSeleccionado, setModeloSeleccionado] = useState(0);
   const [fade, setFade] = useState(false);
   const [showDetalle, setShowDetalle] = useState(false);
   const [imagenActual, setImagenActual] = useState(0);
-  const [touchStartX, setTouchStartX] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { favoritos, agregarFavorito, eliminarFavorito } = useFavoritos(); // Usar el contexto
+
+  const isFavorite = favoritos.includes(producto.nombreProducto);
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      eliminarFavorito(producto.nombreProducto);
+    } else {
+      agregarFavorito(producto.nombreProducto);
+    }
+  };
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -85,7 +95,7 @@ const ProductoCard = ({ producto }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setIsFavorite(!isFavorite);
+            toggleFavorite();
           }}
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 shadow-lg transition-all duration-300 hover:scale-110"
         >

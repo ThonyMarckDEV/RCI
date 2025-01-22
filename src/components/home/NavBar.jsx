@@ -1,8 +1,12 @@
+// Navbar.js
 import { useState } from 'react';
 import logo from '../../img/logorci.png';
+import { Heart } from 'lucide-react';
+import { useFavoritos } from '../../context/FavoritosContext'; // Importar el contexto
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { favoritos } = useFavoritos(); // Usar el contexto
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -67,6 +71,18 @@ const Navbar = () => {
             </a>
           </li>
         </ul>
+
+        {/* Contador de favoritos */}
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <Heart className="w-6 h-6 text-red-500" />
+            {favoritos.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                {favoritos.length}
+              </span>
+            )}
+          </div>
+        </div>
   
         <button 
           onClick={toggleMenu}
