@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Filtrador = ({ categorias = [] }) => {
   const [categoria, setCategoria] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Estado para controlar si la sidebar está abierta o cerrada
   const inputRef = useRef(null); // Referencia para el input
   const navigate = useNavigate();
   const location = useLocation();
@@ -139,7 +139,9 @@ const Filtrador = ({ categorias = [] }) => {
         {/* Botón para abrir/cerrar en desktop */}
         <button
           onClick={toggleFilter}
-          className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors animate-slide-right-back"
+          className={`absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors ${
+            !isOpen ? 'animate-slide-right-back' : '' // Aplicar animación solo si la sidebar está cerrada
+          }`}
         >
           {isOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
         </button>
