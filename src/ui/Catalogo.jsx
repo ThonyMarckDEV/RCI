@@ -41,7 +41,7 @@ const Catalogo = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
       {/* Navbar */}
-      <Navbar className="fixed top-0 w-full z-50 animate-slide-down" />
+      <Navbar className="fixed top-0 w-full z-[1000] animate-slide-down" />
       
       {/* Filtrador */}
       <Filtrador 
@@ -51,7 +51,7 @@ const Catalogo = () => {
       />
       
       {/* Main content */}
-      <main className="flex-grow pt-32 lg:pt-20 pb-16">
+      <main className="flex-grow pt-32 lg:pt-20 pb-16 relative z-0"> {/* z-0 para que esté detrás de la Navbar */}
         {/* Title section */}
         <div className="px-6">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
