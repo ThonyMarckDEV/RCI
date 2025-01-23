@@ -59,22 +59,21 @@ const Catalogo = () => {
           </h1>
           <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
         </div>
-
+      </main>
         {/* Search section */}
-        <CatalogoSearch
+              <CatalogoSearch
           onSearch={handleSearch}
           onSort={handleSort}
         />
         
-        {/* Products section */}
+         {/* Products section */}
         <div className="px-6">
           <ProductosCatalogo 
             filtros={{ ...filtros, sortOrder }}
             className="animate-slide-down"
           />
         </div>
-      </main>
-      
+
       {/* Footer */}
       <Footer className="animate-slide-up" />
     </div>
