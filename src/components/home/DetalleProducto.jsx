@@ -214,7 +214,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
            <div>
              <div
-               className="bg-gray-200 rounded-lg  animate-blink"
+               className="bg-gray-200 rounded-lg animate-blink"
                style={{ aspectRatio: '1/1', maxHeight: '40vh' }}
              ></div>
              <div className="mt-4 space-y-2">
