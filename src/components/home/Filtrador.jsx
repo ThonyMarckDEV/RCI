@@ -139,19 +139,11 @@ const Filtrador = ({ categorias = [] }) => {
         {/* Botón para abrir/cerrar en desktop */}
         <button
           onClick={toggleFilter}
-          className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors"
+          className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors animate-slide-right-back"
         >
           {isOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
         </button>
       </aside>
-
-      {/* Botón flotante para móviles */}
-      <button
-        onClick={toggleFilter}
-        className="fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-colors lg:hidden"
-      >
-        <Filter size={24} />
-      </button>
     </>
   );
 };
