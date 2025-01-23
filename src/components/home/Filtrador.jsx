@@ -3,10 +3,9 @@ import { ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Filtrador = ({ categorias = [] }) => {
-  const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef(null); // Referencia para el input
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,21 +15,15 @@ const Filtrador = ({ categorias = [] }) => {
     const nombreParam = queryParams.get('nombre');
     const categoriaParam = queryParams.get('categoria');
 
-    if (nombreParam) setNombre(nombreParam);
+    if (nombreParam && inputRef.current) {
+      inputRef.current.value = nombreParam; // Establecer el valor inicial del input
+    }
     if (categoriaParam) setCategoria(categoriaParam);
   }, [location.search]);
 
-  // Mantener el foco automáticamente
-  useEffect(() => {
-    const input = inputRef.current;
-    if (input) {
-      input.focus();
-      input.setSelectionRange(input.value.length, input.value.length);
-    }
-  });
-
   // Aplicar filtros
   const handleApplyFilter = () => {
+    const nombre = inputRef.current ? inputRef.current.value : ''; // Obtener el valor del input
     const params = new URLSearchParams();
     if (nombre) params.set('nombre', nombre);
     if (categoria) params.set('categoria', categoria);
@@ -40,7 +33,7 @@ const Filtrador = ({ categorias = [] }) => {
 
   // Reiniciar filtros
   const handleResetFilter = () => {
-    setNombre('');
+    if (inputRef.current) inputRef.current.value = ''; // Limpiar el input
     setCategoria('');
     navigate('/catalogo');
     setIsOpen(false);
@@ -49,11 +42,6 @@ const Filtrador = ({ categorias = [] }) => {
   // Abrir/cerrar el filtrador
   const toggleFilter = () => {
     setIsOpen(!isOpen);
-  };
-
-  // Manejar cambios en el input
-  const handleInputChange = (e) => {
-    setNombre(e.target.value);
   };
 
   // Cerrar el filtrador con la tecla Escape
@@ -91,14 +79,12 @@ const Filtrador = ({ categorias = [] }) => {
               Nombre del Producto
             </label>
             <input
-              ref={inputRef}
+              ref={inputRef} // Referencia para el input
               type="text"
-              value={nombre}
-              onChange={handleInputChange}
+              defaultValue={new URLSearchParams(location.search).get('nombre') || ''} // Valor inicial
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
               placeholder="Buscar por nombre"
               autoComplete="off"
-              autoFocus
             />
           </div>
 
