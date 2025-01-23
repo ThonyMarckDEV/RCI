@@ -139,7 +139,7 @@ const Filtrador = ({ categorias = [] }) => {
         {/* Botón para abrir/cerrar en desktop */}
         <button
           onClick={toggleFilter}
-          className={`absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors ${
+          className={`absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg transition-colors ${
             !isOpen ? 'animate-slide-right-back' : '' // Aplicar animación solo si la sidebar está cerrada
           }`}
         >
