@@ -6,10 +6,11 @@ const Filtrador = ({ categorias = [] }) => {
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const filtradorRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Cargar los valores iniciales desde la URL
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const nombreParam = queryParams.get('nombre');
@@ -19,30 +20,43 @@ const Filtrador = ({ categorias = [] }) => {
     if (categoriaParam) setCategoria(categoriaParam);
   }, [location.search]);
 
+  // Mantener el foco automáticamente
+  useEffect(() => {
+    const input = inputRef.current;
+    if (input) {
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
+  });
+
+  // Aplicar filtros
   const handleApplyFilter = () => {
     const params = new URLSearchParams();
     if (nombre) params.set('nombre', nombre);
     if (categoria) params.set('categoria', categoria);
     navigate(`/catalogo?${params.toString()}`);
-    
-    // Cerrar el filtro siempre después de aplicar, sin importar el tamaño de pantalla
     setIsOpen(false);
   };
 
+  // Reiniciar filtros
   const handleResetFilter = () => {
     setNombre('');
     setCategoria('');
     navigate('/catalogo');
-    
-    // Cerrar el filtro siempre después de reiniciar, sin importar el tamaño de pantalla
     setIsOpen(false);
   };
 
+  // Abrir/cerrar el filtrador
   const toggleFilter = () => {
     setIsOpen(!isOpen);
   };
 
-  // Manejador para cerrar el filtrador con la tecla Escape
+  // Manejar cambios en el input
+  const handleInputChange = (e) => {
+    setNombre(e.target.value);
+  };
+
+  // Cerrar el filtrador con la tecla Escape
   useEffect(() => {
     const handleEscapeKey = (event) => {
       if (event.key === 'Escape' && isOpen) {
@@ -56,6 +70,7 @@ const Filtrador = ({ categorias = [] }) => {
     };
   }, [isOpen]);
 
+  // Contenido del filtrador
   const FilterContent = () => (
     <div className="h-full flex flex-col">
       <div className="p-6 flex-1 overflow-y-auto">
@@ -68,23 +83,26 @@ const Filtrador = ({ categorias = [] }) => {
             <ChevronLeft size={24} />
           </button>
         </div>
-        
+
         <div className="space-y-6">
-          {/* Nombre filter */}
+          {/* Filtro por nombre */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Nombre del Producto
             </label>
             <input
+              ref={inputRef}
               type="text"
               value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              onChange={handleInputChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
               placeholder="Buscar por nombre"
+              autoComplete="off"
+              autoFocus
             />
           </div>
 
-          {/* Category filter */}
+          {/* Filtro por categoría */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Categoría
@@ -104,7 +122,7 @@ const Filtrador = ({ categorias = [] }) => {
           </div>
         </div>
 
-        {/* Action buttons */}
+        {/* Botones de acción */}
         <div className="mt-8 space-y-3">
           <button
             onClick={handleApplyFilter}
@@ -125,15 +143,14 @@ const Filtrador = ({ categorias = [] }) => {
 
   return (
     <>
-      {/* Desktop slideable sidebar */}
+      {/* Sidebar para desktop */}
       <aside
-        ref={filtradorRef}
         className={`fixed top-20 h-[calc(100vh-5rem)] w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <FilterContent />
-        {/* Desktop toggle button */}
+        {/* Botón para abrir/cerrar en desktop */}
         <button
           onClick={toggleFilter}
           className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition-colors"
@@ -142,7 +159,7 @@ const Filtrador = ({ categorias = [] }) => {
         </button>
       </aside>
 
-      {/* Floating button */}
+      {/* Botón flotante para móviles */}
       <button
         onClick={toggleFilter}
         className="fixed bottom-8 right-8 z-50 p-4 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-colors lg:hidden"
