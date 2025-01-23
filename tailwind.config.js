@@ -11,7 +11,7 @@ module.exports = {
         'slide-up': 'slideUp 1.5s ease-out',
         'fade-in-down': 'fade-in-down 1s ease-out forwards',
         'blink': 'blink 1.5s infinite', // Animación de parpadeo
-        'slide-right-back': 'slideRightAndBack 3s ease-in-out infinite', // Animación con pausa
+        'slide-right-back': 'slideRightAndBack 5s ease-in-out infinite', // Animación con dos movimientos y pausa
       },
       // Definir keyframes para las animaciones
       keyframes: {
@@ -35,14 +35,14 @@ module.exports = {
           '0%, 100%': { opacity: '1' }, // Siempre visible
           '10%': { opacity: '0.5' }, // Titileo sutil
         },
-        // Nueva animación: Desliza a la derecha, regresa y pausa
+        // Nueva animación: Dos movimientos a la derecha y regreso, seguidos de una pausa
         slideRightAndBack: {
-          '0%, 20%': { transform: 'translateX(0)' }, // Pausa inicial (0% a 20%)
-          '30%': { transform: 'translateX(10px)' }, // Mueve 10px a la derecha (30%)
-          '40%': { transform: 'translateX(0)' }, // Regresa a la posición original (40%)
-          '30%': { transform: 'translateX(10px)' }, // Mueve 10px a la derecha (30%)
-          '40%': { transform: 'translateX(0)' }, // Regresa a la posición original (40%)
-          '50%, 100%': { transform: 'translateX(0)' }, // Pausa final (50% a 100%)
+          '0%, 10%': { transform: 'translateX(0)' }, // Pausa inicial (0% a 10%)
+          '15%': { transform: 'translateX(10px)' }, // Primer movimiento a la derecha (15%)
+          '20%': { transform: 'translateX(0)' }, // Primer regreso (20%)
+          '25%': { transform: 'translateX(10px)' }, // Segundo movimiento a la derecha (25%)
+          '30%': { transform: 'translateX(0)' }, // Segundo regreso (30%)
+          '35%, 100%': { transform: 'translateX(0)' }, // Pausa final (35% a 100%)
         },
       },
       fontFamily: {
