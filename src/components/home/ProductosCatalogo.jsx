@@ -73,7 +73,7 @@ const ProductosCatalogo = ({ filtros }) => {
   return (
     <div className="flex flex-col min-h-[600px] bg-gray-50">
       {/* Header con resultados y filtros */}
-      <div className="sticky top-20 z-10 bg-white border-b border-gray-100 shadow-sm mb-8"> {/* z-10 para que esté debajo de la Navbar */}
+      <div className="sticky top-20 z-10 bg-white border-b border-gray-100 shadow-sm mb-8">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex-1">
@@ -107,47 +107,49 @@ const ProductosCatalogo = ({ filtros }) => {
             ))}
           </div>
 
-          {/* Paginación mejorada */}
+          {/* Paginación fija */}
           {totalPaginas > 1 && (
-            <div className="mt-12 mb-8">
-              <div className="flex justify-center items-center space-x-2">
-                <button
-                  onClick={() => handlePageChange(paginaActual - 1)}
-                  disabled={paginaActual === 1}
-                  className={`p-2 rounded-lg transition-all duration-300 ${
-                    paginaActual === 1
-                      ? 'text-gray-300 cursor-not-allowed'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
+            <div className="sticky bottom-0 bg-white py-4 border-t border-gray-100 shadow-lg">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-center items-center space-x-2">
+                  <button
+                    onClick={() => handlePageChange(paginaActual - 1)}
+                    disabled={paginaActual === 1}
+                    className={`p-2 rounded-lg transition-all duration-300 ${
+                      paginaActual === 1
+                        ? 'text-gray-300 cursor-not-allowed'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
 
-                {/* Números de página */}
-                <div className="flex items-center">
-                  {Array.from({ length: totalPaginas }, (_, i) => i + 1)
-                    .filter(page => page === 1 || page === totalPaginas || (page >= paginaActual - 1 && page <= paginaActual + 1))
-                    .map((page, index, array) => (
-                      <React.Fragment key={page}>
-                        {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
-                        <button
-                          onClick={() => handlePageChange(page)}
-                          className={`px-4 py-2 mx-1 rounded-lg transition-colors ${paginaActual === page ? 'bg-yellow-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                        >
-                          {page}
-                        </button>
-                      </React.Fragment>
-                    ))}
+                  {/* Números de página */}
+                  <div className="flex items-center">
+                    {Array.from({ length: totalPaginas }, (_, i) => i + 1)
+                      .filter(page => page === 1 || page === totalPaginas || (page >= paginaActual - 1 && page <= paginaActual + 1))
+                      .map((page, index, array) => (
+                        <React.Fragment key={page}>
+                          {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
+                          <button
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-2 mx-1 rounded-lg transition-colors ${paginaActual === page ? 'bg-yellow-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                          >
+                            {page}
+                          </button>
+                        </React.Fragment>
+                      ))}
+                  </div>
+
+                  {/* Botón siguiente */}
+                  <button
+                    onClick={() => handlePageChange(paginaActual + 1)}
+                    disabled={paginaActual === totalPaginas}
+                    className={`p-2 rounded-lg ${paginaActual === totalPaginas ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
                 </div>
-
-                {/* Botón siguiente */}
-                <button
-                  onClick={() => handlePageChange(paginaActual + 1)}
-                  disabled={paginaActual === totalPaginas}
-                  className={`p-2 rounded-lg ${paginaActual === totalPaginas ? 'text-gray-400 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100'}`}
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
               </div>
             </div>
           )}
