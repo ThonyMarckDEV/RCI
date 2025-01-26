@@ -1,8 +1,8 @@
 // ProductoCard.js
 import React, { useState, useEffect } from 'react';
+import DetalleProducto from './DetalleProducto';
 import { ChevronLeft, ChevronRight, Plus, Heart } from 'lucide-react';
 import API_BASE_URL from '../../js/urlHelper';
-import DetalleProducto from './DetalleProducto';
 import { useFavoritos } from '../../context/FavoritosContext';
 
 const ProductoCard = ({ producto }) => {
@@ -239,21 +239,18 @@ const ProductoCard = ({ producto }) => {
         </div>
       </div>
 
-      {/* Modal de detalle con posición fija */}
       {showDetalle && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" />
-          <div className="relative min-h-screen flex items-center justify-center p-4">
-            <div className="relative bg-white w-full max-w-4xl rounded-lg shadow-xl">
-              <DetalleProducto
-                producto={producto}
-                onClose={handleCloseDetalle}
-                modeloInicial={modeloSeleccionado}
-              />
-            </div>
+        <div className="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center overflow-y-auto">
+          <div className="relative bg-white w-full max-w-4xl rounded-lg shadow-xl m-4">
+            <DetalleProducto
+              producto={producto}
+              onClose={handleCloseDetalle}
+              modeloInicial={modeloSeleccionado}
+            />
           </div>
         </div>
       )}
+
     </>
   );
 };

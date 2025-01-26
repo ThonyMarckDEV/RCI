@@ -195,7 +195,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
 
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-start justify-center overflow-y-auto">
       <div className={`bg-white rounded-xl max-w-4xl w-full mx-4 my-4 relative`}>
         {/* Botón para cerrar */}
         <div className="sticky top-0 right-0 z-50 flex justify-end p-4 bg-white rounded-t-xl">

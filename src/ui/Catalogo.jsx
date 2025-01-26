@@ -41,7 +41,7 @@ const Catalogo = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
       {/* Navbar */}
-      <Navbar className="fixed top-0 w-full z-[1000] animate-slide-down" />
+      <Navbar className="fixed top-0 w-full z-100 animate-slide-down" />
       
       {/* Filtrador */}
       <Filtrador 
@@ -51,28 +51,31 @@ const Catalogo = () => {
       />
       
       {/* Main content */}
-      <main className="flex-grow pt-32 lg:pt-20 pb-16 relative z-0"> {/* z-0 para que esté detrás de la Navbar */}
+      <main className="flex-grow pt-32 lg:pt-20 pb-16 relative"> {/* z-0 para que esté detrás de la Navbar */}
         {/* Title section */}
         <div className="px-6">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
             Catálogo
           </h1>
+
           <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
-        </div>
-      </main>
-        {/* Search section */}
-              <CatalogoSearch
-          onSearch={handleSearch}
-          onSort={handleSort}
-        />
-        
-         {/* Products section */}
-        <div className="px-6">
-          <ProductosCatalogo 
-            filtros={{ ...filtros, sortOrder }}
-            className="animate-slide-down"
+            {/* Search section */}
+            <CatalogoSearch
+            onSearch={handleSearch}
+            onSort={handleSort}
           />
         </div>
+
+          {/* Products section */}
+          <div className="px-6">
+            <ProductosCatalogo 
+              filtros={{ ...filtros, sortOrder }}
+              className="animate-slide-down"
+            />
+          </div>
+      </main>
+
+
 
       {/* Footer */}
       <Footer className="animate-slide-up" />
