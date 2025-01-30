@@ -5,34 +5,35 @@ import 'slick-carousel/slick/slick-theme.css';
 import Navbar from '../components/home/NavBar';
 import Footer from '../components/home/Footer';
 import { motion } from 'framer-motion';
+import laEmpresa from '../img/RCIMAIN.jpeg';
 
 const Clientes = () => {
   const settings = {
-    dots: false, // Elimina los puntos de selección
+    dots: false,
     infinite: true,
-    speed: 500,
-    slidesToShow: 5, // Número de slides visibles en PC
+    speed: 800,
+    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false, // Oculta las flechas de navegación
+    autoplaySpeed: 3000,
+    arrows: false,
     responsive: [
       {
-        breakpoint: 1024, // Pantallas medianas (tablets)
+        breakpoint: 1024,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 768, // Pantallas pequeñas (móviles)
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 480, // Pantallas muy pequeñas
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -46,47 +47,58 @@ const Clientes = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 }
+      transition: { duration: 0.8, ease: "easeOut" }
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-white to-gray-50 min-h-screen flex flex-col">
+    <div className="bg-white min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Hero Section */}
-      <motion.div 
+       {/* Hero Section - Más dramático */}
+       <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="container mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-12 md:pb-16 text-center"
+        className="relative h-screen flex items-center justify-center overflow-hidden"
       >
-        <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6">
-          Nuestros Clientes
-        </h1>
-        <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
-        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-12 md:mb-16 px-4">
-          Empresas líderes que confían en nuestra calidad y servicio
-        </p>
+        <div className="absolute inset-0 bg-black/40 z-10" />
+        <img
+          src={laEmpresa}
+          alt="RCI Empresa"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="container relative z-10 mx-auto px-6 text-center">
+          <motion.h1 
+            variants={fadeInUp}
+            className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
+          >
+            Nuestros Clientes
+          </motion.h1>
+          <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
+          Colaboraciones que trascienden expectativas
+          </p>
+        </div>
       </motion.div>
 
       {/* Brands Slider Section */}
-      <div className="w-full bg-gray-50 py-1 md:py-24 shadow-inner">
+      <div className="w-full bg-gray-50 py-24">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="container mx-auto px-4 md:px-6"
+          className="container mx-auto px-6"
         >
-          <div className="relative pb-16 md:pb-20">
+          <div className="max-w-7xl mx-auto">
             <Slider {...settings} className="brands-slider">
               {[...Array(20)].map((_, index) => (
-                <div key={index} className="px-2 md:px-3 py-4">
-                  <div className="bg-white rounded-xl p-4 md:p-6 h-44 md:h-48 w-64 md:w-auto mx-auto mt-10 flex items-center justify-center transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                <div key={index} className="px-4 py-6">
+                  <div className="bg-white rounded-2xl p-8 h-52 w-full mx-auto flex items-center justify-center transform transition-all duration-500 hover:scale-105 shadow-lg hover:shadow-xl border border-gray-100">
                     <img
                       src={`/img/marcas/marca${index + 1}.png`}
                       alt={`Cliente ${index + 1}`}
-                      className="max-w-[80%] max-h-[80%] object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+                      className="max-w-[85%] max-h-[85%] object-contain opacity-90 hover:opacity-100 transition-all duration-300"
                     />
                   </div>
                 </div>
@@ -101,39 +113,52 @@ const Clientes = () => {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="container mx-auto px-4 md:px-6 py-16 md:py-24"
+        className="container mx-auto px-6 py-32 bg-white"
       >
-        <h2 className="text-2xl md:text-3xl font-light text-gray-900 text-center mb-12 md:mb-16">
-          Lo que dicen nuestros clientes
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8">
+            Testimonios de Excelencia
+          </h2>
+          <div className="w-24 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
           {[
             {
-              text: "La calidad y el servicio superaron nuestras expectativas. Definitivamente volveremos a trabajar juntos.",
+              text: "La dedicación y maestría de RCI han transformado nuestros espacios en obras maestras del diseño y la funcionalidad.",
               author: "María González",
-              company: "Diseño Interior SA"
+              company: "Diseño Interior SA",
+              role: "Directora Creativa"
             },
             {
-              text: "Su atención al detalle y profesionalismo hacen que cada proyecto sea excepcional.",
+              text: "Su compromiso con la excelencia y la innovación establece nuevos estándares en la industria del mobiliario.",
               author: "Carlos Rodríguez",
-              company: "Arquitectos Asociados"
+              company: "Arquitectos Asociados",
+              role: "Socio Principal"
             },
             {
-              text: "Un equipo comprometido con la excelencia y la satisfacción del cliente.",
+              text: "La fusión perfecta entre artesanía tradicional y visión contemporánea. RCI supera consistentemente nuestras expectativas.",
               author: "Ana López",
-              company: "Constructora del Norte"
+              company: "Constructora del Norte",
+              role: "Gerente de Proyectos"
             }
           ].map((testimonial, index) => (
-            <div 
+            <motion.div 
               key={index}
-              className="bg-white p-6 md:p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              variants={fadeInUp}
+              className="bg-white p-10 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
             >
-              <p className="text-gray-600 italic mb-6 text-base md:text-lg">"{testimonial.text}"</p>
-              <div className="border-t pt-4">
-                <p className="font-medium text-gray-900">{testimonial.author}</p>
-                <p className="text-gray-500 text-sm">{testimonial.company}</p>
+              <div className="mb-8">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-400 text-2xl">★</span>
+                ))}
               </div>
-            </div>
+              <p className="text-gray-700 italic mb-8 text-lg leading-relaxed">"{testimonial.text}"</p>
+              <div className="border-t border-gray-100 pt-6">
+                <p className="font-medium text-gray-900 text-lg">{testimonial.author}</p>
+                <p className="text-yellow-500 font-medium mt-1">{testimonial.role}</p>
+                <p className="text-gray-500 text-sm mt-1">{testimonial.company}</p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </motion.div>
@@ -141,15 +166,12 @@ const Clientes = () => {
       <Footer />
 
       <style jsx global>{`
-        .brands-slider .slick-dots {
-          bottom: -2rem;
+        .brands-slider .slick-track {
+          display: flex;
+          align-items: center;
         }
-        .brands-slider .slick-dots li button:before {
-          font-size: 8px;
-          color: #CBD5E0;
-        }
-        .brands-slider .slick-dots li.slick-active button:before {
-          color: #2D3748;
+        .brands-slider .slick-slide > div {
+          margin: 0 0.5rem;
         }
       `}</style>
     </div>

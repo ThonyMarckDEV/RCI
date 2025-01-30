@@ -39,7 +39,7 @@ const LaEmpresa = () => {
           alt="RCI Empresa"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="container relative z-20 mx-auto px-6 text-center">
+        <div className="container relative z-10 mx-auto px-6 text-center">
           <motion.h1 
             variants={fadeInUp}
             className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"

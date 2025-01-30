@@ -2,12 +2,87 @@ import React from 'react';
 import Navbar from '../components/home/NavBar';
 import Footer from '../components/home/Footer';
 import logoeco from '../img/eco2.png';
+import { motion } from 'framer-motion';
+import laEmpresa from '../img/RCIMAIN.jpeg';
 
 const EcoAmigable = () => {
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };  
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" }
+    }
+  };
+
+
   return (
     <div className="bg-white font-light text-gray-800">
       {/* Navbar */}
       <Navbar />
+
+      
+       {/* Hero Section - Más dramático */}
+       <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        className="relative h-screen flex items-center justify-center overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-black/40 z-10" />
+        <img
+          src={laEmpresa}
+          alt="RCI Empresa"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="container relative z-10 mx-auto px-6 text-center">
+          <motion.h1 
+            variants={fadeInUp}
+            className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
+          >
+            ECO AMIGABLE
+          </motion.h1>
+          <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
+            Trabajamos con madera certificada
+          </p>
+        </div>
+      </motion.div>
 
       {/* Contenido principal */}
       <div className="container mx-auto px-6 pt-32 pb-24 flex flex-col justify-center items-center"> {/* Added pb-24 for bottom padding */}
