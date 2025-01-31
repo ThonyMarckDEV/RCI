@@ -6,6 +6,7 @@ import WhatsAppIcon from './components/home/WhatsAppIcon'; // Asegúrate de impo
 import jwtUtils from './utilities/jwtUtils';
 import ErrorPage from './components/home/ErrorPage'; // Asegúrate de que la ruta sea correcta
 import { FavoritosProvider } from './context/FavoritosContext';
+import ScrollToTopButton from './components/home/ScrollToTopButton';
 
 // Componentes Home
 import Home from './ui/Home';
@@ -97,13 +98,13 @@ function AppContent() {
 
     return (
         <Routes>
-          <Route path="/" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Home /></>} />} />
-          <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<><WhatsAppIcon /><EcoAmigable /></>} />} />
-          <Route path="/laEmpresa" element={<ProtectedRouteHome element={<><WhatsAppIcon /><LaEmpresa /></>} />} />
-          <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Clientes /></>} />} />
-          <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Contacto /></>} />} />
-          <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Catalogo /></>} />} />
-          <Route path="/favoritos" element={<ProtectedRouteHome element={<><WhatsAppIcon /><Favoritos /></>} />} />
+          <Route path="/" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><Home /></>} />} />
+          <Route path="/ecoAmigable" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><EcoAmigable /></>} />} />
+          <Route path="/laEmpresa" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><LaEmpresa /></>} />} />
+          <Route path="/clientes" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><Clientes /></>} />} />
+          <Route path="/contacto" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><Contacto /></>} />} />
+          <Route path="/catalogo" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><Catalogo /></>} />} />
+          <Route path="/favoritos" element={<ProtectedRouteHome element={<><WhatsAppIcon /><ScrollToTopButton /><Favoritos /></>} />} />
 
           <Route path="/login" element={<ProtectedRouteHome element={<Login />} />} />
   
