@@ -11,6 +11,8 @@ module.exports = {
         'fade-in-down': 'fade-in-down 1s ease-out forwards',
         'blink': 'blink 1.5s infinite', // Animación de parpadeo
         'slide-right-back': 'slideRightAndBack 5s ease-in-out infinite', // Animación con dos movimientos y pausa
+         // New bounce animation
+         'bounce-custom': 'bounceCustom 2s infinite'
       },
       // Definir keyframes para las animaciones
       keyframes: {
@@ -42,6 +44,17 @@ module.exports = {
           '25%': { transform: 'translateX(10px)' }, // Segundo movimiento a la derecha (25%)
           '30%': { transform: 'translateX(0)' }, // Segundo regreso (30%)
           '35%, 100%': { transform: 'translateX(0)' }, // Pausa final (35% a 100%)
+        },
+         // Add new bounce keyframes
+         bounceCustom: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '40%': { transform: 'translateY(-15px)' },
+          '60%': { transform: 'translateY(10px)' },
+          '80%': { transform: 'translateY(-5px)' }
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
       },
       fontFamily: {
