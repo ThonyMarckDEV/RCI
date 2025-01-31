@@ -13,9 +13,7 @@ function AgregarProductoAdmin() {
     nombreProducto: '',
     descripcion: '',
     estado: 'activo',
-    idCategoria: '',
-    precio: '',
-  };
+    idCategoria: '',  };
 
   const initialModeloState = {
     idModelo: '',
@@ -200,15 +198,7 @@ function AgregarProductoAdmin() {
       return false;
     }
 
-    if (!producto.precio || producto.precio <= 0) {
-      SweetAlert.showMessageAlert(
-        'Error',
-        'El precio debe ser mayor a 0',
-        'error'
-      );
-      return false;
-    }
-
+  
     if (modelos.length === 0) {
       SweetAlert.showMessageAlert(
         'Error',
@@ -256,8 +246,7 @@ function AgregarProductoAdmin() {
     formData.append('descripcion', producto.descripcion.trim());
     formData.append('estado', producto.estado);
     formData.append('idCategoria', producto.idCategoria);
-    formData.append('precio', producto.precio);
-
+  
   // Agregar características al FormData
     if (caracteristicas.trim()) {
       formData.append('caracteristicas', caracteristicas.trim());
@@ -332,21 +321,6 @@ function AgregarProductoAdmin() {
                   onChange={handleChange}
                   className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="Ingrese el nombre del producto"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Precio</label>
-                <input
-                  type="number"
-                  name="precio"
-                  value={producto.precio}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  placeholder="Ingrese el precio del producto"
-                  min="0"
-                  step="0.01"
                   required
                 />
               </div>
@@ -524,5 +498,6 @@ function AgregarProductoAdmin() {
     </div>
   );
 }
+
 
 export default AgregarProductoAdmin;
