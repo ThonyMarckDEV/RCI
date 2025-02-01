@@ -8,7 +8,9 @@ import {
 } from 'react-icons/fa';
 import API_BASE_URL from '../../js/urlHelper';
 import CaracteristicasProducto from './CaracteristicasProducto';
-import ProductosRelacionados from './ProductosRelacionados'; // Importar el nuevo componente
+import ProductosRelacionados from './ProductosRelacionados';
+import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 
 const DetalleProducto = ({ producto, onClose }) => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +24,13 @@ const DetalleProducto = ({ producto, onClose }) => {
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
 
+  // Configurar IntersectionObserver para animaciones
+  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [imageSectionRef, imageSectionInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [detailsSectionRef, detailsSectionInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [featuresRef, featuresInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [relatedProductsRef, relatedProductsInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
   useEffect(() => {
     document.body.classList.add('overflow-hidden');
     return () => {
@@ -29,20 +38,16 @@ const DetalleProducto = ({ producto, onClose }) => {
     };
   }, []);
 
-  // Simular la carga de datos
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true); // Activar el estado de carga global
-
-        // Simular la carga de características
+        setLoading(true);
         const response = await fetch(`${API_BASE_URL}/api/productos/${producto.idProducto}/caracteristicas`);
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
         if (data.success) {
-          // Filtrar características para excluir IDs
           const filteredData = Object.fromEntries(
             Object.entries(data.data).filter(
               ([key]) => !key.toLowerCase().includes('id') && !key.toLowerCase().includes('_id')
@@ -52,14 +57,12 @@ const DetalleProducto = ({ producto, onClose }) => {
         } else {
           setCaracteristicas(null);
         }
-
-        // Simular un tiempo de carga (por ejemplo, 1 segundo)
         await new Promise((resolve) => setTimeout(resolve, 100));
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         setCaracteristicas(null);
       } finally {
-        setLoading(false); // Desactivar el estado de carga global
+        setLoading(false);
       }
     };
 
@@ -97,45 +100,6 @@ const DetalleProducto = ({ producto, onClose }) => {
     }
   };
 
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Error al copiar:', err);
-    }
-  };
-
-  const handleSocialShare = (platform) => {
-    const text = encodeURIComponent(`¡Mira este producto: ${producto.nombreProducto} - ${modeloActual.nombreModelo}!`);
-    const url = encodeURIComponent(shareUrl);
-
-    let shareUrl;
-    switch (platform) {
-      case 'whatsapp':
-        shareUrl = `https://wa.me/?text=${text}%20${url}`;
-        break;
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'instagram':
-        if (navigator.share) {
-          navigator.share({
-            title: producto.nombreProducto,
-            text: text,
-            url: shareUrl,
-          });
-          return;
-        }
-        break;
-    }
-
-    if (shareUrl) {
-      window.open(shareUrl, '_blank', 'width=600,height=400');
-    }
-  };
-
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
       `¡Hola! 👋\n\n` +
@@ -155,24 +119,36 @@ const DetalleProducto = ({ producto, onClose }) => {
   return (
     <div className="fixed inset-x-0 bottom-0 h-[85vh] bg-white z-50 flex flex-col overflow-y-auto shadow-lg border-t border-gray-200">
       {/* Header */}
-      <div className="sticky top-0 bg-white p-4 border-b border-gray-200 z-10">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">{producto.nombreProducto}</h1>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
-          >
-            <FaTimes className="w-5 h-5 text-gray-600" />
-          </button>
+      <motion.div
+        ref={headerRef}
+        initial={{ opacity: 0, y: -50 }}
+        animate={headerInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="sticky top-0 bg-white p-4 border-b border-gray-200 z-10">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold">{producto.nombreProducto}</h1>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
+            >
+              <FaTimes className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
       
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-8 mb-8">
-          {/* Image Section - Updated */}
-          <div className="w-full md:w-1/2">
+          {/* Image Section */}
+          <motion.div
+            ref={imageSectionRef}
+            initial={{ opacity: 0, x: -100 }}
+            animate={imageSectionInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="w-full md:w-1/2"
+          >
             <div className="relative w-full max-w-2xl mx-auto">
-              {/* Main Image - Modified container */}
               <div className="relative w-full mb-8">
                 <div className="aspect-square w-full rounded-lg overflow-hidden">
                   {imagenes[imagenActual] && (
@@ -184,8 +160,6 @@ const DetalleProducto = ({ producto, onClose }) => {
                   )}
                 </div>
               </div>
-  
-              {/* Navigation Arrows */}
               {imagenes.length > 1 && (
                 <>
                   <button
@@ -202,8 +176,6 @@ const DetalleProducto = ({ producto, onClose }) => {
                   </button>
                 </>
               )}
-  
-              {/* Image Indicators - adjusted margin */}
               <div className="flex justify-center gap-2 mt-4 mb-6">
                 {imagenes.map((_, index) => (
                   <button
@@ -216,10 +188,16 @@ const DetalleProducto = ({ producto, onClose }) => {
                 ))}
               </div>
             </div>
-          </div>
-  
+          </motion.div>
+
           {/* Product Details Section */}
-          <div className="w-full md:w-1/2">
+          <motion.div
+            ref={detailsSectionRef}
+            initial={{ opacity: 0, x: 100 }}
+            animate={detailsSectionInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="w-full md:w-1/2"
+          >
             <div className="mb-6">
               <span className="inline-block px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
                 {producto.nombreCategoria}
@@ -266,7 +244,7 @@ const DetalleProducto = ({ producto, onClose }) => {
               <p className="text-gray-600">{producto.descripcion}</p>
             </div>
 
-            {/* Thumbnails - Moved here */}
+            {/* Thumbnails */}
             <div className="flex gap-2 overflow-x-auto pb-2 mb-8">
               {imagenes.map((imagen, index) => (
                 <button
@@ -284,13 +262,28 @@ const DetalleProducto = ({ producto, onClose }) => {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <CaracteristicasProducto caracteristicas={caracteristicas} />
+        {/* Características del Producto */}
+        <motion.div
+          ref={featuresRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={featuresInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <CaracteristicasProducto caracteristicas={caracteristicas} />
+        </motion.div>
 
-        {/* Related Products */}
-        <ProductosRelacionados productoId={producto.idProducto} />
+        {/* Productos Relacionados */}
+        <motion.div
+          ref={relatedProductsRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={relatedProductsInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <ProductosRelacionados productoId={producto.idProducto} />
+        </motion.div>
       </div>
     </div>
   );

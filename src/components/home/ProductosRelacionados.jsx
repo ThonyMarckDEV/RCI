@@ -42,7 +42,7 @@ const ProductosRelacionados = ({ productoId }) => {  // Acepta productoId como p
   
       // Parsear la respuesta como JSON
       const data = await response.json();
-      console.log("Respuesta de la API:", data);  // Inspecciona la respuesta
+     // console.log("Respuesta de la API:", data);  // Inspecciona la respuesta
   
       // Asegúrate de que `data.productos` sea un array, incluso si está vacío
       setProductos(data.productos || []);
@@ -56,7 +56,6 @@ const ProductosRelacionados = ({ productoId }) => {  // Acepta productoId como p
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
       <div className="flex-grow pt-32">
         <div className="px-6 pt-8">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
