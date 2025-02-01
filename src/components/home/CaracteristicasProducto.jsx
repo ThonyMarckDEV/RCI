@@ -48,7 +48,7 @@ const CaracteristicasProducto = ({ caracteristicas }) => {
           </div>
 
           {/* Contenedor de características */}
-          <div className="bg-white rounded-xl p-6 relative overflow-hidden">
+          <div className="bg-white rounded-xl p-4 relative overflow-hidden w-full mx-auto mt-4">
             <div
               className={`text-gray-600 whitespace-pre-wrap ${
                 !isExpanded ? "max-h-32 overflow-hidden" : "max-h-none"

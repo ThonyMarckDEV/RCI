@@ -1,38 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import {
-  FaWhatsapp,
+  FaTimes,
   FaChevronLeft,
   FaChevronRight,
-  FaTimes,
-  FaShare,
-  FaInstagram,
-  FaFacebook,
-  FaCopy,
-  FaCheck,
+  FaShareAlt,
+  FaWhatsapp,
 } from 'react-icons/fa';
 import API_BASE_URL from '../../js/urlHelper';
 import CaracteristicasProducto from './CaracteristicasProducto';
+import ProductosRelacionados from './ProductosRelacionados'; // Importar el nuevo componente
 
-const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
-  const [modeloSeleccionado, setModeloSeleccionado] = useState(modeloInicial);
+const DetalleProducto = ({ producto, onClose }) => {
+  const [loading, setLoading] = useState(true);
+  const [modeloSeleccionado, setModeloSeleccionado] = useState(0);
   const [imagenActual, setImagenActual] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 para izquierda, 1 para derecha
   const [transitioning, setTransitioning] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [caracteristicas, setCaracteristicas] = useState(null);
-  const [isZoomed, setIsZoomed] = useState(false); // Estado para el zoom
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Posición del cursor
-  const [loading, setLoading] = useState(true); // Estado de carga global
 
   const modeloActual = producto.modelos[modeloSeleccionado] || {};
   const imagenes = modeloActual.imagenes || [];
 
-  // Deshabilitar el desplazamiento del fondo cuando el modal está abierto
   useEffect(() => {
-    document.body.classList.add('overflow-hidden'); // Deshabilita el desplazamiento del fondo
+    document.body.classList.add('overflow-hidden');
     return () => {
-      document.body.classList.remove('overflow-hidden'); // Restaura el desplazamiento del fondo
+      document.body.classList.remove('overflow-hidden');
     };
   }, []);
 
@@ -72,45 +65,22 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
 
     fetchData();
   }, [producto.idProducto]);
-  
-  // Cambiar modelo seleccionado
+
   const handleModeloChange = (index) => {
-    setTransitioning(true);
-    setTimeout(() => {
-      setModeloSeleccionado(index);
-      setImagenActual(0);
-      setTransitioning(false);
-    }, 300);
+    setModeloSeleccionado(index);
+    setImagenActual(0);
   };
 
-  // Cambiar imagen con transición
-  const handleImageTransition = (newIndex, newDirection) => {
+  const handleImageChange = (newIndex) => {
     if (!transitioning) {
-      setDirection(newDirection);
       setTransitioning(true);
-      setTimeout(() => {
-        setImagenActual(newIndex);
-        setTransitioning(false);
-      }, 300);
+      setImagenActual(newIndex);
+      setTimeout(() => setTransitioning(false), 300);
     }
   };
 
-  // Siguiente imagen
-  const nextImage = () => {
-    const newIndex = (imagenActual + 1) % imagenes.length;
-    handleImageTransition(newIndex, 1);
-  };
-
-  // Imagen anterior
-  const prevImage = () => {
-    const newIndex = (imagenActual - 1 + imagenes.length) % imagenes.length;
-    handleImageTransition(newIndex, -1);
-  };
-
-  // Generar enlace compartible
   const shareUrl = `${window.location.origin}/catalogo?nombre=${encodeURIComponent(producto.nombreProducto)}`;
 
-  // Compartir en redes sociales
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -127,7 +97,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
-  // Copiar enlace
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
@@ -138,7 +107,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
-  // Compartir en redes sociales específicas
   const handleSocialShare = (platform) => {
     const text = encodeURIComponent(`¡Mira este producto: ${producto.nombreProducto} - ${modeloActual.nombreModelo}!`);
     const url = encodeURIComponent(shareUrl);
@@ -168,7 +136,6 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     }
   };
 
-  // Enviar mensaje por WhatsApp
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
       `¡Hola! 👋\n\n` +
@@ -185,286 +152,145 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
     window.open(`https://wa.me/+51902207108?text=${message}`, '_blank');
   };
 
-  // Manejar el movimiento del cursor sobre la imagen
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setCursorPosition({ x, y });
-  };
-
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-start justify-center overflow-y-auto">
-      <div className={`bg-white rounded-xl max-w-4xl w-full mx-4 my-4 relative`}>
-        {/* Botón para cerrar */}
-        <div className="sticky top-0 right-0 z-50 flex justify-end p-4 bg-white rounded-t-xl">
+    <div className="fixed inset-x-0 bottom-0 h-[85vh] bg-white z-50 flex flex-col overflow-y-auto shadow-lg border-t border-gray-200">
+      {/* Header */}
+      <div className="sticky top-0 bg-white p-4 border-b border-gray-200 z-10">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">{producto.nombreProducto}</h1>
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200"
           >
             <FaTimes className="w-5 h-5 text-gray-600" />
           </button>
         </div>
-
-        {/* Esqueleto de carga para todo el modal */}
-        {loading ? (
-         <div className="p-4">
-         {/* Esqueleto para la sección de imágenes */}
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-           <div>
-             <div
-               className="bg-gray-200 rounded-lg animate-blink"
-               style={{ aspectRatio: '1/1', maxHeight: '40vh' }}
-             ></div>
-             <div className="mt-4 space-y-2">
-               <div className="h-4 bg-gray-200 rounded w-1/2  animate-blink"></div>
-               <div className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
-             </div>
-           </div>
-       
-           {/* Esqueleto para la sección de contenido */}
-           <div className="space-y-4">
-             <div className="h-8 bg-gray-200 rounded w-3/4  animate-blink"></div>
-             <div className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
-             <div className="h-4 bg-gray-200 rounded w-2/3  animate-blink"></div>
-             <div className="h-4 bg-gray-200 rounded w-1/2  animate-blink"></div>
-             <div className="h-12 bg-gray-200 rounded  animate-blink"></div>
-             <div className="h-12 bg-gray-200 rounded  animate-blink"></div>
-           </div>
-         </div>
-       
-         {/* Esqueleto para la sección de características */}
-         <div className="mt-8">
-           <div className="h-6 bg-gray-200 rounded w-1/2 mb-4  animate-blink"></div>
-           <div className="space-y-3">
-             {[...Array(5)].map((_, index) => (
-               <div key={index} className="h-4 bg-gray-200 rounded w-full  animate-blink"></div>
-             ))}
-           </div>
-         </div>
-       </div>
-        ) : (
-          /* Contenido real del modal */
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 pt-0">
-              {/* Sección de imágenes */}
-              <div>
-                <div 
-                  className="relative bg-gray-100 rounded-lg overflow-hidden"
-                  style={{
-                    aspectRatio: '1/1',
-                    maxHeight: '70vh'
-                  }}
-                  onClick={() => setIsZoomed(!isZoomed)}
-                  onMouseMove={(e) => {
-                    if (isZoomed) {
-                      handleMouseMove(e);
-                    }
-                  }}
-                  onMouseLeave={() => setIsZoomed(false)}
-                >
-                  <div className="relative w-full h-full flex items-center justify-center">
+      </div>
+      
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex flex-col md:flex-row gap-8 mb-8">
+          {/* Image Section - Updated */}
+          <div className="w-full md:w-1/2">
+            <div className="relative w-full max-w-2xl mx-auto">
+              {/* Main Image - Modified container */}
+              <div className="relative w-full mb-8">
+                <div className="aspect-square w-full rounded-lg overflow-hidden">
+                  {imagenes[imagenActual] && (
                     <img
-                      key={`${modeloSeleccionado}-${imagenActual}`}
-                      src={`${API_BASE_URL}/storage/${imagenes[imagenActual]?.urlImagen}`}
-                      alt={modeloSeleccionado.nombreModelo}
-                      className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
-                        transitioning
-                          ? direction > 0 
-                            ? '-translate-x-full opacity-0'
-                            : 'translate-x-full opacity-0'
-                          : 'translate-x-0 opacity-100'
-                      }`}
-                      style={{
-                        transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
-                        objectFit: 'contain'
-                      }}
+                      src={`${API_BASE_URL}/storage/${imagenes[imagenActual].urlImagen}`}
+                      alt={modeloActual.nombreModelo}
+                      className="w-full h-full object-contain bg-gray-50"
                     />
-
-                    {transitioning && (
-                      <img
-                        src={`${API_BASE_URL}/storage/${
-                          imagenes[direction > 0 ? (imagenActual + 1) % imagenes.length : (imagenActual - 1 + imagenes.length) % imagenes.length]
-                            ?.urlImagen
-                        }`}
-                        alt="Next"
-                        className={`absolute max-h-full max-w-full transition-all duration-300 ease-in-out ${
-                          direction > 0 ? 'translate-x-full' : '-translate-x-full'
-                        }`}
-                        style={{ objectFit: 'contain' }}
-                      />
-                    )}
-                  </div>
-
-                  {imagenes.length > 1 && (
-                    <>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation(); // Evitar que el click se propague
-                          prevImage();
-                        }}
-                        disabled={transitioning}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <FaChevronLeft className="w-5 h-5 text-gray-800" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation(); // Evitar que el click se propague
-                          nextImage();
-                        }}
-                        disabled={transitioning}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <FaChevronRight className="w-5 h-5 text-gray-800" />
-                      </button>
-
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                        {imagenes.map((_, index) => (
-                          <button
-                            key={index}
-                            onClick={(e) => {
-                              e.stopPropagation(); // Evitar que el click se propague
-                              const newDirection = index > imagenActual ? 1 : -1;
-                              handleImageTransition(index, newDirection);
-                            }}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                              index === imagenActual ? 'bg-black w-4' : 'bg-gray-300 hover:bg-gray-400'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
                   )}
                 </div>
-
-                {imagenes.length > 1 && (
-                  <div className="mt-4">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">Imágenes adicionales</h3>
-                    <div className="grid grid-cols-4 gap-2">
-                      {imagenes.map((imagen, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            const newDirection = index > imagenActual ? 1 : -1;
-                            handleImageTransition(index, newDirection);
-                          }}
-                          className={`aspect-square rounded-lg overflow-hidden border-2 ${
-                            imagenActual === index ? 'border-black' : 'border-transparent'
-                          }`}
-                        >
-                          <img
-                            src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
-                            alt={`Imagen ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
-
-              {/* Contenido del producto */}
-              <div className="flex flex-col">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">{producto.nombreProducto}</h2>
-
-                <p className="text-gray-600 mb-6">{producto.descripcion}</p>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {producto.modelos.map((modelo, index) => (
-                    <button
-                      key={modelo.idModelo}
-                      onClick={() => handleModeloChange(index)}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
-                        modeloSeleccionado === index
-                          ? 'bg-black text-white shadow-md'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {modelo.nombreModelo}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mb-8">
-                  <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
-                    {producto.nombreCategoria}
-                  </span>
-                </div>
-
-                {/* Botones de acción */}
-                <div className="flex flex-col gap-3 mt-auto">
-                  {/* Botón de compartir */}
-                  <div className="relative">
-                    <button
-                      onClick={handleShare}
-                      className="w-full flex items-center justify-center gap-2 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                    >
-                      <FaShare className="w-5 h-5" />
-                      Compartir
-                    </button>
-
-                    {/* Menú de compartir */}
-                    {showShareMenu && (
-                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg p-4">
-                        <div className="flex flex-col gap-3">
-                          <button
-                            onClick={handleCopyLink}
-                            className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                          >
-                            {copied ? (
-                              <FaCheck className="w-5 h-5 text-green-500" />
-                            ) : (
-                              <FaCopy className="w-5 h-5 text-gray-600" />
-                            )}
-                            {copied ? '¡Enlace copiado!' : 'Copiar enlace'}
-                          </button>
-
-                          <div className="flex justify-center gap-4">
-                            <button
-                              onClick={() => handleSocialShare('whatsapp')}
-                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                            >
-                              <FaWhatsapp className="w-6 h-6 text-green-500" />
-                            </button>
-                            <button
-                              onClick={() => handleSocialShare('facebook')}
-                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                            >
-                              <FaFacebook className="w-6 h-6 text-blue-600" />
-                            </button>
-                            <button
-                              onClick={() => handleSocialShare('instagram')}
-                              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                            >
-                              <FaInstagram className="w-6 h-6 text-pink-600" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Botón de WhatsApp */}
+  
+              {/* Navigation Arrows */}
+              {imagenes.length > 1 && (
+                <>
                   <button
-                    onClick={handleWhatsAppClick}
-                    className="flex items-center justify-center gap-2 bg-gray-400 hover:bg-gray-500 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                    onClick={() => handleImageChange((imagenActual - 1 + imagenes.length) % imagenes.length)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-lg"
                   >
-                    <FaWhatsapp className="w-5 h-5" />
-                    Cotízalo aquí
+                    <FaChevronLeft className="w-5 h-5" />
                   </button>
-                </div>
+                  <button
+                    onClick={() => handleImageChange((imagenActual + 1) % imagenes.length)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-lg"
+                  >
+                    <FaChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+  
+              {/* Image Indicators - adjusted margin */}
+              <div className="flex justify-center gap-2 mt-4 mb-6">
+                {imagenes.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleImageChange(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      imagenActual === index ? 'bg-gray-800 w-4' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
-
-            {/* Sección de características */}
-            <div className="p-4">
-              {caracteristicas && <CaracteristicasProducto caracteristicas={caracteristicas} />}
+          </div>
+  
+          {/* Product Details Section */}
+          <div className="w-full md:w-1/2">
+            <div className="mb-6">
+              <span className="inline-block px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                {producto.nombreCategoria}
+              </span>
             </div>
-          </>
-        )}
+
+            {/* Model Selection */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {producto.modelos.map((modelo, index) => (
+                <button
+                  key={modelo.idModelo}
+                  onClick={() => handleModeloChange(index)}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                    modeloSeleccionado === index
+                      ? 'bg-black text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {modelo.nombreModelo}
+                </button>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 mb-8">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+              >
+                <FaShareAlt className="w-5 h-5" />
+                <span>Compartir</span>
+              </button>
+              <button
+                onClick={handleWhatsAppClick}
+                className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+              >
+                <FaWhatsapp className="w-5 h-5" />
+                <span>Cotizar</span>
+              </button>
+            </div>
+
+            {/* Product Description */}
+            <div className="mb-8">
+              <p className="text-gray-600">{producto.descripcion}</p>
+            </div>
+
+            {/* Thumbnails - Moved here */}
+            <div className="flex gap-2 overflow-x-auto pb-2 mb-8">
+              {imagenes.map((imagen, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleImageChange(index)}
+                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                    imagenActual === index ? 'border-black' : 'border-transparent'
+                  }`}
+                >
+                  <img
+                    src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
+                    alt={`${modeloActual.nombreModelo} - ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <CaracteristicasProducto caracteristicas={caracteristicas} />
+
+        {/* Related Products */}
+        <ProductosRelacionados productoId={producto.idProducto} />
       </div>
     </div>
   );

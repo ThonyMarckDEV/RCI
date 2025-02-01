@@ -97,20 +97,21 @@ const CategoriesGrid = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      {/* Título con animación de aparecimiento */}
-      <div
-        ref={ref}
-        className={`text-center transition-all duration-1000 ease-in-out ${
-          inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
-      >
-        <h2 className="text-5xl font-light font-serif text-gray-800 mb-4">
-          Nuestras Categorías
-        </h2>
-        <p className="text-lg text-gray-800">
-          Explora nuestras categorías y descubre lo mejor para ti.
-        </p>
-      </div>
+
+    {/* Título con animación de aparecimiento */}
+    <div
+      ref={ref}
+      className={`text-center transition-all duration-1000 ease-in-out ${
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+    >
+      <h2 className="text-5xl font-light font-serif text-gray-800 mb-4">
+        Nuestras Categorías
+      </h2>
+      <p className="text-lg text-gray-800">
+        Explora nuestras categorías y descubre lo mejor para ti.
+      </p>
+    </div>
 
       {/* Slider para móviles y desktop */}
       <Swiper
@@ -189,7 +190,7 @@ const CategoriesGrid = () => {
               onClick={() => handlePageChange(page)}
               className={`px-6 py-3 border-2 rounded-lg mx-1 ${
                 pagination.page === page
-                  ? 'bg-black text-white border-black hover:bg-gray-800'
+                  ? 'bg-gray-800 text-white border-gray-800 hover:bg-gray-900'
                   : 'bg-white text-black border-gray-300 hover:bg-gray-100'
               } transition-all duration-300`}
             >
@@ -203,14 +204,14 @@ const CategoriesGrid = () => {
       <style>
         {`
           .swiper-pagination-bullet {
-            background-color: black;
+            background-color: gray;
             opacity: 0.5;
             width: 10px;
             height: 10px;
             margin: 0 6px !important;
           }
           .swiper-pagination-bullet-active {
-            background-color: black;
+            background-color: gray;
             opacity: 1;
           }
           .swiper-button-next {

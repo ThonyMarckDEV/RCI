@@ -20,10 +20,10 @@ const SeccionCatalogo = () => {
           boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)', // Sombra personalizada más intensa
         }}
       >
-        <img
-          src="/img/catalogorci.png" // Cambia esta ruta por la imagen real
+       <img
+          src="/img/catalogorci.png"
           alt="Nuestro Catálogo"
-          className="w-80 md:w-96 lg:w-[500px]"
+          className="w-64 md:w-80 lg:w-96" 
         />
       </motion.div>
 

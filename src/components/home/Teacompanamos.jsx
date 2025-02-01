@@ -27,7 +27,7 @@ const InfoSection = () => {
           className="text-4xl sm:text-6xl font-serif text-slate-900 italic"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1.5 }}  // Aumentamos la duración a 1.5 segundos
         >
           Transformamos tus ideas en realidad
         </motion.h2>
@@ -35,7 +35,7 @@ const InfoSection = () => {
           className="text-4xl sm:text-6xl font-serif text-slate-900 italic mt-2"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 1.5, delay: 0.3 }}  // Aumentamos la duración a 1.5 segundos y el delay a 0.3 segundos
         >
           creando espacios que inspiran y conectan
         </motion.h2>
@@ -43,7 +43,7 @@ const InfoSection = () => {
           className="text-4xl sm:text-6xl font-serif text-slate-900 italic mt-2"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 1.5, delay: 0.6 }}  // Aumentamos la duración a 1.5 segundos y el delay a 0.6 segundos
         >
           con tu visión y estilo único
         </motion.h2>
@@ -54,7 +54,7 @@ const InfoSection = () => {
             className="mt-8 px-6 py-3 sm:px-10 sm:py-5 border border-slate-900 text-slate-900 text-xl sm:text-2xl font-serif italic hover:bg-slate-900 hover:text-white transition-all"
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: inView ? 0 : 100, opacity: inView ? 1 : 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
+            transition={{ duration: 1.5, delay: 0.9 }}  // Aumentamos la duración a 1.5 segundos y el delay a 0.9 segundos
           >
             SABER MÁS
           </motion.button>
@@ -65,7 +65,7 @@ const InfoSection = () => {
       <motion.div
         className="hidden md:flex absolute -right-[300px] top-1/6 transform -translate-y-1/2 w-[600px] h-[600px] items-center justify-center"
         animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}  // Aumentamos la duración de la rotación a 30 segundos
       >
         <svg viewBox="0 0 600 600" className="w-full h-full">
           <defs>

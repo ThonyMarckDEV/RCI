@@ -43,46 +43,30 @@ const Catalogo = () => {
     setSortOrder(order);
   };
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };  
-
+  // Animaciones
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.1, ease: "easeOut" }
+    }
+  };
+
+  const fadeInDown = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.1, ease: "easeOut" }
+    }
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.1, ease: "easeOut" }
     }
   };
 
@@ -116,8 +100,12 @@ const Catalogo = () => {
           >
             Catálogo
           </motion.h1>
-          <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
+          <motion.div
+            variants={fadeInDown}
+            className="w-32 h-1 bg-white mb-8 mx-auto"
+          />
         </div>
+        
       </motion.div>
 
       {/* Filtrador - justo debajo del navbar */}
@@ -134,16 +122,32 @@ const Catalogo = () => {
           {/* Title section */}
           <div className="px-6 mt-8">
             <div className="px-6 pt-8">
-              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center"
+              >
                 Busca tus Productos
-              </h1>
-              <div className="w-24 h-1 bg-black mb-8 mx-auto animate-slide-up"></div>
+              </motion.h1>
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeInDown}
+                className="w-24 h-1 bg-black mb-8 mx-auto"
+              />
             </div>
             {/* Search section */}
-            <CatalogoSearch 
-              onSearch={handleSearch} 
-              onSort={handleSort}
-            />
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
+            >
+              <CatalogoSearch 
+                onSearch={handleSearch} 
+                onSort={handleSort}
+              />
+            </motion.div>
           </div>
 
           {/* Products section */}

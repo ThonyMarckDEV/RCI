@@ -244,15 +244,11 @@ const ProductoCard = ({ producto }) => {
       </div>
 
       {showDetalle && (
-        <div className="fixed inset-0 z-[9999] bg-black/50 flex items-center justify-center overflow-y-auto">
-          <div className="relative bg-white w-full max-w-4xl rounded-lg shadow-xl m-4">
             <DetalleProducto
               producto={producto}
               onClose={handleCloseDetalle}
               modeloInicial={modeloSeleccionado}
             />
-          </div>
-        </div>
       )}
     </>
   );
