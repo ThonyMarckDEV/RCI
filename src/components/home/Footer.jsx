@@ -1,11 +1,10 @@
 import React from 'react';
-import { FaFacebook, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome } from 'react-icons/fa'; // Íconos de React Icons
+import { FaFacebook, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope, FaHome } from 'react-icons/fa';
 import logoeco from '../../img/eco.png';
-import { FaDashcube } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
-    <div className="bg-white text-gray-800 py-12">
+    <div className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-6">
         {/* Contenedor de columnas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -24,11 +23,15 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2">
-              <li><a href="/" className="hover:text-gray-600">Inicio</a></li>
-              <li><a href="/laEmpresa" className="hover:text-gray-600">La Empresa</a></li>
-              <li><a href="/catalogo" className="hover:text-gray-600">Catalogo</a></li>
-              <li><a href="/contacto" className="hover:text-gray-600">Contacto</a></li>
-              <li><a href="/login"className="hover:text-gray-600"> <FaHome className="mr-2" /></a></li>
+              <li><a href="/" className="hover:text-gray-400">Inicio</a></li>
+              <li><a href="/laEmpresa" className="hover:text-gray-400">La Empresa</a></li>
+              <li><a href="/catalogo" className="hover:text-gray-400">Catálogo</a></li>
+              <li><a href="/contacto" className="hover:text-gray-400">Contacto</a></li>
+              <li>
+                <a href="/login" className="hover:text-gray-400 flex items-center justify-center md:justify-start">
+                  <FaHome className="mr-2" /> Iniciar sesión
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -46,7 +49,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <FaPhone className="mr-2" />
-                (073) 38 3432 - anexo 20 
+                (073) 38 3432 - anexo 20
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <FaEnvelope className="mr-2" />
@@ -63,10 +66,10 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4">Síguenos</h3>
             <div className="flex space-x-4 justify-center md:justify-start">
-              <a href="https://www.facebook.com/rcimuebles" className="text-gray-800 hover:text-gray-600">
+              <a href="https://www.facebook.com/rcimuebles" className="text-white hover:text-gray-400">
                 <FaFacebook size={24} />
               </a>
-              <a href="https://www.instagram.com/rcimuebles?igsh=Z2l1ZXkyMDRlZmow" className="text-gray-800 hover:text-gray-600">
+              <a href="https://www.instagram.com/rcimuebles?igsh=Z2l1ZXkyMDRlZmow" className="text-white hover:text-gray-400">
                 <FaInstagram size={24} />
               </a>
             </div>
@@ -74,7 +77,7 @@ const Footer = () => {
         </div>
 
         {/* Derechos de autor */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-sm">
             &copy; {new Date().getFullYear()} Muebles RCI. Todos los derechos reservados.
           </p>

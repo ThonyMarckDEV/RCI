@@ -5,8 +5,6 @@ import Filtrador from '../components/home/Filtrador';
 import ProductosCatalogo from '../components/home/ProductosCatalogo';
 import CatalogoSearch from '../components/home/CatalogoSearch';
 import API_BASE_URL from '../js/urlHelper';
-
-
 import { motion } from 'framer-motion';
 import productos from '../img/productos.webp';
 
@@ -93,46 +91,44 @@ const Catalogo = () => {
       {/* Navbar - fixed position */}
       <Navbar className="fixed top-0 w-full z-50" />
 
-        {/* Hero Section */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="relative h-[70vh] flex items-center justify-center overflow-hidden"
-        >
-          {/* Overlay oscuro para mejorar la legibilidad del texto */}
-          <div className="absolute inset-0 bg-black/50 z-10" />
+      {/* Hero Section */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        className="relative h-[70vh] flex items-center justify-center overflow-hidden"
+      >
+        {/* Overlay oscuro para mejorar la legibilidad del texto */}
+        <div className="absolute inset-0 bg-black/50 z-10" />
 
-          {/* Imagen de fondo */}
-          <img
-            src={productos} // Reemplaza con la ruta de tu imagen
-            alt="Fondo de contacto"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-
-          {/* Contenido del Hero Section */}
-          <div className="container relative z-10 mx-auto px-6 text-center">
-            <motion.h1
-              variants={fadeInUp}
-              className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
-            >
-              Productos
-            </motion.h1>
-            <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
-          </div>
-        </motion.div>
-      
-        {/* Filtrador - justo debajo del navbar */}
-       <Filtrador 
-          onFilterApply={setFiltros} 
-          categorias={categorias} 
-          className="animate-fade-in"
+        {/* Imagen de fondo */}
+        <img
+          src={productos} // Reemplaza con la ruta de tu imagen
+          alt="Fondo de contacto"
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
+        {/* Contenido del Hero Section */}
+        <div className="container relative z-10 mx-auto px-6 text-center">
+          <motion.h1
+            variants={fadeInUp}
+            className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
+          >
+            Productos
+          </motion.h1>
+          <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
+        </div>
+      </motion.div>
+
+      {/* Filtrador - justo debajo del navbar */}
+      <Filtrador 
+        onFilterApply={setFiltros} 
+        categorias={categorias} 
+        className="animate-fade-in"
+      />
 
       {/* Content wrapper */}
       <div className="pt-[88px]"> {/* Ajustado al alto exacto del navbar */}
-
         {/* Main content */}
         <main className="flex-grow pb-16 relative">
           {/* Title section */}
@@ -160,8 +156,10 @@ const Catalogo = () => {
         </main>
       </div>
 
-      {/* Footer */}
-      <Footer className="animate-slide-up" />
+      {/* Footer - con margen superior para separarlo del contenido */}
+      <div className="mt-100"> {/* Añade un margen superior de 4rem (mt-16) */}
+        <Footer className="animate-slide-up" />
+      </div>
     </div>
   );
 };

@@ -75,7 +75,7 @@ const EcoAmigable = () => {
             variants={fadeInUp}
             className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
           >
-            ECO AMIGABLE
+           Eco Amigable
           </motion.h1>
           <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
