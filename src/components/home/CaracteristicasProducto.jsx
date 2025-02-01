@@ -41,7 +41,7 @@ const CaracteristicasProducto = ({ caracteristicas }) => {
             <h3 className="text-lg font-medium">Características del producto</h3>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-blue-500 hover:text-blue-600 font-medium"
+              className="text-black hover:text-gray-600 font-medium"
             >
               {isExpanded ? 'Ver menos' : 'Ver más'}
             </button>

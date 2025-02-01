@@ -330,7 +330,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                               handleImageTransition(index, newDirection);
                             }}
                             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                              index === imagenActual ? 'bg-yellow-500 w-4' : 'bg-gray-300 hover:bg-gray-400'
+                              index === imagenActual ? 'bg-black w-4' : 'bg-gray-300 hover:bg-gray-400'
                             }`}
                           />
                         ))}
@@ -351,7 +351,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                             handleImageTransition(index, newDirection);
                           }}
                           className={`aspect-square rounded-lg overflow-hidden border-2 ${
-                            imagenActual === index ? 'border-yellow-500' : 'border-transparent'
+                            imagenActual === index ? 'border-black' : 'border-transparent'
                           }`}
                         >
                           <img
@@ -379,7 +379,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                       onClick={() => handleModeloChange(index)}
                       className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
                         modeloSeleccionado === index
-                          ? 'bg-yellow-500 text-white shadow-md'
+                          ? 'bg-black text-white shadow-md'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -400,7 +400,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                   <div className="relative">
                     <button
                       onClick={handleShare}
-                      className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                      className="w-full flex items-center justify-center gap-2 bg-black hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors"
                     >
                       <FaShare className="w-5 h-5" />
                       Compartir
@@ -450,7 +450,7 @@ const DetalleProducto = ({ producto, onClose, modeloInicial = 0 }) => {
                   {/* Botón de WhatsApp */}
                   <button
                     onClick={handleWhatsAppClick}
-                    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                    className="flex items-center justify-center gap-2 bg-gray-400 hover:bg-gray-500 text-white font-medium py-3 px-6 rounded-lg transition-colors"
                   >
                     <FaWhatsapp className="w-5 h-5" />
                     Cotízalo aquí
