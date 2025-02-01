@@ -18,13 +18,13 @@ const InfoSection = () => {
   return (
     <div 
       ref={ref} 
-      className="relative flex items-center justify-center h-screen bg-slate-50 px-16 overflow-hidden"
+      className="relative flex items-center justify-center h-screen bg-slate-50 px-4 sm:px-16 overflow-hidden"
     >
       {/* Central content */}
       <div className="text-center z-10">
         {/* Animación de deslizamiento del texto */}
         <motion.h2
-          className="text-6xl font-serif text-slate-900 italic"
+          className="text-4xl sm:text-6xl font-serif text-slate-900 italic"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
           transition={{ duration: 1 }}
@@ -32,7 +32,7 @@ const InfoSection = () => {
           Transformamos tus ideas en realidad
         </motion.h2>
         <motion.h2
-          className="text-6xl font-serif text-slate-900 italic mt-2"
+          className="text-4xl sm:text-6xl font-serif text-slate-900 italic mt-2"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -40,7 +40,7 @@ const InfoSection = () => {
           creando espacios que inspiran y conectan
         </motion.h2>
         <motion.h2
-          className="text-6xl font-serif text-slate-900 italic mt-2"
+          className="text-4xl sm:text-6xl font-serif text-slate-900 italic mt-2"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
           transition={{ duration: 1, delay: 0.4 }}
@@ -51,7 +51,7 @@ const InfoSection = () => {
         {/* Animación del botón */}
         <Link to="/laEmpresa">
           <motion.button
-            className="mt-8 px-10 py-5 border border-slate-900 text-slate-900 text-2xl font-serif italic hover:bg-slate-900 hover:text-white transition-all"
+            className="mt-8 px-6 py-3 sm:px-10 sm:py-5 border border-slate-900 text-slate-900 text-xl sm:text-2xl font-serif italic hover:bg-slate-900 hover:text-white transition-all"
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: inView ? 0 : 100, opacity: inView ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.6 }}
