@@ -11,6 +11,7 @@ const images = [
     img3,
     img4,
 ];
+
 const Slider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -22,9 +23,9 @@ const Slider = () => {
           setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
           return 0;
         }
-        return prevProgress + 8; // Ajusta la velocidad de la barra de progreso
+        return prevProgress + 8;
       });
-    }, 300); // Ajusta el tiempo de cambio de imagen
+    }, 300);
 
     return () => clearInterval(interval);
   }, []);
@@ -35,22 +36,29 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative w-full h-[100vh] overflow-hidden">
-      {/* Contenedor de la imagen */}
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Image container with overlay */}
       <div className="relative w-full h-full">
         {images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Slide ${index + 1}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              index === currentIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
+          <div key={index} className="absolute inset-0">
+            <img
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            {/* Dark overlay */}
+            <div 
+              className={`absolute inset-0 bg-black/30 transition-opacity duration-1000 ${
+                index === currentIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </div>
         ))}
       </div>
 
-      {/* Indicadores (bolitas) */}
+      {/* Indicators (dots) */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (
           <button
@@ -65,7 +73,7 @@ const Slider = () => {
         ))}
       </div>
 
-      {/* Barra de progreso */}
+      {/* Progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/30">
         <div
           className="h-full bg-white transition-all duration-300"
