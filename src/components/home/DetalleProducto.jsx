@@ -179,7 +179,7 @@ const DetalleProducto = ({ producto, onClose }) => {
                     <img
                       src={`${API_BASE_URL}/storage/${imagenes[imagenActual].urlImagen}`}
                       alt={modeloActual.nombreModelo}
-                      className="w-full h-full object-contain bg-gray-50"
+                      className="w-full h-full object-contain"
                     />
                   )}
                 </div>

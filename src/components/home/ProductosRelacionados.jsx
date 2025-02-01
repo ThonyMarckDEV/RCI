@@ -1,103 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../../js/urlHelper';
+import { Search, Wifi } from 'lucide-react';
+import ProductoCard from '../../components/home/ProductoCard';
+import { useFavoritos } from '../../context/FavoritosContext';
+import Navbar from '../../components/home/NavBar';
+import Footer from '../../components/home/Footer';
 
-const ProductosRelacionados = ({ productoId }) => {
-  const [productosRelacionados, setProductosRelacionados] = useState([]);
+const ProductosRelacionados = ({ productoId }) => {  // Acepta productoId como prop
+  const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [error, setError] = useState(null);
+  const { favoritos } = useFavoritos();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProductosRelacionados = async () => {
-      try {
-        setLoading(true);
-        // Verifica que el productoId esté presente antes de hacer la solicitud
-        if (!productoId) {
-          console.error("El productoId no está disponible.");
-          return;
+    fetchProductos();
+  }, [favoritos, productoId]);  // Añade productoId como dependencia
+
+  const fetchProductos = async () => {
+    try {
+      setLoading(true);
+  
+      const response = await fetch(
+        `${API_BASE_URL}/api/productos-relacionados/${productoId}`,
+        {
+          method: 'POST',  // Cambia a GET si el backend lo requiere
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
-    
-        const response = await fetch(
-          `${API_BASE_URL}/api/productos-relacionados/${productoId}`
-        );
-        console.log(await response.json());  // Log the actual response from the API
-        if (!response.ok) throw new Error('Error al obtener productos relacionados');
-        const data = await response.json();
-        setProductosRelacionados(data);
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-      } finally {
-        setLoading(false);
+      );
+  
+      // Verificar el tipo de contenido de la respuesta
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text(); // Leer la respuesta como texto
+        throw new Error(`La respuesta no es un JSON válido. Respuesta recibida: ${textResponse}`);
       }
-    };
-    
-    fetchProductosRelacionados();
-}, [productoId]);
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? productosRelacionados.length - 1 : prevIndex - 1
-    );
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === productosRelacionados.length - 1 ? 0 : prevIndex + 1
-    );
+  
+      // Parsear la respuesta como JSON
+      const data = await response.json();
+      console.log("Respuesta de la API:", data);  // Inspecciona la respuesta
+  
+      // Asegúrate de que `data.productos` sea un array, incluso si está vacío
+      setProductos(data.productos || []);
+    } catch (err) {
+      console.error("Error en la solicitud:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Productos Relacionados</h2>
-      {loading ? (
-        <div className="animate-pulse flex space-x-4">
-          <div className="flex-1 space-y-4">
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-            </div>
-          </div>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Navbar />
+      <div className="flex-grow pt-32">
+        <div className="px-6 pt-8">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
+            Productos Relacionados
+          </h1>
+          <div className="w-24 h-1 bg-black mb-8 mx-auto animate-slide-up"></div>
         </div>
-      ) : (
-        <div className="relative w-full max-w-3xl mx-auto">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {productosRelacionados.map((item) => (
-                <div key={item.id} className="w-full flex-shrink-0 px-2">
-                  <img
-                    src={item.imagen}
-                    alt={item.nombre}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
-                  <p className="mt-2 text-center font-semibold">{item.nombre}</p>
-                </div>
+  
+        {loading ? (
+          <div className="flex justify-center items-center py-16">
+            <p>Cargando productos relacionados...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : !Array.isArray(productos) || productos.length === 0 ? (
+          <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+            <Search className="w-16 h-16 mb-4 text-gray-400" />
+            <h3 className="text-2xl font-semibold mb-2">No existen productos relacionados disponibles.</h3>
+          </div>
+        ) : (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {productos.map((producto) => (
+                <ProductoCard key={producto.idProducto} producto={producto} />
               ))}
             </div>
           </div>
-          {productosRelacionados.length > 1 && (
-            <>
-              <button
-                onClick={prevSlide}
-                className="absolute left-0 top-1/2 -translate-y-1/2 p-2 bg-black/80 text-white rounded-full"
-              >
-                <FaChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-2 bg-black/80 text-white rounded-full"
-              >
-                <FaChevronRight className="w-5 h-5" />
-              </button>
-            </>
-          )}
-        </div>
-      )}
+        )}
+      </div>
+      <Footer />
     </div>
   );
-};
+}  
 
 export default ProductosRelacionados;
