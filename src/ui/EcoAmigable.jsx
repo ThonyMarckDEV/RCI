@@ -52,7 +52,7 @@ const EcoAmigable = () => {
 
 
   return (
-    <div className="bg-white font-light text-gray-800">
+    <div className="bg-gray-100 font-light text-gray-800">
       {/* Navbar */}
       <Navbar />
 

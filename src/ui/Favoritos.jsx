@@ -62,7 +62,7 @@ const ProductosFavoritos = () => {
   if (loading) {
     return (
       <div className="min-h-[600px] flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 border-4 border-gray-200 border-t-yellow-500 rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-gray-200 border-t-gray-500 rounded-full animate-spin" />
         <p className="text-gray-500 font-medium">Cargando productos favoritos...</p>
       </div>
     );
@@ -81,12 +81,12 @@ const ProductosFavoritos = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex-grow pt-20">
+      <div className="flex-grow pt-32"> {/* Aumenté el padding-top a pt-32 para mover el contenido más abajo */}
         <div className="px-6 pt-8">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
             Favoritos
           </h1>
-          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto animate-slide-up"></div>
+          <div className="w-24 h-1 bg-black mb-8 mx-auto animate-slide-up"></div>
         </div>
 
         {(!productos || productos.length === 0) ? (

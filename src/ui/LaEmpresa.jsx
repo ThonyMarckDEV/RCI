@@ -23,7 +23,7 @@ const LaEmpresa = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-white to-gray-50 min-h-screen">
+    <div className="bg-gradient-to-b from-white to-gray-100 min-h-screen">
       <Navbar />
 
       {/* Hero Section - Más dramático */}

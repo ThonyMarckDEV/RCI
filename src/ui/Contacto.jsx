@@ -98,7 +98,7 @@ const Contacto = () => {
   };
 
   return (
-    <div className="bg-white font-light text-gray-800 min-h-screen flex flex-col">
+    <div className="bg-gradient-to-b from-white to-gray-100 font-light text-gray-800 min-h-screen flex flex-col">
       <Navbar />
 
         {/* Hero Section */}
