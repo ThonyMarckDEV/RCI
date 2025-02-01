@@ -63,13 +63,13 @@ const CategoriesGrid = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) => 
-      prev === Math.ceil(categories.length / 3) - 1 ? 0 : prev + 1
+      prev === Math.ceil(categories.length / 6) - 1 ? 0 : prev + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) => 
-      prev === 0 ? Math.ceil(categories.length / 3) - 1 : prev - 1
+      prev === 0 ? Math.ceil(categories.length / 6) - 1 : prev - 1
     );
   };
 
@@ -149,7 +149,7 @@ const CategoriesGrid = () => {
             className="flex transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <div key={category.idCategoria} className="w-full flex-shrink-0 px-4">
                 <Link
                   to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
@@ -194,7 +194,7 @@ const CategoriesGrid = () => {
 
         {/* Dots Pagination */}
         <div className="flex justify-center gap-2 mt-4">
-          {Array.from({ length: Math.ceil(categories.length / 1) }).map((_, index) => (
+          {Array.from({ length: Math.ceil(categories.length / 6) }).map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}

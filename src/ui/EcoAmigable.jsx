@@ -77,7 +77,7 @@ const EcoAmigable = () => {
           >
            Eco Amigable
           </motion.h1>
-          <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
             Trabajamos con madera certificada
           </p>
@@ -109,12 +109,12 @@ const EcoAmigable = () => {
               Eco Amigable
             </h1>
             {/* Línea amarilla */}
-            <div className="w-40 h-1 bg-yellow-500 mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
+            <div className="w-40 h-1 bg-black mb-8 mx-auto md:mx-0 animate-fade-in-up animate-delay-300"></div>
 
             {/* Descripción */}
             <p className="text-lg text-gray-600 leading-relaxed animate-fade-in-up animate-delay-400">
               RCI es parte del{' '}
-              <strong className="text-yellow-500 font-semibold">
+              <strong className="text-black font-semibold">
                 Sustainable Home Furnishings Council
               </strong>
               , una comunidad global de más de 1,000 fabricantes de mobiliario, tiendas y diseñadores de interiores enfocados en soluciones ecológicas.
@@ -145,7 +145,7 @@ const EcoAmigable = () => {
                     style={{ animationDelay: `${600 + index * 100}ms` }}
                   >
                     {/* Ícono de check */}
-                    <span className="w-6 h-6 flex items-center justify-center bg-yellow-500 text-white rounded-full">
+                    <span className="w-6 h-6 flex items-center justify-center bg-gray-500 text-white rounded-full">
                       ✓
                     </span>
                     <span>{item}</span>
