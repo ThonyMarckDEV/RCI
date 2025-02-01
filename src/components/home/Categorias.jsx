@@ -104,10 +104,10 @@ const CategoriesGrid = () => {
           inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}
       >
-        <h2 className="text-5xl font-light font-serif text-white mb-4">
+        <h2 className="text-5xl font-light font-serif text-gray-800 mb-4">
           Nuestras Categorías
         </h2>
-        <p className="text-lg text-white">
+        <p className="text-lg text-gray-800">
           Explora nuestras categorías y descubre lo mejor para ti.
         </p>
       </div>
