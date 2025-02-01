@@ -66,10 +66,10 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-4">Síguenos</h3>
             <div className="flex space-x-4 justify-center md:justify-start">
-              <a href="https://www.facebook.com/rcimuebles" className="text-white hover:text-gray-400">
+              <a href="https://www.facebook.com/rcimuebles" className="text-black hover:text-gray-400">
                 <FaFacebook size={24} />
               </a>
-              <a href="https://www.instagram.com/rcimuebles?igsh=Z2l1ZXkyMDRlZmow" className="text-white hover:text-gray-400">
+              <a href="https://www.instagram.com/rcimuebles?igsh=Z2l1ZXkyMDRlZmow" className="text-black hover:text-gray-400">
                 <FaInstagram size={24} />
               </a>
             </div>
