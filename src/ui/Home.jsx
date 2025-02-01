@@ -28,17 +28,6 @@ const fadeInUp = {
 
       <Teacompanamos />
   
-      {/* Contenido del Hero Section */}
-      <div className="container relative z-10 mx-auto px-10 text-center">
-        <motion.h1
-          variants={fadeInUp}
-          className="text-5xl md:text-7xl lg:text-8xl font-light text-black mb-8"
-        >
-          Categorias
-        </motion.h1>
-        <div className="w-32 h-1 bg-black mb-8 mx-auto"></div>
-      </div>
-  
       {/* Componente Categorías */}
       <Categorias />
   

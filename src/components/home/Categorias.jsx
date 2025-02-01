@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import API_BASE_URL from '../../js/urlHelper';
 import { FaWifi } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const CategoriesGrid = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [pagination, setPagination] = useState({
     page: 1,
     perPage: 6,
@@ -48,7 +51,7 @@ const CategoriesGrid = () => {
         throw new Error('La respuesta de la API no es válida');
       }
     } catch (err) {
-      setError('Error de conexión con el servidor'); // Guardar el mensaje de error
+      setError('Error de conexión con el servidor');
     } finally {
       setLoading(false);
     }
@@ -56,6 +59,18 @@ const CategoriesGrid = () => {
 
   const handlePageChange = (newPage) => {
     setPagination({ ...pagination, page: newPage });
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => 
+      prev === Math.ceil(categories.length / 3) - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => 
+      prev === 0 ? Math.ceil(categories.length / 3) - 1 : prev - 1
+    );
   };
 
   if (loading) {
@@ -69,7 +84,7 @@ const CategoriesGrid = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center text-gray-500 py-16">
-        <FaWifi className="text-6xl mb-4" /> {/* Ícono de WiFi sin señal */}
+        <FaWifi className="text-6xl mb-4" />
         <p className="text-xl font-semibold">
           Error de conexión con el servidor
         </p>
@@ -78,87 +93,117 @@ const CategoriesGrid = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-12">
-      {/* Grid de categorías - 3 arriba y 3 abajo */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Primer grupo de 3 categorías */}
-        {categories.slice(0, 3).map((category) => (
-          <Link
-            key={category.idCategoria}
-            to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`} 
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
-          >
-            {/* Imagen de la categoría */}
-            <div className="h-56 bg-gray-200 relative overflow-hidden rounded-t-2xl">
-              <img
-                src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
-                alt={category.nombreCategoria}
-                className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
-                onError={(e) => {
-                  e.target.src = '/api/placeholder/400/300';
-                }}
-              />
-            </div>
-
-            {/* Contenido de la categoría */}
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                {category.nombreCategoria}
-              </h3>
-              <p className="text-sm text-gray-600 line-clamp-3">{category.descripcion}</p>
-            </div>
-          </Link>
-        ))}
+    <div className="relative max-w-7xl mx-auto px-4 py-12">
+      {/* Título elegante */}
+      <div className="container relative z-10 mx-auto px-10 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-light text-black mb-8"
+        >
+          Categorias
+        </motion.h1>
+        <div className="w-32 h-1 bg-black mb-8 mx-auto"></div>
       </div>
 
-      {/* Segundo grupo de 3 categorías */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {categories.slice(3, 6).map((category) => (
+      {/* Desktop Grid View */}
+      <div className="hidden lg:grid grid-cols-3 gap-8">
+        {categories.map((category) => (
           <Link
             key={category.idCategoria}
             to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out hover:scale-105 overflow-hidden"
+            className="group relative h-[600px] overflow-hidden rounded-2xl shadow-xl transition-all duration-500 hover:shadow-2xl"
           >
-            {/* Imagen de la categoría */}
-            <div className="h-56 bg-gray-200 relative overflow-hidden rounded-t-2xl">
+            {/* Image Container */}
+            <div className="absolute inset-0">
               <img
-                src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
+                src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/600'}
                 alt={category.nombreCategoria}
-                className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 onError={(e) => {
-                  e.target.src = '/api/placeholder/400/300';
+                  e.target.src = '/api/placeholder/400/600';
                 }}
               />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
             </div>
 
-            {/* Contenido de la categoría */}
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
+            {/* Content Container */}
+            <div className="absolute bottom-0 p-8 w-full">
+              <h3 className="font-serif text-3xl text-white mb-4 transform transition-all duration-500 group-hover:translate-y-[-8px]">
                 {category.nombreCategoria}
               </h3>
-              <p className="text-sm text-gray-600 line-clamp-3">{category.descripcion}</p>
+              <p className="text-white/80 text-lg leading-relaxed opacity-0 transform translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                {category.descripcion}
+              </p>
             </div>
           </Link>
         ))}
       </div>
 
-      {/* Paginación */}
-      <div className="flex justify-center mt-8">
-        <nav className="inline-flex rounded-lg shadow-sm">
-          {Array.from({ length: pagination.lastPage }, (_, i) => i + 1).map((page) => (
+      {/* Mobile/Tablet Slider */}
+      <div className="lg:hidden relative">
+        <div className="overflow-hidden">
+          <div 
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {categories.map((category) => (
+              <div key={category.idCategoria} className="w-full flex-shrink-0 px-4">
+                <Link
+                  to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
+                  className="block relative h-[500px] rounded-2xl overflow-hidden shadow-xl"
+                >
+                  <img
+                    src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/500'}
+                    alt={category.nombreCategoria}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.target.src = '/api/placeholder/400/500';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute bottom-0 p-6 w-full">
+                    <h3 className="font-serif text-2xl text-white mb-3">
+                      {category.nombreCategoria}
+                    </h3>
+                    <p className="text-white/80 text-base leading-relaxed">
+                      {category.descripcion}
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Slider Controls */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-black/80 p-3 rounded-full shadow-lg hover:bg-black transition-colors"
+        >
+          <ChevronLeft className="w-6 h-6 text-white" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-black/80 p-3 rounded-full shadow-lg hover:bg-black transition-colors"
+        >
+          <ChevronRight className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Dots Pagination */}
+        <div className="flex justify-center gap-2 mt-4">
+          {Array.from({ length: Math.ceil(categories.length / 1) }).map((_, index) => (
             <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`px-6 py-3 border-2 rounded-lg mx-1 ${
-                pagination.page === page
-                  ? 'bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-              } transition-all duration-300`}
-            >
-              {page}
-            </button>
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentSlide === index ? 'bg-black w-4' : 'bg-gray-300'
+              }`}
+            />
           ))}
-        </nav>
+        </div>
       </div>
     </div>
   );
