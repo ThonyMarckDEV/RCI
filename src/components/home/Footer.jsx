@@ -4,7 +4,7 @@ import logoeco from '../../img/eco.png';
 
 const Footer = () => {
   return (
-    <div className="bg-[#23293e] text-white py-12">
+    <div className="bg-black text-white py-12">
       <div className="container mx-auto px-6">
         {/* Contenedor de columnas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -77,7 +77,7 @@ const Footer = () => {
         </div>
 
         {/* Derechos de autor */}
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+        <div className="border-t border-white mt-8 pt-8 text-center">
           <p className="text-sm">
             &copy; {new Date().getFullYear()} Muebles RCI. Todos los derechos reservados.
           </p>

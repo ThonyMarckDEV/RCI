@@ -18,7 +18,7 @@ const fadeInUp = {
 };
 
   return (
-    <div className="bg-white text-white">
+    <div className="text-white">
       {/* Navbar */}
       <Navbar />
   

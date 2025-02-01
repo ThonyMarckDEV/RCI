@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer'; // Importar hook
 import API_BASE_URL from '../../js/urlHelper';
 import { FaWifi } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,12 @@ const CategoriesGrid = () => {
     perPage: 6,
     total: 0,
     lastPage: 1,
+  });
+
+  // Hook para detectar si el título está en la vista
+  const { ref, inView } = useInView({
+    triggerOnce: true, // Solo se activa una vez
+    threshold: 0.5, // Porcentaje de visibilidad para activar
   });
 
   useEffect(() => {
@@ -81,7 +88,30 @@ const CategoriesGrid = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-12 bg-white">
+    <div
+      className="w-full p-6 space-y-12 bg-cover bg-center"
+      style={{
+        backgroundImage: 'url(/img/fondocatgorias.webp)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Título con animación de aparecimiento */}
+      <div
+        ref={ref}
+        className={`text-center transition-all duration-1000 ease-in-out ${
+          inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
+        <h2 className="text-5xl font-light font-serif text-white mb-4">
+          Nuestras Categorías
+        </h2>
+        <p className="text-lg text-white">
+          Explora nuestras categorías y descubre lo mejor para ti.
+        </p>
+      </div>
+
       {/* Slider para móviles y desktop */}
       <Swiper
         modules={[Pagination, Navigation]}
@@ -114,31 +144,26 @@ const CategoriesGrid = () => {
               to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
               className="block h-[600px] bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out overflow-hidden group relative"
             >
+              <div className="h-full bg-gray-200 relative overflow-hidden rounded-2xl group">
+                {/* Overlay: Siempre visible */}
+                <div className="absolute inset-0 bg-black bg-opacity-25 z-10"></div>
 
-                <div className="h-full bg-gray-200 relative overflow-hidden rounded-2xl group">
-                  {/* Overlay: Siempre visible */}
-                  <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
-                  
-                  {/* Imagen que se agranda en hover */}
-                  <img
-                    src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
-                    alt={category.nombreCategoria}
-                    className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-                    onError={(e) => {
-                      e.target.src = '/api/placeholder/400/300';
-                    }}
-                  />
-                  
-                  {/* Contenido de la tarjeta (título, descripción, etc.) */}
-                </div>
+                {/* Imagen que se agranda en hover */}
+                <img
+                  src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
+                  alt={category.nombreCategoria}
+                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  onError={(e) => {
+                    e.target.src = '/api/placeholder/400/300';
+                  }}
+                />
+              </div>
 
               {/* Título y descripción superpuestos en la imagen */}
               <div className="absolute bottom-6 left-6 right-6 space-y-2 z-10">
-              {/* Título con letras más finas y elegantes */}
-<p className="text-3xl font-light font-serif text-white drop-shadow-lg">
-  {category.nombreCategoria}
-</p>
-                {/* Descripción sin fondo */}
+                <p className="text-3xl font-light font-serif text-white drop-shadow-lg">
+                  {category.nombreCategoria}
+                </p>
                 <p className="text-sm text-white lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
                   {category.descripcion}
                 </p>
@@ -148,8 +173,8 @@ const CategoriesGrid = () => {
         ))}
 
         {/* Flechas de navegación personalizadas (fuera de la imagen) */}
-        <div className="swiper-button-next text-black p-4 rounded-full shadow-lg  transition-all duration-300"></div>
-        <div className="swiper-button-prev text-black p-4 rounded-full shadow-lg  transition-all duration-300"></div>
+        <div className="swiper-button-next text-black p-4 rounded-full shadow-lg transition-all duration-300"></div>
+        <div className="swiper-button-prev text-black p-4 rounded-full shadow-lg transition-all duration-300"></div>
 
         {/* Indicadores de paginación personalizados (negros) */}
         <div className="swiper-pagination !bottom-0 !relative mt-6"></div>
@@ -188,12 +213,12 @@ const CategoriesGrid = () => {
             background-color: black;
             opacity: 1;
           }
-         .swiper-button-next {
-              color: white;
+          .swiper-button-next {
+            color: white;
           }
 
           .swiper-button-prev {
-              color: white;
+            color: white;
           }
         `}
       </style>
