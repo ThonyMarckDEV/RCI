@@ -15,10 +15,6 @@ const Home = () => {
       <div className="relative">
         <Slider />
   
-      
-      {/* Sección de información */}
-      <InfoSection />
-  
       {/* Título de Categorías */}
       <h1 className="text-4xl text-center my-8 text-black">Categorías</h1>
   
