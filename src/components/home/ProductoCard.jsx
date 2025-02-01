@@ -112,12 +112,12 @@ const ProductoCard = ({ producto }) => {
       >
         {/* Badge de categoría */}
         <div className="absolute top-4 left-4 z-10">
-          <span className="px-3 py-1 text-xs font-medium bg-black/80 text-white rounded-full backdrop-blur-sm">
+          <span className="px-3 py-1 text-xs font-medium bg-black text-white rounded-full backdrop-blur-sm">
             {producto.nombreCategoria}
           </span>
         </div>
 
-        {/* Botón de favoritos */}
+      {/* Botón de favoritos */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -126,13 +126,17 @@ const ProductoCard = ({ producto }) => {
           className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 shadow-lg transition-all duration-300 hover:scale-110"
         >
           <Heart 
-            className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-700'}`}
+            className={`w-5 h-5 transition-colors ${
+              isFavorite 
+                ? 'fill-red-500 text-red-500 stroke-red-500' // Lleno de rojo y borde rojo
+                : 'text-gray-700 stroke-gray-700' // Borde gris y sin relleno
+            }`}
           />
         </button>
 
         {/* Contenedor de imagen principal */}
         <div 
-          className="relative aspect-[4/5] overflow-hidden bg-gray-100"
+          className="relative aspect-[4/5] overflow-hidden bg-gray-50"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -149,11 +153,11 @@ const ProductoCard = ({ producto }) => {
               } ${isHovered ? 'scale-110' : 'scale-100'}`}
             />
             
-            {/* Overlay gradiente mejorado */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Overlay gradiente luxury */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
 
-          {/* Navegación de imágenes mejorada */}
+          {/* Navegación de imágenes */}
           {imagenes.length > 1 && (
             <>
               <button
@@ -165,7 +169,7 @@ const ProductoCard = ({ producto }) => {
                   isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 } transition-all duration-300 hover:scale-110`}
               >
-                <ChevronLeft className="w-6 h-6 text-gray-800" />
+                <ChevronLeft className="w-6 h-6 text-black" />
               </button>
               <button
                 onClick={(e) => {
@@ -176,12 +180,12 @@ const ProductoCard = ({ producto }) => {
                   isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 } transition-all duration-300 hover:scale-110`}
               >
-                <ChevronRight className="w-6 h-6 text-gray-800" />
+                <ChevronRight className="w-6 h-6 text-black" />
               </button>
             </>
           )}
 
-          {/* Indicador de imágenes mejorado */}
+          {/* Indicador de imágenes estilo luxury */}
           {imagenes.length > 1 && (
             <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 ${
               isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
@@ -198,10 +202,10 @@ const ProductoCard = ({ producto }) => {
           )}
         </div>
 
-        {/* Contenido mejorado */}
+        {/* Contenido luxury */}
         <div className="p-6 space-y-4">
           {/* Nombre del producto */}
-          <h3 className="text-2xl font-light text-gray-800 group-hover:text-yellow-500 transition-colors duration-300">
+          <h3 className="text-2xl font-light text-gray-900 group-hover:text-black transition-colors duration-300">
             {producto.nombreProducto}
           </h3>
 
@@ -210,7 +214,7 @@ const ProductoCard = ({ producto }) => {
             {producto.descripcion}
           </p>
 
-          {/* Modelos */}
+          {/* Modelos con estilo luxury */}
           <div className="flex flex-wrap gap-2 pt-2" onClick={(e) => e.stopPropagation()}>
             {Array.isArray(producto.modelos) &&
               producto.modelos.map((modelo, index) => (
@@ -219,8 +223,8 @@ const ProductoCard = ({ producto }) => {
                   onClick={() => handleModeloChange(index)}
                   className={`px-5 py-2 text-sm font-medium transition-all duration-300 border-2 rounded-full ${
                     modeloSeleccionado === index
-                      ? 'border-yellow-500 text-yellow-500 bg-yellow-50'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                      ? 'border-black text-black bg-black/5'
+                      : 'border-gray-200 text-gray-600 hover:border-gray-400 hover:bg-gray-50'
                   }`}
                 >
                   {modelo.nombreModelo}
@@ -228,10 +232,10 @@ const ProductoCard = ({ producto }) => {
               ))}
           </div>
 
-          {/* Botón de detalles */}
+          {/* Botón de detalles luxury */}
           <button
             onClick={handleShowDetalle}
-            className="w-full mt-4 py-3 bg-yellow-500 text-white font-medium transition-all duration-300 hover:bg-yellow-600 rounded-lg flex items-center justify-center space-x-2 group/btn"
+            className="w-full mt-4 py-3 bg-black text-white font-medium transition-all duration-300 hover:bg-gray-900 rounded-lg flex items-center justify-center space-x-2 group/btn"
           >
             <span>Ver detalles</span>
             <Plus className="w-5 h-5 transition-transform group-hover/btn:rotate-90" />
@@ -250,7 +254,6 @@ const ProductoCard = ({ producto }) => {
           </div>
         </div>
       )}
-
     </>
   );
 };

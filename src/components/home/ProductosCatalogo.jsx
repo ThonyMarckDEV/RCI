@@ -134,7 +134,7 @@ const ProductosCatalogo = ({ filtros }) => {
                           {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
                           <button
                             onClick={() => handlePageChange(page)}
-                            className={`px-4 py-2 mx-1 rounded-lg transition-colors ${paginaActual === page ? 'bg-yellow-500 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                            className={`px-4 py-2 mx-1 rounded-lg transition-colors ${paginaActual === page ? 'bg-black text-white' : 'text-gray-600 hover:bg-gray-100'}`}
                           >
                             {page}
                           </button>

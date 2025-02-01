@@ -112,7 +112,7 @@ const Filtrador = ({ categorias = [] }) => {
         <div className="mt-8 space-y-3">
           <button
             onClick={handleApplyFilter}
-            className="w-full px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors shadow-sm"
+            className="w-full px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors shadow-sm"
           >
             Aplicar Filtros
           </button>
@@ -131,7 +131,7 @@ const Filtrador = ({ categorias = [] }) => {
     <>
       {/* Sidebar para desktop */}
       <aside
-        className={`fixed top-20 h-[calc(100vh-5rem)] w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed top-32 h-[calc(100vh-8rem)] w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-20 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -139,7 +139,7 @@ const Filtrador = ({ categorias = [] }) => {
         {/* Botón para abrir/cerrar en desktop */}
         <button
           onClick={toggleFilter}
-          className={`absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-yellow-500 text-white rounded-r-lg transition-colors ${
+          className={`absolute -right-10 top-1/2 -translate-y-1/2 p-2 bg-black text-white rounded-r-lg transition-colors ${
             !isOpen ? 'animate-slide-right-back' : '' // Aplicar animación solo si la sidebar está cerrada
           }`}
         >
