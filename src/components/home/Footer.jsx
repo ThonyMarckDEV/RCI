@@ -5,7 +5,7 @@ import { FaDashcube } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
-    <div className="bg-yellow-400 text-gray-800 py-12">
+    <div className="bg-white text-gray-800 py-12">
       <div className="container mx-auto px-6">
         {/* Contenedor de columnas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
