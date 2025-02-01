@@ -114,7 +114,7 @@ const Catalogo = () => {
             variants={fadeInUp}
             className="text-5xl md:text-7xl lg:text-8xl font-light text-white mb-8"
           >
-            Productos
+            Catálogo
           </motion.h1>
           <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
         </div>
