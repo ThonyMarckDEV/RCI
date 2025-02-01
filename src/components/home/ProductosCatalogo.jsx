@@ -73,26 +73,25 @@ const ProductosCatalogo = ({ filtros }) => {
   return (
     <div className="flex flex-col min-h-[600px] bg-gray-50">
 
-      {/* Header con resultados y filtros */}
-      <div className="sticky top-8 md:top-100 lg:top-40 z-10 bg-white border-b border-gray-100 shadow-sm mb-8">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h2 className="text-xl font-medium text-gray-900">
-                {totalProductos} productos encontrados
-              </h2>
-              {(categoria || nombreProducto) && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Mostrando resultados para {categoria && `categoría "${categoria}"`}
-                  {categoria && nombreProducto && ' y '}
-                  {nombreProducto && `búsqueda "${nombreProducto}"`}
-                </p>
-              )}
-            </div>
+    {/* Header con resultados y filtros */}
+    <div className="sticky top-28 md:top-36 z-10 bg-white border-b border-gray-100 shadow-sm mb-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <h2 className="text-xl font-medium text-gray-900">
+              {totalProductos} productos encontrados
+            </h2>
+            {(categoria || nombreProducto) && (
+              <p className="text-sm text-gray-500 mt-1">
+                Mostrando resultados para {categoria && `categoría "${categoria}"`}
+                {categoria && nombreProducto && ' y '}
+                {nombreProducto && `búsqueda "${nombreProducto}"`}
+              </p>
+            )}
           </div>
         </div>
       </div>
-
+    </div>
 
       {productos.length === 0 ? (
         <div className="flex flex-col items-center justify-center text-gray-500 py-16">
