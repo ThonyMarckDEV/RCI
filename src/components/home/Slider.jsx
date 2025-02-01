@@ -30,11 +30,11 @@ const slides = [
   },
   {
     image: img4,
-    title: "Mesas de Conferencia",
-    description: "Descubre nuestras mesas de conferencia elegantes y funcionales, ideales para reuniones profesionales.",
+    title: "Centros de Entretenimiento",
+    description: "Explora nuestros modernos centros de entretenimiento, diseñados para brindarte comodidad y estilo.",
     buttonText: "Comprar ahora",
-    buttonLink: "/catalogo?categoria=Mesas+De+Conferencia", // Ruta para el botón
-  },
+    buttonLink: "/catalogo?categoria=Centros+De+Entretenimiento", // Ruta para el botón
+  }  
 ];
 
 const Slider = () => {
