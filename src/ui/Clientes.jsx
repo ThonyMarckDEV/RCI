@@ -75,7 +75,7 @@ const Clientes = () => {
           >
             Nuestros Clientes
           </motion.h1>
-          <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
           Colaboraciones que trascienden expectativas
           </p>
@@ -119,7 +119,7 @@ const Clientes = () => {
           <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8">
             Testimonios de Excelencia
           </h2>
-          <div className="w-24 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <div className="w-24 h-1 bg-black mb-8 mx-auto"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
           {[

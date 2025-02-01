@@ -126,7 +126,7 @@ const Contacto = () => {
               >
                 Contáctanos
               </motion.h1>
-              <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+              <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
               <motion.p
                 variants={fadeInUp}
                 className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light"
@@ -221,7 +221,7 @@ const Contacto = () => {
           className="max-w-2xl mx-auto py-16"
         >
           <h1 className="text-5xl font-light text-gray-900 mb-12 text-center">Envíanos un mensaje</h1>
-          <div className="w-24 h-1 bg-yellow-500 mb-8 mx-auto"></div>
+          <div className="w-24 h-1 bg-black mb-8 mx-auto"></div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -279,7 +279,7 @@ const Contacto = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-yellow-500 text-white py-4 rounded-none hover:bg-yellow-600 transition-colors duration-300"
+              className="w-full bg-black text-white py-4 rounded-none hover:bg-gray-800 transition-colors duration-300"
             >
               <strong className="font-bold">Enviar Mensaje</strong>
             </button>

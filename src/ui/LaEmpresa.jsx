@@ -46,7 +46,7 @@ const LaEmpresa = () => {
           >
             La Empresa
           </motion.h1>
-          <div className="w-32 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+          <div className="w-32 h-1 bg-white mb-8 mx-auto"></div>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto font-light">
             Creando espacios extraordinarios desde 1980
           </p>
@@ -63,14 +63,14 @@ const LaEmpresa = () => {
         <div className="max-w-4xl mx-auto space-y-16">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8">Nuestra Historia</h2>
-            <div className="w-24 h-1 bg-yellow-400 mb-12 mx-auto"></div>
+            <div className="w-24 h-1 bg-black mb-12 mx-auto"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div 
               variants={fadeInUp}
               className="space-y-8 text-gray-700 leading-relaxed text-lg"
             >
-              <p className="first-letter:text-5xl first-letter:font-light first-letter:text-yellow-400 first-letter:mr-3 first-letter:float-left">
+              <p className="first-letter:text-5xl first-letter:font-light first-letter:text-black first-letter:mr-3 first-letter:float-left">
                 Los inicios de la empresa RCI se remontan a 1980, comenzando con la decoración del hogar y adornos de estilo colonial. Tras quince años de crecimiento constante, expandimos nuestro horizonte con la creación de nuestra propia fábrica de muebles, transformándonos en una empresa familiar con visión profesional.
               </p>
               <p>
@@ -105,7 +105,7 @@ const LaEmpresa = () => {
             <h2 className="text-4xl md:text-5xl font-light text-white mb-8">
               Excelencia en Cada Detalle
             </h2>
-            <div className="w-24 h-1 bg-yellow-400 mb-8 mx-auto"></div>
+            <div className="w-24 h-1 bg-white mb-8 mx-auto"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {[
@@ -122,7 +122,7 @@ const LaEmpresa = () => {
                 className="bg-gray-800 p-10 rounded-xl hover:transform hover:-translate-y-2 transition-all duration-300"
               >
                 <div className="flex items-center space-x-4 mb-8">
-                  <span className="text-3xl font-light text-yellow-400">
+                  <span className="text-3xl font-light text-white">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="h-px flex-grow bg-gray-700"></div>
@@ -150,7 +150,7 @@ const LaEmpresa = () => {
           <h2 className="text-4xl md:text-5xl font-light text-gray-900 mb-8">
             Nuestro Legado de Excelencia
           </h2>
-          <div className="w-24 h-1 bg-yellow-400 mb-12 mx-auto"></div>
+          <div className="w-24 h-1 bg-black mb-12 mx-auto"></div>
           <p className="text-xl text-gray-700 leading-relaxed">
             En RCI, cada creación es una obra maestra que fusiona artesanía tradicional con innovación contemporánea. Nuestro compromiso con la excelencia se refleja en cada detalle, transformando espacios en experiencias extraordinarias que perduran en el tiempo.
           </p>

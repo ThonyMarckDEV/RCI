@@ -5,6 +5,8 @@ import InfoSection from '../components/home/InfoSection';
 import Footer from '../components/home/Footer';
 import Categorias from '../components/home/Categorias'; // Importa el componente Categorias
 
+import Teacompanamos from '../components/home/Teacompanamos';
+
 const Home = () => {
   return (
     <div className="bg-white text-white">
@@ -14,6 +16,8 @@ const Home = () => {
       {/* Slider con texto superpuesto */}
       <div className="relative">
         <Slider />
+
+      <Teacompanamos />
   
       {/* Título de Categorías */}
       <h1 className="text-4xl text-center my-8 text-black">Categorías</h1>
