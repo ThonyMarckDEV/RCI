@@ -87,7 +87,7 @@ const Catalogo = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-light text-gray-800">
+    <div className="min-h-screen flex flex-col font-light text-gray-800">
       {/* Navbar - fixed position */}
       <Navbar className="fixed top-0 w-full z-50" />
 
