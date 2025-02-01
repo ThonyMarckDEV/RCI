@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useInView } from 'react-intersection-observer';  // Importar hook
 
 const InfoSection = () => {
   // Esto se ejecuta cada vez que se carga el componente (al cambiar de ruta)
@@ -8,22 +9,60 @@ const InfoSection = () => {
     window.scrollTo(0, 0); // Esto desplazará la página al inicio
   }, []);
 
+  // Usamos el hook useInView para detectar cuando la sección es visible
+  const { ref, inView } = useInView({
+    triggerOnce: true,  // Solo se activa la animación una vez cuando la sección entra en vista
+    threshold: 0.3,     // Considera que el elemento está en vista cuando el 30% de él es visible
+  });
+
   return (
-    <div className="relative flex items-center justify-center h-screen bg-slate-50 px-16 overflow-hidden">
+    <div 
+      ref={ref} 
+      className="relative flex items-center justify-center h-screen bg-slate-50 px-16 overflow-hidden"
+    >
       {/* Central content */}
       <div className="text-center z-10">
-      <h2 className="text-6xl font-serif text-slate-900 italic">Transformamos tus ideas en realidad</h2>
-      <h2 className="text-6xl font-serif text-slate-900 italic mt-2">creando espacios que inspiran y conectan</h2>
-      <h2 className="text-6xl font-serif text-slate-900 italic mt-2">con tu visión y estilo único</h2>
+        {/* Animación de deslizamiento del texto */}
+        <motion.h2
+          className="text-6xl font-serif text-slate-900 italic"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
+          transition={{ duration: 1 }}
+        >
+          Transformamos tus ideas en realidad
+        </motion.h2>
+        <motion.h2
+          className="text-6xl font-serif text-slate-900 italic mt-2"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          creando espacios que inspiran y conectan
+        </motion.h2>
+        <motion.h2
+          className="text-6xl font-serif text-slate-900 italic mt-2"
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: inView ? 0 : -100, opacity: inView ? 1 : 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+        >
+          con tu visión y estilo único
+        </motion.h2>
+
+        {/* Animación del botón */}
         <Link to="/laEmpresa">
-          <button className="mt-8 px-10 py-5 border border-slate-900 text-slate-900 text-2xl font-serif italic hover:bg-slate-900 hover:text-white transition-all">
+          <motion.button
+            className="mt-8 px-10 py-5 border border-slate-900 text-slate-900 text-2xl font-serif italic hover:bg-slate-900 hover:text-white transition-all"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: inView ? 0 : 100, opacity: inView ? 1 : 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
             SABER MÁS
-          </button>
+          </motion.button>
         </Link>
       </div>
 
       {/* Rotating circle with text - hidden on mobile, visible from md breakpoint up */}
-      <motion.div 
+      <motion.div
         className="hidden md:flex absolute -right-[300px] top-1/6 transform -translate-y-1/2 w-[600px] h-[600px] items-center justify-center"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
