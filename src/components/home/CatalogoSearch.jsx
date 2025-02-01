@@ -110,7 +110,7 @@ const CatalogoSearch = ({ onSearch, onSort, onFilterChange }) => {
               onKeyPress={handleKeyPress}
               onFocus={() => setShowRecent(true)}
               placeholder="Buscar productos..."
-              className="w-full px-4 py-3 pl-12 pr-20 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-200"
+              className="w-full px-4 py-3 pl-12 pr-20 rounded-lg border border-gray-200 0 transition-all duration-200"
             />
             <button
               onClick={handleSearchSubmit}

@@ -8,7 +8,7 @@ import API_BASE_URL from '../js/urlHelper';
 
 
 import { motion } from 'framer-motion';
-import laEmpresa from '../img/RCIMAIN.jpeg';
+import productos from '../img/productos.webp';
 
 const Catalogo = () => {
   const [filtros, setFiltros] = useState({
@@ -105,7 +105,7 @@ const Catalogo = () => {
 
           {/* Imagen de fondo */}
           <img
-            src={laEmpresa} // Reemplaza con la ruta de tu imagen
+            src={productos} // Reemplaza con la ruta de tu imagen
             alt="Fondo de contacto"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -137,7 +137,12 @@ const Catalogo = () => {
         <main className="flex-grow pb-16 relative">
           {/* Title section */}
           <div className="px-6 mt-8">
-            
+            <div className="px-6 pt-8">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-900 mb-6 text-center animate-fade-in-up">
+                Busca tus Productos
+              </h1>
+              <div className="w-24 h-1 bg-black mb-8 mx-auto animate-slide-up"></div>
+            </div>
             {/* Search section */}
             <CatalogoSearch 
               onSearch={handleSearch} 
