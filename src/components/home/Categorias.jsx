@@ -1,112 +1,125 @@
-  import React, { useState, useEffect } from 'react';
-  import API_BASE_URL from '../../js/urlHelper';
-  import { FaWifi } from 'react-icons/fa';
-  import { Link } from 'react-router-dom';
-  import { Swiper, SwiperSlide } from 'swiper/react';
-  import { Pagination, Navigation } from 'swiper/modules';
-  import 'swiper/css';
-  import 'swiper/css/pagination';
-  import 'swiper/css/navigation';
+import React, { useState, useEffect } from 'react';
+import API_BASE_URL from '../../js/urlHelper';
+import { FaWifi } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
-  const CategoriesGrid = () => {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [pagination, setPagination] = useState({
-      page: 1,
-      perPage: 6,
-      total: 0,
-      lastPage: 1,
-    });
+const CategoriesGrid = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    perPage: 6,
+    total: 0,
+    lastPage: 1,
+  });
 
-    useEffect(() => {
-      fetchCategories();
-    }, [pagination.page, pagination.perPage]);
+  useEffect(() => {
+    fetchCategories();
+  }, [pagination.page, pagination.perPage]);
 
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `${API_BASE_URL}/api/listarCategorias?page=${pagination.page}&perPage=${pagination.perPage}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Error al cargar las categorías');
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${API_BASE_URL}/api/listarCategorias?page=${pagination.page}&perPage=${pagination.perPage}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
+      );
 
-        const data = await response.json();
-
-        if (data.data && Array.isArray(data.data)) {
-          setCategories(data.data);
-          setPagination({
-            ...pagination,
-            total: data.pagination.total,
-            lastPage: data.pagination.lastPage,
-          });
-        } else {
-          throw new Error('La respuesta de la API no es válida');
-        }
-      } catch (err) {
-        setError('Error de conexión con el servidor');
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Error al cargar las categorías');
       }
-    };
 
-    const handlePageChange = (newPage) => {
-      setPagination({ ...pagination, page: newPage });
-    };
+      const data = await response.json();
 
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center min-h-[200px]">
-          <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
-        </div>
-      );
+      if (data.data && Array.isArray(data.data)) {
+        setCategories(data.data);
+        setPagination({
+          ...pagination,
+          total: data.pagination.total,
+          lastPage: data.pagination.lastPage,
+        });
+      } else {
+        throw new Error('La respuesta de la API no es válida');
+      }
+    } catch (err) {
+      setError('Error de conexión con el servidor');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (error) {
-      return (
-        <div className="flex flex-col items-center justify-center text-gray-500 py-16">
-          <FaWifi className="text-6xl mb-4" />
-          <p className="text-xl font-semibold">Error de conexión con el servidor</p>
-        </div>
-      );
-    }
+  const handlePageChange = (newPage) => {
+    setPagination({ ...pagination, page: newPage });
+  };
 
+  if (loading) {
     return (
-      <div className="container mx-auto p-6 space-y-12">
-        {/* Slider para móviles y desktop */}
-        <Swiper
-          modules={[Pagination, Navigation]}
-          spaceBetween={20}
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
-          }}
-          className="w-full"
-        >
-          {categories.map((category) => (
-            <SwiperSlide key={category.idCategoria}>
-              <Link
-                to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
-                className="block h-[600px] bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out overflow-hidden group relative"
-              >
-                {/* Imagen de la categoría */}
-                <div className="h-[80%] bg-gray-200 relative overflow-hidden rounded-t-2xl">
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center text-gray-500 py-16">
+        <FaWifi className="text-6xl mb-4" />
+        <p className="text-xl font-semibold">Error de conexión con el servidor</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-6 space-y-12 bg-white">
+      {/* Slider para móviles y desktop */}
+      <Swiper
+        modules={[Pagination, Navigation]}
+        spaceBetween={20}
+        slidesPerView={1}
+        pagination={{
+          clickable: true,
+          el: '.swiper-pagination',
+          type: 'bullets',
+          bulletClass: 'swiper-pagination-bullet',
+          bulletActiveClass: 'swiper-pagination-bullet-active',
+        }}
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
+        className="w-full relative"
+      >
+        {categories.map((category) => (
+          <SwiperSlide key={category.idCategoria}>
+            <Link
+              to={`/catalogo?categoria=${encodeURIComponent(category.nombreCategoria)}`}
+              className="block h-[600px] bg-white rounded-2xl shadow-lg hover:shadow-2xl transform transition-all duration-300 ease-in-out overflow-hidden group relative"
+            >
+
+                <div className="h-full bg-gray-200 relative overflow-hidden rounded-2xl group">
+                  {/* Overlay: Siempre visible */}
+                  <div className="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
+                  
+                  {/* Imagen que se agranda en hover */}
                   <img
                     src={`${API_BASE_URL}/storage/${category.imagen}` || '/api/placeholder/400/300'}
                     alt={category.nombreCategoria}
@@ -115,39 +128,77 @@
                       e.target.src = '/api/placeholder/400/300';
                     }}
                   />
+                  
+                  {/* Contenido de la tarjeta (título, descripción, etc.) */}
                 </div>
 
-                {/* Descripción (visible en móvil por defecto y en desktop al hacer hover) */}
-                <div className="h-[20%] p-6 bg-white flex items-center justify-center">
-                  <p className="text-lg font-semibold text-black text-center">
-                    {category.nombreCategoria}
-                  </p>
-                </div>
-              </Link>
-            </SwiperSlide>
+              {/* Título y descripción superpuestos en la imagen */}
+              <div className="absolute bottom-6 left-6 right-6 space-y-2 z-10">
+              {/* Título con letras más finas y elegantes */}
+<p className="text-3xl font-light font-serif text-white drop-shadow-lg">
+  {category.nombreCategoria}
+</p>
+                {/* Descripción sin fondo */}
+                <p className="text-sm text-white lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
+                  {category.descripcion}
+                </p>
+              </div>
+            </Link>
+          </SwiperSlide>
+        ))}
+
+        {/* Flechas de navegación personalizadas (fuera de la imagen) */}
+        <div className="swiper-button-next text-black p-4 rounded-full shadow-lg  transition-all duration-300"></div>
+        <div className="swiper-button-prev text-black p-4 rounded-full shadow-lg  transition-all duration-300"></div>
+
+        {/* Indicadores de paginación personalizados (negros) */}
+        <div className="swiper-pagination !bottom-0 !relative mt-6"></div>
+      </Swiper>
+
+      {/* Paginación */}
+      <div className="flex justify-center mt-8">
+        <nav className="inline-flex rounded-lg shadow-sm">
+          {Array.from({ length: pagination.lastPage }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-6 py-3 border-2 rounded-lg mx-1 ${
+                pagination.page === page
+                  ? 'bg-black text-white border-black hover:bg-gray-800'
+                  : 'bg-white text-black border-gray-300 hover:bg-gray-100'
+              } transition-all duration-300`}
+            >
+              {page}
+            </button>
           ))}
-        </Swiper>
-
-        {/* Paginación */}
-        <div className="flex justify-center mt-8">
-          <nav className="inline-flex rounded-lg shadow-sm">
-            {Array.from({ length: pagination.lastPage }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-6 py-3 border-2 rounded-lg mx-1 ${
-                  pagination.page === page
-                    ? 'bg-black text-white border-black hover:bg-gray-800'
-                    : 'bg-white text-black border-gray-300 hover:bg-gray-100'
-                } transition-all duration-300`}
-              >
-                {page}
-              </button>
-            ))}
-          </nav>
-        </div>
+        </nav>
       </div>
-    );
-  };
 
-  export default CategoriesGrid;
+      {/* Estilos personalizados para los bullets */}
+      <style>
+        {`
+          .swiper-pagination-bullet {
+            background-color: black;
+            opacity: 0.5;
+            width: 10px;
+            height: 10px;
+            margin: 0 6px !important;
+          }
+          .swiper-pagination-bullet-active {
+            background-color: black;
+            opacity: 1;
+          }
+         .swiper-button-next {
+              color: white;
+          }
+
+          .swiper-button-prev {
+              color: white;
+          }
+        `}
+      </style>
+    </div>
+  );
+};
+
+export default CategoriesGrid;
