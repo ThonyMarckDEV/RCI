@@ -84,38 +84,39 @@ const Slider = () => {
               style={{ zIndex: 1 }} // Asegura que el overlay esté detrás del contenido
             />
 
-            {/* Texto y botón "Ver más" (con z-index mayor) */}
-            <div
-              className={`absolute left-4 sm:left-8 md:left-16 top-1/2 transform -translate-y-1/2 text-white transition-all duration-1000 ${
-                index === currentIndex
-                  ? 'opacity-100 translate-x-0' // Visible y en su posición final
-                  : 'opacity-0 translate-x-full' // Invisible y desplazado a la derecha
-              }`}
-              style={{ zIndex: 2 }} // Asegura que el contenido esté por encima del overlay
-            >
-              {/* Título */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 sm:mb-6 animate-slide-right-back">
-                {slide.title}
-              </h1>
-              {/* Descripción */}
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-sans mb-6 sm:mb-8 animate-slide-right-back">
-                {slide.description}
-              </p>
-              {/* Botón con Link */}
-              <Link to={slide.buttonLink}>
-                <button
-                  className="bg-white text-black py-2 sm:py-3 px-6 sm:px-8 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-100 transition-all duration-300 animate-slide-right-back"
-                >
-                  {slide.buttonText}
-                </button>
-              </Link>
-            </div>
+          {/* Texto y botón "Ver más" (con z-index mayor) */}
+          <div
+            className={`absolute left-8 sm:left-12 md:left-24 lg:left-32 top-[55%] transform -translate-y-1/2 text-white transition-all duration-1000 ${
+              index === currentIndex
+                ? 'opacity-100 translate-x-0' // Visible y en su posición final
+                : 'opacity-0 translate-x-full' // Invisible y desplazado a la derecha
+            }`}
+            style={{ zIndex: 2, maxWidth: '36rem' }} // Asegura que el contenido esté por encima del overlay
+          >
+            {/* Título */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 sm:mb-6 animate-slide-right-back">
+              {slide.title}
+            </h1>
+            {/* Descripción */}
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-sans mb-6 sm:mb-8 animate-slide-right-back">
+              {slide.description}
+            </p>
+            {/* Botón con Link */}
+            <Link to={slide.buttonLink}>
+              <button
+                className="bg-white text-black py-2 sm:py-3 px-6 sm:px-8 rounded-lg font-semibold text-lg sm:text-xl hover:bg-gray-100 transition-all duration-300 animate-slide-right-back"
+              >
+                {slide.buttonText}
+              </button>
+            </Link>
+          </div>
+
           </div>
         ))}
       </div>
 
       {/* Indicadores (bolitas) */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -130,7 +131,7 @@ const Slider = () => {
       </div>
 
       {/* Barra de progreso */}
-      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/30">
+      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/30 z-10">
         <div
           className="h-full bg-white transition-all duration-300"
           style={{ width: `${progress}%` }}
