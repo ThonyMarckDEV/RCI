@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Importa Link para la navegación
+import { Link } from 'react-router-dom';
 import img1 from '../../img/1.jpg';
 import img2 from '../../img/2.jpg';
 import img3 from '../../img/3.jpg';
@@ -91,16 +91,23 @@ const Slider = () => {
                 ? 'opacity-100 translate-x-0' // Visible y en su posición final
                 : 'opacity-0 translate-x-full' // Invisible y desplazado a la derecha
             }`}
-            style={{ zIndex: 2, maxWidth: '36rem' }} // Asegura que el contenido esté por encima del overlay
+            style={{ 
+              zIndex: 2, 
+              maxWidth: '36rem',
+              fontFamily: "'Didot', 'Didot LT STD', 'Hoefler Text', Garamond, 'Times New Roman', serif" 
+            }} // Asegura que el contenido esté por encima del overlay
           >
-            {/* Título */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 sm:mb-6 animate-slide-right-back">
+            {/* Título con Didot */}
+            <h1 
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 animate-slide-right-back"
+              style={{ fontFamily: "'Didot', 'Didot LT STD', 'Hoefler Text', Garamond, 'Times New Roman', serif" }}
+            >
               {slide.title}
             </h1>
-            {/* Descripción */}
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-sans mb-6 sm:mb-8 animate-slide-right-back">
-              {slide.description}
-            </p>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-sans mb-6 sm:mb-8 animate-slide-right-back">
+  {slide.description}
+</p>
+
             {/* Botón con Link */}
             <Link to={slide.buttonLink}>
               <button

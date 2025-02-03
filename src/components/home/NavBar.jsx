@@ -39,6 +39,7 @@ const Navbar = () => {
             ? 'bg-white shadow-sm'
             : 'bg-transparent backdrop-blur-sm'
         }`}
+        style={{ fontFamily: "'Century Gothic', CenturyGothic, AppleGothic, sans-serif" }}
       >
         <div className="mb-4">
           <a href="/">
@@ -57,7 +58,8 @@ const Navbar = () => {
                 href="/"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
                 Home
               </a>
@@ -67,7 +69,8 @@ const Navbar = () => {
                 href="/ecoAmigable"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
                 Eco Amigable
               </a>
@@ -77,7 +80,8 @@ const Navbar = () => {
                 href="/laEmpresa"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
                 La Empresa
               </a>
@@ -89,9 +93,10 @@ const Navbar = () => {
                 href="/catalogo"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
-                Catalogo
+                Catálogo
               </a>
             </li>
             <li>
@@ -99,7 +104,8 @@ const Navbar = () => {
                 href="/clientes"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
                 Clientes
               </a>
@@ -109,7 +115,8 @@ const Navbar = () => {
                 href="/contacto"
                 className={`${
                   isScrolled || isOpen || isWhiteBackground ? 'text-black' : 'text-white'
-                } hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest`}
+                } hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest`}
+                style={{ fontSize: '16px' }}
               >
                 Contacto
               </a>
@@ -143,12 +150,16 @@ const Navbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="fixed top-[120px] left-0 w-full bg-white z-40 md:hidden shadow-lg">
+        <div 
+          className="fixed top-[120px] left-0 w-full bg-white z-40 md:hidden shadow-lg"
+          style={{ fontFamily: "'Century Gothic', CenturyGothic, AppleGothic, sans-serif" }}
+        >
           <ul className="flex flex-col space-y-4 p-6">
             <li>
               <a
                 href="/"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
                 Inicio
@@ -157,7 +168,8 @@ const Navbar = () => {
             <li>
               <a
                 href="/ecoAmigable"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
                 Eco Amigable
@@ -166,7 +178,8 @@ const Navbar = () => {
             <li>
               <a
                 href="/laEmpresa"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
                 La Empresa
@@ -175,16 +188,18 @@ const Navbar = () => {
             <li>
               <a
                 href="/catalogo"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
-                Catalogo
+                Catálogo
               </a>
             </li>
             <li>
               <a
                 href="/clientes"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
                 Clientes
@@ -193,7 +208,8 @@ const Navbar = () => {
             <li>
               <a
                 href="/contacto"
-                className="block text-black hover:text-gray-900 text-lg font-serif font-medium transition-all duration-300 hover:tracking-widest"
+                className="block text-black hover:text-gray-900 text-base font-normal transition-all duration-300 hover:tracking-widest"
+                style={{ fontSize: '16px' }}
                 onClick={toggleMenu}
               >
                 Contacto
