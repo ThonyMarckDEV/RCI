@@ -162,7 +162,7 @@ const CategoriesGrid = () => {
 
               {/* Título y descripción superpuestos en la imagen */}
               <div className="absolute bottom-6 left-6 right-6 space-y-2 z-10">
-                <p className="text-3xl font-light font-serif text-white drop-shadow-lg">
+                <p className="text-3xl font-light font-didot text-white drop-shadow-lg">
                   {category.nombreCategoria}
                 </p>
                 <p className="text-sm text-white lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
