@@ -188,6 +188,25 @@ const DetalleProducto = ({ producto, onClose }) => {
                 ))}
               </div>
             </div>
+
+            {/* Thumbnails for Mobile */}
+            <div className="md:hidden flex gap-2 overflow-x-auto pb-2 mb-8">
+              {imagenes.map((imagen, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleImageChange(index)}
+                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                    imagenActual === index ? 'border-black' : 'border-transparent'
+                  }`}
+                >
+                  <img
+                    src={`${API_BASE_URL}/storage/${imagen.urlImagen}`}
+                    alt={`${modeloActual.nombreModelo} - ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
           </motion.div>
 
           {/* Product Details Section */}
@@ -244,8 +263,8 @@ const DetalleProducto = ({ producto, onClose }) => {
               <p className="text-gray-600">{producto.descripcion}</p>
             </div>
 
-            {/* Thumbnails */}
-            <div className="flex gap-2 overflow-x-auto pb-2 mb-8">
+            {/* Thumbnails for Desktop */}
+            <div className="hidden md:flex gap-2 overflow-x-auto pb-2 mb-8">
               {imagenes.map((imagen, index) => (
                 <button
                   key={index}
